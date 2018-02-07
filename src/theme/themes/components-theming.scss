@@ -1,0 +1,28 @@
+////////////////////////////////////////////////
+// Ionosphere theming gadget ///////////////////
+
+// Import all theming scss-theme files /////////
+
+// App theming
+
+// Commons theming
+
+// Pages theming
+@import '../../pages/home/home.scss-theme';
+
+
+// Centralize component theming ////////////////
+
+@mixin custom-components-theme($theme) {
+
+  // App
+
+  // Commons
+
+  // Pages
+  @include home-component-theme($theme);
+}
+
+
+// Ionosphere theming gadget ///////////////////
+///////////////////////////////////////////////

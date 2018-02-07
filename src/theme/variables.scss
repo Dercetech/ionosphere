@@ -1,15 +1,6 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
 
-////////////////////////////////////////////////
-// Ionosphere custom ///////////////////////////
-
-// Fonts ///////////////////////////////////////
-@import 'fonts/fonts';
-
-// Ionosphere custom ///////////////////////////
-///////////////////////////////////////////////
-
 // Font path is used to include ionicons,
 // roboto, and noto sans fonts
 $font-path: "../assets/fonts";
@@ -30,6 +21,8 @@ $app-direction: ltr;
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
+// Gradients
+@import 'gradients/uiGradients/gradient-mixins';
 
 
 
@@ -79,6 +72,10 @@ $colors: (
 // default are overridden.
 
 @import "ionic.theme.default";
+//@import "ionic.theme.dark";
+
+@import "themes/ionosphere";
+@import "themes/toxic";
 
 
 // Ionicons
@@ -94,3 +91,4 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+@import 'fonts/font-awesome';
