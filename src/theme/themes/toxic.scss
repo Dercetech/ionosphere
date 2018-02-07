@@ -1,7 +1,21 @@
+@import '_components';
+
+$PRIMARY_LIT: #00FF00 ;        // Averages the striped Stampify logo
+$PRIMARY_DFT: #b9d658;        // Looks toxic on the secondary toolbar
+$PRIMARY_DRK: #8ea63c;
+
+$palette-toxic:(
+  NAV_UL_LI: $PRIMARY_LIT
+);
+
+
 .theme-toxic {
 
-  ion-content {
-    @include linear-gradient(left,$green-and-blue);
+  @include custom-components-theme($palette-toxic);
+
+  ion-content.not-in-use {
+
+    @include linear-gradient(left, $green-and-blue);
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;

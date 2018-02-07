@@ -1,4 +1,5 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
+import {IonicModule} from 'ionic-angular';
 
 import {LayoutService} from './services/layout.service';
 import {DesktopMenuComponent} from './components/desktop-menu/desktop-menu';
@@ -8,7 +9,9 @@ import {DesktopMenuComponent} from './components/desktop-menu/desktop-menu';
 	declarations: [
 	  DesktopMenuComponent
   ],
-	imports: [],
+	imports: [
+	  IonicModule
+  ],
 	exports: [
 	  DesktopMenuComponent
   ]

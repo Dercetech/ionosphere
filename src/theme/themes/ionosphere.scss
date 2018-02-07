@@ -1,4 +1,4 @@
-@import 'components-theming';
+@import '_components';
 
 $PRIMARY_LIT: #bed14f ;        // Averages the striped Stampify logo
 $PRIMARY_DFT: #b9d658;        // Looks toxic on the secondary toolbar
@@ -11,10 +11,9 @@ $palette-ionosphere:(
 
 .theme-ionosphere {
 
-  @include custom-components-theme($palette-ionosphere);
+  //@include custom-components-theme($palette-ionosphere);
 
-  ion-content {
-
+  ion-content.not-in-use {
 
     @include linear-gradient(left,$facebook-messenger);
     -webkit-background-size: cover;

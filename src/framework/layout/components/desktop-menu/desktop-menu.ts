@@ -1,22 +1,22 @@
 import { Component } from '@angular/core';
 
-/**
- * Generated class for the DesktopMenuComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'desktop-menu',
   templateUrl: 'desktop-menu.html'
 })
+
 export class DesktopMenuComponent {
 
-  text: string;
+  private _expanded: string = null;
 
-  constructor() {
-    console.log('Hello DesktopMenuComponent Component');
-    this.text = 'Hello World';
+  constructor() {}
+
+  expandSection(sectionName: string): void {
+    this._expanded = sectionName;
+  }
+
+  isSectionExpanded(sectionName: string): boolean {
+    return this._expanded === sectionName;
   }
 
 }
