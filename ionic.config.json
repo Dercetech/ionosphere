@@ -1,0 +1,8 @@
+{
+  "name": "ionosphere",
+  "app_id": "bf99dab4",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
