@@ -21,6 +21,10 @@ $app-direction: ltr;
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
+// Layout
+$PHONE_APP: "(max-width: 575px)";
+$DESKTOP_APP: "(min-width: 576px)";
+
 // Gradients
 @import 'gradients/uiGradients/gradient-mixins';
 
