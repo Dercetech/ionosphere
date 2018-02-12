@@ -1,0 +1,60 @@
+$PRIMARY_LIT: #FFE082 ;        // Averages the striped Stampify logo
+$PRIMARY_DFT: #FFCA28;        // Looks toxic on the secondary toolbar
+$PRIMARY_DRK: #FFC107;
+
+$CONTRAST_DFT: #2622FF;
+
+
+
+
+$color-bad : #FAA;
+$color-bof : #FB6;
+$color-good : #AFA;
+
+
+$color-midnight-dft: #3A3F51;
+$color-midnight-drk: #2E3344;
+
+$color-amber-lt: #FFE082;
+$color-amber-dft: #FFCA28;
+$color-amber-drk: #FFC107;
+
+// SHADES
+$BLACK: #000;
+$SHADE_NEAR_BLACK: #212121;
+$SHADE_DARK: #3A3A3A;
+$SHADE_MEDIUM: #757575;
+$GREY_VDARK: #999;
+$GREY_DARK: #AAA;
+$GREY_MED: #BDBDBD;
+$GREY_TINTED: #58666e;
+$GREY_LIGHT: #EEEEEE;
+$GREY_ALMOST_WHITE: #FAFAFA;
+$WHITE: #FFF;
+
+
+@function get-color-palette(){
+  @return (
+    primary:    (
+      base: $color-amber-dft,
+      contrast: $BLACK,
+    ),
+    secondary:  $color-midnight-dft,
+    danger:     #f53d3d,
+    light:      #f4f4f4,
+    dark:       #222
+  );
+}
+
+@function get-components-colors() {
+  @return (
+    NAV_UL_LI: $PRIMARY_LIT,
+
+    NAV_DESKTOP: (
+      WIDTH_OPEN: 300px,
+      TITLE_HEIGHT: 56px,
+      BG_COLOR: $color-midnight-dft,
+      BOX_SHADOW:  #EEE,
+    )
+  )
+};

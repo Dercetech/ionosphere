@@ -1,14 +1,10 @@
 desktop-menu {
 
-  flex: 0 0 200px;
   z-index:10;
 
   > ion-title{
 
-    height: 56px;
     text-align: center;
-    //background-color: $NAV_BG_COLOR;
-    //box-shadow: $NAV_BOXHSADOW;
 
     .toolbar-title{
       font-variant:small-caps;

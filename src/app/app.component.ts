@@ -9,7 +9,8 @@ import { HomePage } from '../pages/home/home';
 })
 export class MyApp {
 
-  theme: string = 'theme-ionosphere';
+  // Not in use unless there are variants of the .ionosphere theme (found in theme/variables > import /ionosphere/
+  theme: string = 'ionosphere';
 
   rootPage:any = HomePage;
 

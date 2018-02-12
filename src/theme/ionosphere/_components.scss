@@ -7,6 +7,9 @@
 
 // Commons theming
 
+// Framework theming
+@import '../../framework/layout/components/desktop-menu/desktop-menu.scss-theme';
+
 // Pages theming
 @import '../../pages/home/home.scss-theme';
 
@@ -18,6 +21,9 @@
   // App
 
   // Commons
+
+  // Framework
+  @include desktop-menu-component-theme($theme);
 
   // Pages
   @include home-component-theme($theme);
