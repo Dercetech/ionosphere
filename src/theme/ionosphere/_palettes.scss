@@ -1,0 +1,40 @@
+$palettes: (
+
+  moods: (
+    bad : #FAA,
+    bof : #FB6,
+    good : #AFA
+  ),
+
+  // Amber
+  amber: (
+    lit: #FFE082,
+    dft: #FFCA28,
+    drk: #FFC107
+  ),
+
+  // Night
+  night: (
+    lit: #44495a,
+    dft: #3A3F51,
+    drk: #2E3344,
+    vdrk: #20232d
+  ),
+
+  // Triad: Granny, peach, night ///////////////
+
+  granny: (
+    lit: #d5f0b9,
+    dft: #74CC14,
+    drk: #61c00e
+  ),
+
+  peach: (
+    lit: #FFC9BA,
+    dft: #FF4C19,
+    drk: #FF3C12
+  ),
+
+
+
+);
