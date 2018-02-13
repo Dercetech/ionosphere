@@ -17,9 +17,18 @@ $color-amber-lt: #FFE082;
 $color-amber-dft: #FFCA28;
 $color-amber-drk: #FFC107;
 
+// BOX SHADOWs
+$BOX_SHADOW_Z6: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+$BOX_SHADOW_Z1: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+$BOX_SHADOW_VERTICAL-Z: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+$BOX_SHADOW_NONE: none;
+
 // Navigation
-$NAV_BOX_SHADOW: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
-$NAV_BOX_SHADOW_NONE: none;
+$NAV_BOX_SHADOW:
+  0 2px 2px 0 rgba(0,0,0,0.14),     // x offset, y offset, blur, , color
+  0 3px 1px -2px rgba(0,0,0,0.12),
+  0 1px 5px 0 rgba(0,0,0,0.2);
+
 
 // SHADES
 $BLACK: #000;
@@ -34,6 +43,8 @@ $GREY_LIGHT: #EEEEEE;
 $GREY_ALMOST_WHITE: #FAFAFA;
 $WHITE: #FFF;
 
+// TRANSPARENCIES
+$BLACK_06: rgba(0,0,0,.06);
 
 @function get-color-palette(){
   @return (
@@ -53,18 +64,20 @@ $WHITE: #FFF;
     NAV_UL_LI: $PRIMARY_LIT,
 
     NAV_DESKTOP: (
+      BG_COLOR: $color-midnight-dft,
       WIDTH_OPEN: 300px,
+      TITLE_BOX_SHADOW: $BOX_SHADOW_VERTICAL-Z,
+      CONTENT_BOX_SHADOW: $BOX_SHADOW_VERTICAL-Z,
+
       TITLE_COLOR: $WHITE,
       TITLE_HEIGHT: 56px,
       TITLE_SIZE: 28px,
-      BG_COLOR: $color-midnight-dft,
-      BOX_SHADOW: $NAV_BOX_SHADOW, //_NONE
 
       SECTION_TEXT_COLOR: $SHADE_MEDIUM,
       SECTION_TEXT_SIZE: 10px,
       SECTION_TEXT_WEIGHT: 600,
 
-      CATEGORY_BORDER: 1px solid rgba(0,0,0,.06),
+      CATEGORY_BORDER: 1px solid $BLACK_06,
       CATEGORY_ICON_SIZE: 24px,
       CATEGORY_TXT_COLOR: $GREY_DARK,
       CATEGORY_TXT_SIZE: 14px,
@@ -72,7 +85,7 @@ $WHITE: #FFF;
       CATEGORY_ALT_TXT_COLOR: $PRIMARY_DFT,
       CATEGORY_ALT_BG_COLOR: $color-midnight-drk,
 
-      SUB_BORDER: 1px solid rgba(0,0,0,.06),
+      SUB_BORDER: 1px solid $BLACK_06,
       SUB_ICON_SIZE: 14px,
       SUB_TXT_COLOR: $GREY_DARK,
       SUB_TXT_SIZE: 12px,

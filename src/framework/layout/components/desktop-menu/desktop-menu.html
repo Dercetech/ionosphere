@@ -1,32 +1,49 @@
 <ion-title>ionosphere</ion-title>
 <ion-content>
-  <ion-list>
+  <div ion-fixed class="menu-flex-wrapper" fxLayout="column">
 
-    <!-- Patient: Mon profil -->
-    <div class="group">
-      <ion-item class="menu-item section">a menu section</ion-item>
+    <ion-list class="menu-scroll-container">
 
-      <ion-item class="menu-item category" [ngClass]="{ 'expanded' : isSectionExpanded('first-section') }"
-                (click)="expandSection('first-section');">
-        <ion-icon class="fa fa-stethoscope" item-start></ion-icon>
-        placeholder 1
-      </ion-item>
+      <div class="group">
+        <ion-item class="menu-item section">a menu section</ion-item>
 
-      <div *ngIf="isSectionExpanded('first-section')">
-        <ion-item class="menu-item sub-item separator">
-          <ion-icon class="fa fa-arrow-circle-up" item-left></ion-icon>
-          sub-item
+        <ion-item class="menu-item category" [ngClass]="{ 'expanded' : isSectionExpanded('first-section') }"
+                  (click)="expandSection('first-section');">
+          <ion-icon class="fa fa-stethoscope" item-start></ion-icon>
+          placeholder 1
         </ion-item>
+
+        <div *ngIf="isSectionExpanded('first-section')">
+          <ion-item class="menu-item sub-item separator">
+            <ion-icon class="fa fa-arrow-circle-up" item-left></ion-icon>
+            sub-item
+          </ion-item>
+        </div>
+
+
+        <ion-item class="menu-item category" [ngClass]="{ 'expanded' : isSectionExpanded('second-section') }"
+                  (click)="expandSection('second-section');">
+          <ion-icon class="fa fa-stethoscope" item-start></ion-icon>
+          placeholder 1
+        </ion-item>
+
       </div>
 
+      <div class="group">
+        <ion-item class="menu-item section">a menu section</ion-item>
+      </div>
 
-      <ion-item class="menu-item category" [ngClass]="{ 'expanded' : isSectionExpanded('second-section') }"
-                (click)="expandSection('second-section');">
+    </ion-list>
+
+    <div fxFlex></div>
+
+    <ion-list fxFlex="0 0 auto">
+      <ion-item class="menu-item category">
         <ion-icon class="fa fa-stethoscope" item-start></ion-icon>
         placeholder 1
       </ion-item>
+    </ion-list>
 
-    </div>
+  </div>
 
-  </ion-list>
 </ion-content>
