@@ -5,8 +5,6 @@ $PRIMARY_DRK: #FFC107;
 $CONTRAST_DFT: #2622FF;
 
 
-
-
 $color-bad : #FAA;
 $color-bof : #FB6;
 $color-good : #AFA;
@@ -18,6 +16,10 @@ $color-midnight-drk: #2E3344;
 $color-amber-lt: #FFE082;
 $color-amber-dft: #FFCA28;
 $color-amber-drk: #FFC107;
+
+// Navigation
+$NAV_BOX_SHADOW: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+$NAV_BOX_SHADOW_NONE: none;
 
 // SHADES
 $BLACK: #000;
@@ -52,9 +54,31 @@ $WHITE: #FFF;
 
     NAV_DESKTOP: (
       WIDTH_OPEN: 300px,
+      TITLE_COLOR: $WHITE,
       TITLE_HEIGHT: 56px,
+      TITLE_SIZE: 28px,
       BG_COLOR: $color-midnight-dft,
-      BOX_SHADOW:  #EEE,
+      BOX_SHADOW: $NAV_BOX_SHADOW, //_NONE
+
+      SECTION_TEXT_COLOR: $SHADE_MEDIUM,
+      SECTION_TEXT_SIZE: 10px,
+      SECTION_TEXT_WEIGHT: 600,
+
+      CATEGORY_BORDER: 1px solid rgba(0,0,0,.06),
+      CATEGORY_ICON_SIZE: 24px,
+      CATEGORY_TXT_COLOR: $GREY_DARK,
+      CATEGORY_TXT_SIZE: 14px,
+      CATEGORY_TXT_WEIGHT: 400,
+      CATEGORY_ALT_TXT_COLOR: $PRIMARY_DFT,
+      CATEGORY_ALT_BG_COLOR: $color-midnight-drk,
+
+      SUB_BORDER: 1px solid rgba(0,0,0,.06),
+      SUB_ICON_SIZE: 14px,
+      SUB_TXT_COLOR: $GREY_DARK,
+      SUB_TXT_SIZE: 12px,
+      SUB_TXT_WEIGHT: 400,
+      SUB_ALT_TXT_COLOR: $color-amber-dft,
+      SUB_ALT_BG_COLOR: $color-midnight-drk,
     )
   )
 };

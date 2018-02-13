@@ -16,14 +16,14 @@
       .toolbar-title{
         font-variant:small-caps;
         letter-spacing: 4px;
-        //color: $NAV_TITLE_COLOR;
-        //font-size: $NAV_TITLE_SIZE;
+        color: map-get($nav, TITLE_COLOR);
+        font-size: map-get($nav, TITLE_SIZE);
       }
     }
 
     > ion-content{
-      //background-color: $NAV_BG_COLOR;
-      //box-shadow: $NAV_BOXHSADOW;
+      background-color: map-get($nav, BG_COLOR);
+      box-shadow: map-get($nav, BOX_SHADOW);
 
       > .scroll-content{
 
@@ -36,9 +36,9 @@
         > div.group {
           margin-bottom: 24px;
 
-          > .item{
+          ion-item.menu-item {
 
-            //background-color: $NAV_BG_COLOR;
+            background-color: map-get($nav, BG_COLOR);
             padding-left:0px;
 
             &:not(.section){
@@ -48,12 +48,12 @@
             &.section{
               border: none;
               padding-left:16px;
-              //color: $NAV_SECTION_COLOR;
-              //font-size: $NAV_SECTION_TXT_SIZE;
+              color: map-get($nav, SECTION_TEXT_COLOR);
+              font-size: map-get($nav, SECTION_TEXT_SIZE);
               letter-spacing: 1px;
               line-height: 24px;
               text-transform: uppercase;
-              //font-weight: $NAV_SECTION_WEIGHT;
+              font-weight: map-get($nav, SECTION_TEXT_WEIGHT);
               margin: 0;
 
               > .item-inner{
@@ -64,17 +64,17 @@
             &.category{
 
               padding-left:16px;
-              //color: $NAV_CATEGORY_TXT_COLOR;
-              //font-size: $NAV_CATEGORY_TXT_SIZE;
-              //font-weight: $NAV_CATEGORY_WEIGHT;
+              color: map-get($nav, CATEGORY_TXT_COLOR);
+              font-size: map-get($nav, CATEGORY_TXT_SIZE);
+              font-weight: map-get($nav, CATEGORY_TXT_WEIGHT);
 
               > ion-icon{
-                //font-size: $NAV_CATEGORY_ICON_SIZE;
+                font-size: map-get($nav, CATEGORY_ICON_SIZE);
               }
 
               &:hover{
-                //color: $NAV_CATEGORY_ALT_TXT_COLOR;
-                //background-color: $NAV_CATEGORY_ALT_BG_COLOR;
+                color: map-get($nav, CATEGORY_ALT_TXT_COLOR);
+                background-color: map-get($nav, CATEGORY_ALT_BG_COLOR);
               }
 
               > .item-inner{
@@ -83,7 +83,7 @@
               }
 
               &:not(.expanded) {
-                //border-bottom: $NAV_CATEGORY-BORDER;
+                border-bottom: map-get($nav, CATEGORY_BORDER);
               }
 
               &.expanded {
@@ -99,23 +99,23 @@
               min-height: unset;
               margin-top: 4px;
               margin-bottom: 8px;
-              //color: $NAV_SUB_TXT_COLOR;
-              //font-size: $NAV_SUB_TXT_SIZE;
-              //font-weight: $NAV_SUB_WEIGHT;
+              color: map-get($nav, SUB_TXT_COLOR);
+              font-size: map-get($nav, SUB_TXT_SIZE);
+              font-weight: map-get($nav, SUB_TXT_WEIGHT);
 
               > ion-icon{
-                //font-size: $NAV_SUB_ICON_SIZE;
+                font-size: map-get($nav, SUB_ICON_SIZE);
                 margin: 0px;
                 min-height: unset;
               }
 
               &:hover{
-                //color: $NAV_SUB_ALT_TXT_COLOR;
+                color: map-get($nav, SUB_ALT_TXT_COLOR);
               }
 
               &.separator{
                 padding-bottom: 8px;
-                //border-bottom: $NAV_SUB-BORDER;
+                border-bottom: map-get($nav, SUB_BORDER);
               }
 
               > .item-inner{
