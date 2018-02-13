@@ -4,6 +4,7 @@
 // Import all theming scss-theme files /////////
 
 // App theming
+@import '../../app/app.scss-theme';
 
 // Commons theming
 
@@ -19,6 +20,7 @@
 @mixin custom-components-theme($theme) {
 
   // App
+  @include app-component-theme($theme);
 
   // Commons
 

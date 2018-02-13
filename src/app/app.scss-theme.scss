@@ -1,0 +1,29 @@
+@mixin app-component-theme($theme) {
+
+  $header: map-get($theme, PAGE_HEADER);
+
+  @media #{$DESKTOP_APP} {
+
+    ion-header{
+      .toolbar-background-md{
+        background-color: map-get($header, TOOLBAR_BG_COLOR);
+      }
+
+      .toolbar-title-md{
+        color: map-get($header, TOOLBAR_TXT_COLOR);
+      }
+
+      .bar-button{
+        color: map-get($header, TOOLBAR_TXT_COLOR);
+
+        &:hover{
+          color: map-get($header, TOOLBAR_ALT_TXT_COLOR)!important;
+        }
+      }
+
+      .bar-buttons-md[end]{
+        margin-right: 16px;
+      }
+    }
+  }
+}

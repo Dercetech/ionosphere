@@ -79,6 +79,12 @@ $WHITE: #FFF;
       SUB_TXT_WEIGHT: 400,
       SUB_ALT_TXT_COLOR: $color-amber-dft,
       SUB_ALT_BG_COLOR: $color-midnight-drk,
+    ),
+
+    PAGE_HEADER: (
+      TOOLBAR_BG_COLOR: $color-midnight-dft,
+      TOOLBAR_TXT_COLOR: $color-amber-dft,
+      TOOLBAR_ALT_TXT_COLOR: $color-amber-lt,
     )
   )
 };
