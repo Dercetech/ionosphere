@@ -31,6 +31,8 @@ $DESKTOP_APP: "(min-width: 600px)";
 // Ionosphere theme
 @import 'ionosphere/jem\'s-layout';
 
+$split-pane-md-side-min-width: 220px;
+$split-pane-md-side-max-width: 220px;
 
 // Named Color Variables
 // --------------------------------------------------

@@ -1,4 +1,4 @@
-import {Component, HostBinding} from '@angular/core';
+import {Component, EventEmitter, HostBinding, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'desktop-menu',
@@ -10,9 +10,16 @@ export class DesktopMenuComponent {
   private sectionsStates: any = {};
   private expandedCategory: string = null;
 
-  @HostBinding('class.compact') compactClassActive: boolean = false;
+  @Input('set-compact')
+    set _setCompact(value: boolean) {
+    this.compactClassActive = value;
+    this.small = value;
+  }
 
+  @Output() compact: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @HostBinding('class.compact') compactClassActive: boolean = false;
   small: boolean = false;
+
   structure: any = {
 
     "scroll" : [
@@ -114,6 +121,7 @@ export class DesktopMenuComponent {
 
   toggleSize(): void {
     this.compactClassActive = !this.compactClassActive;
+    this.compact.emit(this.compactClassActive);
     this.small = !this.small;
   }
 
