@@ -9,14 +9,127 @@ export class DesktopMenuComponent {
 
   private _expanded: string = null;
 
+  private sectionsStates: any = {};
+  private expandedCategory: string = null;
+
+  structure: any = {
+
+    "scroll" : [
+
+      {
+        id:"header",
+        type: "flat-group",
+        categories: [
+          {
+            "id": "entry1",
+            "title": "Overview crap",
+            "fa": "fa fa-home"
+          },
+          {
+            "id": "entry2",
+            "title": "Whut else",
+            "fa": "fa fa-home"
+          }
+        ]
+      },
+
+      {
+        id:"section1",
+        type: "group",
+        title: "A menu section",
+        categories: [
+          {
+            id: "entry1",
+            title: "I haz sub elements",
+            fa: "fa fa-medkit",
+            sub: [
+              {
+                id: "sub1",
+                title: "Entry 1",
+                fa: "fa fa-medkit"
+              },
+              {
+                id: "entry1",
+                title: "Entry 1",
+                fa: "fa fa-medkit"
+              }
+            ]
+          },
+          {
+            id: "entry2",
+            title: "Entry 2",
+            fa: "fa fa-medkit"
+          },
+          {
+            id: "entry3",
+            title: "Entry 3",
+            fa: "fa fa-medkit"
+          }
+        ]
+      },
+
+      {
+        id:"section2",
+        type: "group",
+        title: "Another menu section",
+        categories: [
+          {
+            id: "entry1",
+            title: "Entry 1",
+            fa: "fa fa-medkit"
+          },
+          {
+            id: "entry2",
+            title: "Entry 2",
+            fa: "fa fa-medkit"
+          },
+          {
+            id: "entry3",
+            title: "Entry 3",
+            fa: "fa fa-medkit"
+          }
+        ]
+      },
+    ],
+
+    "footer" : [
+      {
+        "id": "entry1",
+        "title": "Footer 1",
+        "fa": "fa fa-home"
+      },
+      {
+        "id": "entry2",
+        "title": "Whut else",
+        "fa": "fa fa-home"
+      }
+    ]
+
+  };
+
   constructor() {}
 
-  expandSection(sectionName: string): void {
-    this._expanded = sectionName;
+
+  toggleSectionExpanded(section: any): void {
+    const sectionId = section.id;
+    this.sectionsStates[sectionId] = this.sectionsStates[sectionId] ? false : true;
   }
 
-  isSectionExpanded(sectionName: string): boolean {
-    return this._expanded === sectionName;
+  isSectionExpanded(section: any): boolean {
+    const sectionId = section.id;
+    return this.sectionsStates[sectionId] ? this.sectionsStates[sectionId] : false;
+  }
+
+  setExpandedCategory(section: any, category: any): void {
+    const sectionId = section.id;
+    const categoryId = category.id;
+    this.expandedCategory = this.expandedCategory === (categoryId + sectionId) ? null : (categoryId + sectionId);
+  }
+
+  isCategoryExpanded(section: any, category: any): boolean {
+    const sectionId = section.id;
+    const categoryId = category.id;
+    return this.expandedCategory === (categoryId + sectionId);
   }
 
 }

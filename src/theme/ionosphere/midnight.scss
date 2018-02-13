@@ -9,9 +9,10 @@ $color-bad : #FAA;
 $color-bof : #FB6;
 $color-good : #AFA;
 
-
+$color-midnight-lit: #44495a;
 $color-midnight-dft: #3A3F51;
 $color-midnight-drk: #2E3344;
+$color-midnight-vdrk: #20232d;
 
 $color-amber-lt: #FFE082;
 $color-amber-dft: #FFCA28;
@@ -20,7 +21,7 @@ $color-amber-drk: #FFC107;
 // BOX SHADOWs
 $BOX_SHADOW_Z6: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
 $BOX_SHADOW_Z1: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-$BOX_SHADOW_VERTICAL-Z: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+$BOX_SHADOW_VERTICAL-Z: 0px -2px 2px 0 rgba(0, 0, 0, 0.14), 0 -2px 1px -2px rgba(0, 0, 0, 0.12), 0 -4px 5px 0 rgba(0, 0, 0, 0.2);
 $BOX_SHADOW_NONE: none;
 
 // Navigation
@@ -38,18 +39,19 @@ $SHADE_MEDIUM: #757575;
 $GREY_VDARK: #999;
 $GREY_DARK: #AAA;
 $GREY_MED: #BDBDBD;
-$GREY_TINTED: #58666e;
 $GREY_LIGHT: #EEEEEE;
 $GREY_ALMOST_WHITE: #FAFAFA;
 $WHITE: #FFF;
 
 // TRANSPARENCIES
+$TRANSPARENT: transparent;
+$WHITE_12: rgba(255,255,255,0.12);
 $BLACK_06: rgba(0,0,0,.06);
 
 @function get-color-palette(){
   @return (
     primary:    (
-      base: $color-amber-dft,
+      base: $PRIMARY_DFT,
       contrast: $BLACK,
     ),
     secondary:  $color-midnight-dft,
@@ -61,42 +63,52 @@ $BLACK_06: rgba(0,0,0,.06);
 
 @function get-components-colors() {
   @return (
-    NAV_UL_LI: $PRIMARY_LIT,
 
     NAV_DESKTOP: (
       BG_COLOR: $color-midnight-dft,
       WIDTH_OPEN: 300px,
       TITLE_BOX_SHADOW: $BOX_SHADOW_VERTICAL-Z,
-      CONTENT_BOX_SHADOW: $BOX_SHADOW_VERTICAL-Z,
+      CONTENT_BOX_SHADOW: $NAV_BOX_SHADOW,
 
       TITLE_COLOR: $WHITE,
       TITLE_HEIGHT: 56px,
       TITLE_SIZE: 28px,
 
-      SECTION_TEXT_COLOR: $SHADE_MEDIUM,
-      SECTION_TEXT_SIZE: 10px,
-      SECTION_TEXT_WEIGHT: 600,
+      ITEM_HOVER_BG_COLOR: $TRANSPARENT, //$WHITE_12,
+      ITEM_SEPARATOR_COLOR: $color-midnight-lit,
+
+      SECTION_GROUP_BG_COLOR: $color-midnight-dft,
+      SECTION_GROUP_EXPANDED_BG_COLOR: $color-midnight-drk,
+      SECTION_TITLE_COLOR: $SHADE_MEDIUM,
+      SECTION_TITLE_SIZE: 10px,
+      SECTION_TITLE_WEIGHT: 600,
+      SECTION_TITLE_ALT_BG_COLOR: $color-midnight-lit,
+      SECTION_TITLE_ALT_TEXT_COLOR: $PRIMARY_DRK,
+      SECTION_EXPANDED_TITLE_BG_COLOR: $TRANSPARENT, // section title bg
+      SECTION_EXPANDED_TITLE_ALT_BG_COLOR: $TRANSPARENT, // section title bg
+      SECTION_EXPANDED_TITLE_ALT_TEXT_COLOR: $PRIMARY_DRK, // section title color hover
 
       CATEGORY_BORDER: 1px solid $BLACK_06,
       CATEGORY_ICON_SIZE: 24px,
       CATEGORY_TXT_COLOR: $GREY_DARK,
+      CATEGORY_TXT_COLOR_HIGHLIGHT: $PRIMARY_DFT,
       CATEGORY_TXT_SIZE: 14px,
-      CATEGORY_TXT_WEIGHT: 400,
-      CATEGORY_ALT_TXT_COLOR: $PRIMARY_DFT,
-      CATEGORY_ALT_BG_COLOR: $color-midnight-drk,
+      CATEGORY_TXT_WEIGHT: 600,
+      CATEGORY_ALT_TXT_COLOR: $PRIMARY_DRK,
+      CATEGORY_ALT_BG_COLOR: $color-midnight-lit,
 
       SUB_BORDER: 1px solid $BLACK_06,
       SUB_ICON_SIZE: 14px,
       SUB_TXT_COLOR: $GREY_DARK,
       SUB_TXT_SIZE: 12px,
       SUB_TXT_WEIGHT: 400,
-      SUB_ALT_TXT_COLOR: $color-amber-dft,
-      SUB_ALT_BG_COLOR: $color-midnight-drk,
+      SUB_ALT_TXT_COLOR: $PRIMARY_DRK,
+      SUB_ALT_BG_COLOR: $color-midnight-lit,
     ),
 
     PAGE_HEADER: (
       TOOLBAR_BG_COLOR: $color-midnight-dft,
-      TOOLBAR_TXT_COLOR: $color-amber-dft,
+      TOOLBAR_TXT_COLOR: $PRIMARY_DFT,
       TOOLBAR_ALT_TXT_COLOR: $color-amber-lt,
     )
   )

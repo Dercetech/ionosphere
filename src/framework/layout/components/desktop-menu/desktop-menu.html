@@ -2,47 +2,60 @@
 <ion-content>
   <div ion-fixed class="menu-flex-wrapper" fxLayout="column">
 
-    <ion-list class="menu-scroll-container">
+    <div *ngIf="structure.scroll" class="menu-scroll-container">
+      <div *ngFor="let section of structure.scroll"
+           [ngClass]="{
+            'flat-group' : (section.type === 'flat-group'),
+            'group' : (section.type === 'group'),
+            'collapsed' : (section.type === 'group' && !isSectionExpanded(section)),
+            'expanded' : (section.type === 'group' && isSectionExpanded(section))
+          }">
 
-      <div class="group">
-        <ion-item class="menu-item section">a menu section</ion-item>
-
-        <ion-item class="menu-item category" [ngClass]="{ 'expanded' : isSectionExpanded('first-section') }"
-                  (click)="expandSection('first-section');">
-          <ion-icon class="fa fa-stethoscope" item-start></ion-icon>
-          placeholder 1
-        </ion-item>
-
-        <div *ngIf="isSectionExpanded('first-section')">
-          <ion-item class="menu-item sub-item separator">
-            <ion-icon class="fa fa-arrow-circle-up" item-left></ion-icon>
-            sub-item
+        <div *ngIf="section.type === 'flat-group'" fxLayout="column">
+          <ion-item *ngFor="let category of section.categories; let isFirst = first"
+                    class="menu-item category"
+                    [ngClass]="{
+                      'menu-first-item' : isFirst,
+                      'menu-item-lit' : false
+                    }"
+                    fxFlex="0 0 auto">
+            <ion-icon [ngClass]="category.fa" item-start></ion-icon>
+            {{ category.title }}
           </ion-item>
         </div>
 
+        <div *ngIf="section.type === 'group'">
+          <ion-item class="menu-item section" (click)="toggleSectionExpanded(section);">{{ section.title }}</ion-item>
 
-        <ion-item class="menu-item category" [ngClass]="{ 'expanded' : isSectionExpanded('second-section') }"
-                  (click)="expandSection('second-section');">
-          <ion-icon class="fa fa-stethoscope" item-start></ion-icon>
-          placeholder 1
-        </ion-item>
+          <div class="categories" *ngIf="isSectionExpanded(section)">
+            <div *ngFor="let category of section.categories">
+              <ion-item class="menu-item category" (click)="setExpandedCategory(section, category)" [ngClass]="{ 'expanded' : isCategoryExpanded(section, category) }">
+                <ion-icon [ngClass]="category.fa" item-start></ion-icon>
+                {{ category.title }}
+              </ion-item>
+
+              <div *ngIf="category.sub && isCategoryExpanded(section, category)">
+                <ion-item *ngFor="let sub of category.sub" class="menu-item sub-item">
+                  <ion-icon [ngClass]="sub.fa" item-left></ion-icon>
+                  {{ sub.title }}
+                </ion-item>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </div>
 
-      <div class="group">
-        <ion-item class="menu-item section">a menu section</ion-item>
-      </div>
-
-    </ion-list>
+    </div>
 
     <div fxFlex></div>
 
-    <ion-list fxFlex="0 0 auto">
-      <ion-item class="menu-item category">
-        <ion-icon class="fa fa-stethoscope" item-start></ion-icon>
-        placeholder 1
+    <div *ngIf="structure.footer" class="menu-footer" fxFlex="0 0 auto">
+      <ion-item *ngFor="let category of structure.footer" class="menu-item category">
+        <ion-icon [ngClass]="category.fa" item-start></ion-icon>
+        {{ category.title }}
       </ion-item>
-    </ion-list>
+    </div>
 
   </div>
 
