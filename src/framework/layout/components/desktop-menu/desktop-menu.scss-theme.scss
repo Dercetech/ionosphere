@@ -9,7 +9,7 @@
 
     flex: 0 0 map-get($nav, WIDTH_OPEN);
 
-    > ion-title{
+    > ion-title, .compact-title {
 
       position: relative;
       z-index: 1;
@@ -29,6 +29,10 @@
         color: map-get($nav, TITLE_COLOR);
         font-size: map-get($nav, TITLE_SIZE);
       }
+    }
+
+    .compact-title{
+      display: none;
     }
 
     > ion-content{
@@ -106,6 +110,12 @@
             border-top: 1px solid map-get($nav, ITEM_SEPARATOR_COLOR);;
           }
         }
+
+        > div.menu-drawer{
+          > .menu-item{
+            padding-right: 8px;
+          }
+        }
       }
 
 
@@ -140,11 +150,6 @@
           > .item-inner{
             border: none;
           }
-
-          .fa-chevron-small{
-            font-size: 0.8em;
-            padding-top: 10px;
-          }
         }
 
         &.category{
@@ -156,11 +161,6 @@
 
           > ion-icon{
             font-size: map-get($nav, CATEGORY_ICON_SIZE);
-          }
-
-          .fa-chevron-small{
-            font-size: 0.8em;
-            padding-top: 10px;
           }
 
           &:hover{
@@ -217,9 +217,83 @@
         &.menu-item-lit{
           color: map-get($nav, CATEGORY_TXT_COLOR_HIGHLIGHT);
         }
+
+        .fa-chevron-small{
+          font-size: 0.8em;
+          padding-top: 10px;
+        }
       }
 
       //}
+    }
+  }
+
+  desktop-menu:not(.compact){
+    .compact-only{
+      display: none;
+    }
+  }
+
+  desktop-menu.compact{
+
+    flex: 0 0 map-get($nav, WIDTH_OPEN_COMPACT);
+
+    ion-title{
+      display: none;
+    }
+
+    .compact-title{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      color: map-get($theme, PRIMARY);
+    }
+
+    ion-label{
+      display: none;
+    }
+
+    .menu-item{
+
+      padding-left: 0px!important;
+
+      &.section{
+        min-height: 22px;
+      }
+
+      ion-icon{
+        width: 100%;
+        margin-left: 6px;
+      }
+
+      .item-inner{
+        display: none;
+      }
+
+      .chevron-sub{
+        display: none;
+      }
+
+      .fa-chevron-small{
+        font-size: 0.8em!important;
+        padding-top: 10px;
+      }
+
+      &.sub-item{
+        padding-left:0px!important;
+
+        ion-icon{
+          margin-left: 0px!important;
+          padding: 6px 0;
+        }
+      }
+    }
+
+    .menu-drawer {
+
+      > .menu-item {
+        padding-right: 0px!important;
+      }
     }
   }
 }

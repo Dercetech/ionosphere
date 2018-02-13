@@ -1,4 +1,7 @@
 <ion-title>ionosphere</ion-title>
+<div class="compact-title">
+  <span class="fa fa-medkit fa-2x"></span>
+</div>
 <ion-content>
   <div ion-fixed class="menu-flex-wrapper" fxLayout="column">
 
@@ -26,7 +29,8 @@
 
         <div *ngIf="section.type === 'group'">
           <ion-item class="menu-item section" (click)="toggleSectionExpanded(section);">
-            <ion-icon class="fa-chevron-small fa fa-chevron-right" [ngClass]="[(isSectionExpanded(section) ? 'fa-rotate-90' : '')]" item-end></ion-icon>
+            <ion-icon item-start class="compact-only fa-chevron-small fa fa-chevron-right" [ngClass]="[(isSectionExpanded(section) ? 'fa-rotate-90' : '')]"></ion-icon>
+            <ion-icon item-end class="fa-chevron-small fa fa-chevron-right" [ngClass]="[(isSectionExpanded(section) ? 'fa-rotate-90' : '')]"></ion-icon>
             {{ section.title }}
           </ion-item>
 
@@ -34,7 +38,7 @@
             <div *ngFor="let category of section.categories">
               <ion-item class="menu-item category" (click)="setExpandedCategory(section, category)" [ngClass]="{ 'expanded' : isCategoryExpanded(section, category) }">
                 <ion-icon [ngClass]="category.fa" item-start></ion-icon>
-                <ion-icon *ngIf="category.sub" class="fa-chevron-small fa fa-chevron-right" [ngClass]="[(isCategoryExpanded(section, category) ? 'fa-rotate-90' : '')]" item-end></ion-icon>
+                <ion-icon *ngIf="category.sub" class="chevron-sub fa-chevron-small fa fa-chevron-right" [ngClass]="[(isCategoryExpanded(section, category) ? 'fa-rotate-90' : '')]" item-end></ion-icon>
                 {{ category.title }}
               </ion-item>
 
@@ -58,6 +62,13 @@
       <ion-item *ngFor="let category of structure.footer" class="menu-item category">
         <ion-icon [ngClass]="category.fa" item-start></ion-icon>
         {{ category.title }}
+      </ion-item>
+    </div>
+
+    <div *ngIf="structure.drawer" class="menu-footer menu-drawer" fxFlex="0 0 auto">
+      <ion-item class="menu-item category" (click)="toggleSize()">
+        <ion-icon class="fa fa-chevron-right fa-chevron-small compact-only" item-start></ion-icon>
+        <ion-icon class="fa fa-chevron-left fa-chevron-small" item-end></ion-icon>
       </ion-item>
     </div>
 

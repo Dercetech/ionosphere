@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, HostBinding} from '@angular/core';
 
 @Component({
   selector: 'desktop-menu',
@@ -7,11 +7,12 @@ import { Component } from '@angular/core';
 
 export class DesktopMenuComponent {
 
-  private _expanded: string = null;
-
   private sectionsStates: any = {};
   private expandedCategory: string = null;
 
+  @HostBinding('class.compact') compactClassActive: boolean = false;
+
+  small: boolean = false;
   structure: any = {
 
     "scroll" : [
@@ -103,12 +104,18 @@ export class DesktopMenuComponent {
         "title": "Whut else",
         "fa": "fa fa-home"
       }
-    ]
+    ],
+
+    "drawer" : true
 
   };
 
   constructor() {}
 
+  toggleSize(): void {
+    this.compactClassActive = !this.compactClassActive;
+    this.small = !this.small;
+  }
 
   toggleSectionExpanded(section: any): void {
     const sectionId = section.id;

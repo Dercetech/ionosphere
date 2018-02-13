@@ -64,9 +64,12 @@ $BLACK_06: rgba(0,0,0,.06);
 @function get-components-colors() {
   @return (
 
+    PRIMARY: $PRIMARY_DFT,
+
     NAV_DESKTOP: (
       BG_COLOR: $color-midnight-dft,
       WIDTH_OPEN: 220px,
+      WIDTH_OPEN_COMPACT: 72px,
       TITLE_BOX_SHADOW: $BOX_SHADOW_VERTICAL-Z,
       CONTENT_BOX_SHADOW: $NAV_BOX_SHADOW,
 
