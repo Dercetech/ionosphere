@@ -140,6 +140,11 @@
           > .item-inner{
             border: none;
           }
+
+          .fa-chevron-small{
+            font-size: 0.8em;
+            padding-top: 10px;
+          }
         }
 
         &.category{
@@ -151,6 +156,11 @@
 
           > ion-icon{
             font-size: map-get($nav, CATEGORY_ICON_SIZE);
+          }
+
+          .fa-chevron-small{
+            font-size: 0.8em;
+            padding-top: 10px;
           }
 
           &:hover{

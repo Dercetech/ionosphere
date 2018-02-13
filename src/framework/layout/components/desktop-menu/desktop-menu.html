@@ -25,12 +25,16 @@
         </div>
 
         <div *ngIf="section.type === 'group'">
-          <ion-item class="menu-item section" (click)="toggleSectionExpanded(section);">{{ section.title }}</ion-item>
+          <ion-item class="menu-item section" (click)="toggleSectionExpanded(section);">
+            <ion-icon class="fa-chevron-small fa fa-chevron-right" [ngClass]="[(isSectionExpanded(section) ? 'fa-rotate-90' : '')]" item-end></ion-icon>
+            {{ section.title }}
+          </ion-item>
 
           <div class="categories" *ngIf="isSectionExpanded(section)">
             <div *ngFor="let category of section.categories">
               <ion-item class="menu-item category" (click)="setExpandedCategory(section, category)" [ngClass]="{ 'expanded' : isCategoryExpanded(section, category) }">
                 <ion-icon [ngClass]="category.fa" item-start></ion-icon>
+                <ion-icon *ngIf="category.sub" class="fa-chevron-small fa fa-chevron-right" [ngClass]="[(isCategoryExpanded(section, category) ? 'fa-rotate-90' : '')]" item-end></ion-icon>
                 {{ category.title }}
               </ion-item>
 
