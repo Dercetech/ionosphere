@@ -1,16 +1,18 @@
 @import 'palettes';
 
+// Dercetech "Midnight" color scheme
 $ACTIVE_PRIMARY: map-get($palettes, amber);
+$ACTIVE_SECONDARY: map-get($palettes, amber_C);
+$ACTIVE_BACKDROPS: map_get($palettes, night);
+
 $PRIMARY_LIT: map-get($ACTIVE_PRIMARY, lit);
 $PRIMARY_DFT: map-get($ACTIVE_PRIMARY, dft);
 $PRIMARY_DRK: map-get($ACTIVE_PRIMARY, drk);
 
-$ACTIVE_SECONDARY: map-get($palettes, amber);
 $SECONDARY_LIT: map-get($ACTIVE_SECONDARY, lit);
 $SECONDARY_DFT: map-get($ACTIVE_SECONDARY, dft);
 $SECONDARY_DRK: map-get($ACTIVE_SECONDARY, drk);
 
-$ACTIVE_BACKDROPS: map_get($palettes, night);
 $BACKDROPS_LIT: map-get($ACTIVE_BACKDROPS, lit);
 $BACKDROPS_DFT: map-get($ACTIVE_BACKDROPS, dft);
 $BACKDROPS_DRK: map-get($ACTIVE_BACKDROPS, drk);
@@ -52,7 +54,7 @@ $BLACK_06: rgba(0,0,0,.06);
       base: $PRIMARY_DFT,
       contrast: $BLACK,
     ),
-    secondary:  $BACKDROPS_DFT,
+    secondary:  $SECONDARY_DFT,
     danger:     #f53d3d,
     light:      #f4f4f4,
     dark:       #222
@@ -63,6 +65,11 @@ $BLACK_06: rgba(0,0,0,.06);
   @return (
 
     PRIMARY: $PRIMARY_DFT,
+    SECONDARY: SECONDARY_DFT,
+
+    DFT: (
+      BG_COLOR: $GREY_LIGHT
+    ),
 
     NAV_DESKTOP: (
       BG_COLOR: $BACKDROPS_DFT,

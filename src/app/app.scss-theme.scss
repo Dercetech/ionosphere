@@ -1,28 +1,39 @@
 @mixin app-component-theme($theme) {
 
+  $defaults: map-get($theme, DFT);
   $header: map-get($theme, PAGE_HEADER);
 
-  @media #{$DESKTOP_APP} {
+  ion-nav{
 
-    ion-header{
-      .toolbar-background-md{
-        background-color: map-get($header, TOOLBAR_BG_COLOR);
-      }
+    @media #{$DESKTOP_APP} {
 
-      .toolbar-title-md{
-        color: map-get($header, TOOLBAR_TXT_COLOR);
-      }
+      > .ion-page {
 
-      .bar-button{
-        color: map-get($header, TOOLBAR_TXT_COLOR);
+        > ion-header{
+          .toolbar-background-md{
+            background-color: map-get($header, TOOLBAR_BG_COLOR);
+          }
 
-        &:hover{
-          color: map-get($header, TOOLBAR_ALT_TXT_COLOR)!important;
+          .toolbar-title-md{
+            color: map-get($header, TOOLBAR_TXT_COLOR);
+          }
+
+          .bar-button{
+            color: map-get($header, TOOLBAR_TXT_COLOR);
+
+            &:hover{
+              color: map-get($header, TOOLBAR_ALT_TXT_COLOR)!important;
+            }
+          }
+
+          .bar-buttons-md[end]{
+            margin-right: 16px;
+          }
         }
-      }
 
-      .bar-buttons-md[end]{
-        margin-right: 16px;
+        > ion-content{
+          background-color: map-get($defaults, BG_COLOR);
+        }
       }
     }
   }

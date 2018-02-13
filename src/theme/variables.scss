@@ -22,15 +22,14 @@ $app-direction: ltr;
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
 // Layout
-$PHONE_APP: "(max-width: 575px)";
-$DESKTOP_APP: "(min-width: 576px)";
+$PHONE_APP: "(max-width: 599px)";
+$DESKTOP_APP: "(min-width: 600px)";
 
 // Gradients
 @import 'gradients/uiGradients/gradient-mixins';
 
 // Ionosphere theme
-@import 'ionosphere/midnight';
-// @import 'themes/toxic';
+@import 'ionosphere/jem\'s-layout';
 
 
 // Named Color Variables
