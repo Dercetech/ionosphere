@@ -9,8 +9,8 @@
     &.compact{
 
       > ion-menu.split-pane-side{
-        min-width: 72px;
-        max-width: 72px;
+        min-width: map-get($nav, WIDTH_OPEN_COMPACT);
+        max-width: map-get($nav, WIDTH_OPEN_COMPACT);
       }
     }
 
