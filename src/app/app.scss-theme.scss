@@ -30,9 +30,13 @@
 
       > .ion-page {
 
-        > ion-header{
+        ion-header{
           .toolbar-background-md{
             background-color: map-get($header, TOOLBAR_BG_COLOR);
+          }
+
+          &.no-shadow:after{
+            display: none!important;
           }
 
           .toolbar-title-md{

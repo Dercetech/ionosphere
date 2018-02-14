@@ -4,18 +4,21 @@ import {IonicModule} from 'ionic-angular';
 
 import {LayoutService} from './services/layout.service';
 import {DesktopMenuComponent} from './components/desktop-menu/desktop-menu';
+import {HeaderShadowAfterScroll} from "./directives/header-shadow-after-scroll.directive";
 
 
 @NgModule({
 	declarations: [
-	  DesktopMenuComponent
+	  DesktopMenuComponent,
+    HeaderShadowAfterScroll
   ],
 	imports: [
 	  IonicModule,
     FlexLayoutModule
   ],
 	exports: [
-	  DesktopMenuComponent
+	  DesktopMenuComponent,
+    HeaderShadowAfterScroll
   ]
 })
 export class LayoutModule {
