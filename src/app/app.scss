@@ -15,16 +15,27 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-#ionosphere-wrapper{
-  width: 100%;
-  height: 100%;
+// Actual theme is imported in ../theme/variables, this import runs an @include method injecting the template (at the bottom of the resulting .css file)
+@import "../theme/ionosphere/_ionosphere";
 
-  @media #{$DESKTOP_APP} {
 
-    // Main contents must adapt to menu width
-    ion-nav {
-      flex: 1 1 auto;
-      position: unset;
-    }
-  }
-}
+// The following is made obsolete by the (tweaked) ionic splitpane.
+// Tweaking happens in app.scss-theme.scss app-component-theme mixin.
+// Mixins are used to centralize global theming with no hard references.
+// This approach makes Jem@Dercetech very proud of his solution. Attaboy to myself.
+
+
+
+//#ionosphere-wrapper{
+//  width: 100%;
+//  height: 100%;
+//
+//  @media #{$DESKTOP_APP} {
+//
+//    // Main contents must adapt to menu width
+//    ion-nav {
+//      flex: 1 1 auto;
+//      position: unset;
+//    }
+//  }
+//}

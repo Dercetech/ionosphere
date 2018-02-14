@@ -8,13 +8,14 @@
 
     &.compact{
 
-      > ion-menu{
-        min-width: 72px!important;
-        max-width: 72px!important;
+      > ion-menu.split-pane-side{
+        min-width: 72px;
+        max-width: 72px;
       }
     }
 
-    > ion-menu{
+    > ion-menu.split-pane-side{
+      z-index:2;
       border-right: none!important;
       box-shadow: map-get($nav, CONTENT_BOX_SHADOW)!important;
     }
@@ -24,7 +25,8 @@
 
     z-index: -1;
 
-    @media #{$DESKTOP_APP} {
+    // Ionosphere won't have different global stylings for Desktop vs Mobile apps for now
+    // @media #{$DESKTOP_APP}, #{$PHONE_APP} {
 
       > .ion-page {
 
@@ -54,6 +56,6 @@
           background-color: map-get($defaults, BG_COLOR);
         }
       }
-    }
+    // }
   }
 }

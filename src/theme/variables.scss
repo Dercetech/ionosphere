@@ -10,7 +10,6 @@ $font-path: "../assets/fonts";
 // http://ionicframework.com/docs/theming/rtl-support/
 $app-direction: ltr;
 
-
 @import "ionic.globals";
 
 
@@ -21,15 +20,20 @@ $app-direction: ltr;
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
-// Layout
-$PHONE_APP: "(max-width: 599px)";
-$DESKTOP_APP: "(min-width: 600px)";
+// Layout -might not be the best approach since we now have @angular-flex-layout available in Ionosphere
+// $PHONE_APP: "(max-width: 599px)";
+// $DESKTOP_APP: "(min-width: 600px)";
 
 // Gradients
 @import 'gradients/uiGradients/gradient-mixins';
 
 // Ionosphere theme
 @import 'ionosphere/jem\'s-layout';
+
+// REM: this makes the theme colors and component cusotmization available app-wide.
+//      See ../app/app.scss where _ionosphere.scss is imported
+//      That place allows the generated global class to be appended AFTER the actual Ionic defaults, hence overriding them when needed.
+
 
 $split-pane-md-side-min-width: 220px;
 $split-pane-md-side-max-width: 220px;
@@ -84,11 +88,10 @@ $colors:(
 // so that the above variables are used and Ionic's
 // default are overridden.
 
+// REM: Anything included here would be overridden by the Ionic defaults. See comment around line 30 about Ionosphere theme import.
+
 @import "ionic.theme.default";
 //@import "ionic.theme.dark";
-
-// Adds the component-customized .ionosphere theme to the app component
-@import "ionosphere/_ionosphere";
 
 
 // Ionicons

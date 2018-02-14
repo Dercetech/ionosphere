@@ -35,7 +35,7 @@ export class MyApp {
     this.isCompact = isCompact;
   }
 
-  onMSplitChange(): void {
+  onSplitChange(): void {
     this.isCompact = false;
   }
 }
