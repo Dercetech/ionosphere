@@ -11,7 +11,7 @@ export class DesktopMenuComponent {
   private expandedCategory: string = null;
 
   @Input('set-compact')
-    set _setCompact(value: boolean) {
+  set _setCompact(value: boolean) {
     this.compactClassActive = value;
     this.small = value;
   }
@@ -45,6 +45,33 @@ export class DesktopMenuComponent {
             id: "entry0",
             title: "Overview",
             fa: "fa fa-line-chart"
+          },
+          {
+            id: "entry_algo",
+            title: "Algorithms",
+            fa: "fa fa-flask",
+            sub: [
+              {
+                id: "sub1",
+                title: "Generic",
+                fa: "fa fa-user-o"
+              },
+              {
+                id: "sub2",
+                title: "Columbus",
+                fa: "fa fa-user-o"
+              },
+              {
+                id: "sub3",
+                title: "Split",
+                fa: "fa fa-user-o"
+              },
+              {
+                id: "sub4",
+                title: "Blyat",
+                fa: "fa fa-user-o"
+              },
+            ]
           },
           {
             id: "entry1",
