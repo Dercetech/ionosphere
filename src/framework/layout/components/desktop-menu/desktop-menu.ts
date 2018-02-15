@@ -30,12 +30,7 @@ export class DesktopMenuComponent {
         categories: [
           {
             "id": "entry1",
-            "title": "Overview crap",
-            "fa": "fa fa-home"
-          },
-          {
-            "id": "entry2",
-            "title": "Whut else",
+            "title": "Dashboard",
             "fa": "fa fa-home"
           }
         ]
@@ -44,34 +39,39 @@ export class DesktopMenuComponent {
       {
         id:"section1",
         type: "group",
-        title: "A menu section",
+        title: "Trading bots",
         categories: [
           {
+            id: "entry0",
+            title: "Overview",
+            fa: "fa fa-line-chart"
+          },
+          {
             id: "entry1",
-            title: "I haz sub elements",
-            fa: "fa fa-medkit",
-            sub: [
-              {
-                id: "sub1",
-                title: "Entry 1",
-                fa: "fa fa-medkit"
-              },
-              {
-                id: "entry1",
-                title: "Entry 1",
-                fa: "fa fa-medkit"
-              }
-            ]
+            title: "My bots",
+            fa: "fa fa-users"
           },
           {
             id: "entry2",
-            title: "Entry 2",
-            fa: "fa fa-medkit"
-          },
-          {
-            id: "entry3",
-            title: "Entry 3",
-            fa: "fa fa-medkit"
+            title: "Active processing",
+            fa: "fa fa-cogs",
+            sub: [
+              {
+                id: "sub1",
+                title: "MyBot_1",
+                fa: "fa fa-user-o"
+              },
+              {
+                id: "entry1",
+                title: "Columbus tracker",
+                fa: "fa fa-user-o"
+              },
+              {
+                id: "entry1",
+                title: "Split opportunist",
+                fa: "fa fa-user-o"
+              }
+            ]
           }
         ]
       },
@@ -79,22 +79,42 @@ export class DesktopMenuComponent {
       {
         id:"section2",
         type: "group",
-        title: "Another menu section",
+        title: "My wallets",
         categories: [
           {
             id: "entry1",
-            title: "Entry 1",
-            fa: "fa fa-medkit"
+            title: "Crypto",
+            fa: "fa fa-connectdevelop",
+            sub: [
+              {
+                id: "sub1",
+                title: "Bitcoin",
+                fa: "fa fa-btc"
+              },
+              {
+                id: "sub2",
+                title: "Ethereum",
+                fa: "fa fa-diamond"
+              },
+              {
+                id: "sub3",
+                title: "Litecoin",
+                fa: "fa fa-linode"
+              }
+            ]
           },
+
           {
             id: "entry2",
-            title: "Entry 2",
-            fa: "fa fa-medkit"
-          },
-          {
-            id: "entry3",
-            title: "Entry 3",
-            fa: "fa fa-medkit"
+            title: "Fiat",
+            fa: "fa fa-bank",
+            sub: [
+              {
+                id: "sub1",
+                title: "Euro",
+                fa: "fa fa-euro"
+              }
+            ]
           }
         ]
       },
@@ -103,13 +123,13 @@ export class DesktopMenuComponent {
     "footer" : [
       {
         "id": "entry1",
-        "title": "Footer 1",
-        "fa": "fa fa-home"
+        "title": "Free tier - upgrade",
+        "fa": "fa fa-star-o"
       },
       {
         "id": "entry2",
-        "title": "Whut else",
-        "fa": "fa fa-home"
+        "title": "Settings",
+        "fa": "fa fa-cog"
       }
     ],
 

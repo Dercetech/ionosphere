@@ -5,6 +5,7 @@
 
 // App theming
 @import '../../app/app.scss-theme';
+@import '../../app/styles.scss-theme';
 
 // Commons theming
 
@@ -21,6 +22,7 @@
 
   // App
   @include app-component-theme($theme);
+  @include app-generic-styles-theme($theme);
 
   // Commons
 

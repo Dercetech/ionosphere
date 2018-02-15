@@ -1,0 +1,12 @@
+@mixin app-generic-styles-theme($theme) {
+
+  $defaults: map-get($theme, DFT);
+  $nav: map-get($theme, NAV_DESKTOP);
+  $header: map-get($theme, PAGE_HEADER);
+
+  .ionosphere-bg{
+    background-color: map-get($theme, BACKDROP);
+    color: map-get($theme, PRIMARY);
+  }
+
+}

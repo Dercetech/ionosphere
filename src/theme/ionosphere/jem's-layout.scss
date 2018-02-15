@@ -65,8 +65,8 @@ $BLACK_06: rgba(0,0,0,.06);
   @return (
 
     PRIMARY: $PRIMARY_DFT,
-    SECONDARY: SECONDARY_DFT,
-
+    SECONDARY: $SECONDARY_DFT,
+    BACKDROP: $BACKDROPS_DFT,
     DFT: (
       BG_COLOR: $GREY_LIGHT
     ),
