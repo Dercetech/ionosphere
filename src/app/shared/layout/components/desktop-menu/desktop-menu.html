@@ -5,8 +5,8 @@
 <ion-content>
   <div ion-fixed class="menu-flex-wrapper" fxLayout="column">
 
-    <div *ngIf="structure.scroll" class="menu-scroll-container">
-      <div *ngFor="let section of structure.scroll"
+    <div *ngIf="(structure$ | async)?.scroll" class="menu-scroll-container">
+      <div *ngFor="let section of (structure$ | async)?.scroll"
            [ngClass]="{
             'flat-group' : (section.type === 'flat-group'),
             'group' : (section.type === 'group'),
@@ -58,14 +58,14 @@
 
     <div fxFlex></div>
 
-    <div *ngIf="structure.footer" class="menu-footer" fxFlex="0 0 auto">
-      <ion-item *ngFor="let category of structure.footer" class="menu-item category">
+    <div *ngIf="(structure$ | async)?.footer" class="menu-footer" fxFlex="0 0 auto">
+      <ion-item *ngFor="let category of (structure$ | async)?.footer" class="menu-item category">
         <ion-icon [ngClass]="category.fa" item-start></ion-icon>
         {{ category.title }}
       </ion-item>
     </div>
 
-    <div *ngIf="structure.drawer" fxHide.lt-md class="menu-footer menu-drawer" fxFlex="0 0 auto">
+    <div *ngIf="(structure$ | async)?.drawer" fxHide.lt-md class="menu-footer menu-drawer" fxFlex="0 0 auto">
       <ion-item class="menu-item category" (click)="toggleSize()">
         <ion-icon class="fa fa-chevron-right fa-chevron-small compact-only" item-start></ion-icon>
         <ion-icon class="fa fa-chevron-left fa-chevron-small" item-end></ion-icon>
