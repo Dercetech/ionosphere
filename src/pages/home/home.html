@@ -1,0 +1,86 @@
+<ion-header class="toggle-shadow">
+  <ion-navbar>
+    <ion-buttons start>
+      <button fxHide.gt-md ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>
+      Trading bots
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content headerShadowAfterScroll>
+
+  <ion-header style="position: relative">
+    <ion-toolbar *ngIf="false">
+      <ion-title></ion-title>
+    </ion-toolbar>
+    <ion-segment [(ngModel)]="activeSegment" class="ionosphere-bg">
+      <ion-segment-button value="all" style="font-size: 1em;">
+        all bots
+      </ion-segment-button>
+      <ion-segment-button value="processing" style="font-size: 1em;">
+        processing only
+      </ion-segment-button>
+    </ion-segment>
+  </ion-header>
+
+  <div padding fxLayout="row" fxLayoutWrap>
+
+    <ion-card *ngFor="let bot of bots" fxFlex="1 0 auto" fxFlex.gt-xs="0 0 45%" fxFlex.gt-sm="0 0 30%">
+
+      <ion-card-header>
+        <ion-icon class="fa fa-user-o" padding-right></ion-icon>
+        <span>{{ bot.name }}</span>
+        <button float-right ion-button clear color="dark" icon-only>
+          <ion-icon item-start class="fa fa-cog"></ion-icon>
+        </button>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-card-title>{{ bot.status }}</ion-card-title>
+        <ion-list>
+          <ion-item>
+            <ion-label>algo</ion-label>
+            <ion-note item-end>{{ bot.algo }}</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>gap</ion-label>
+            <ion-note item-end>{{ bot.gap }}</ion-note>
+          </ion-item>
+          <ion-item *ngIf="bot.reserve">
+            <ion-label>reserve</ion-label>
+            <ion-note item-end>{{ bot.reserve }}</ion-note>
+          </ion-item>
+          <ion-item *ngIf="bot.threshold">
+            <ion-label>threshold</ion-label>
+            <ion-note item-end>{{ bot.threshold }}</ion-note>
+          </ion-item>
+          <ion-item *ngIf="bot.lease">
+            <ion-label>lease</ion-label>
+            <ion-note item-end>{{ bot.lease }}</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-label>personality</ion-label>
+            <ion-note item-end>{{ bot.personality }}</ion-note>
+          </ion-item>
+        </ion-list>
+        <ion-row class="row">
+          <ion-col class="col"></ion-col>
+          <ion-col class="col">
+            <button ion-button clear color="danger">
+              <ion-icon item-start class="fa fa-hand-paper-o"></ion-icon>
+              <ion-label padding-left>STOP</ion-label>
+            </button>
+          </ion-col>
+        </ion-row>
+
+      </ion-card-content>
+
+    </ion-card>
+
+  </div>
+
+</ion-content>

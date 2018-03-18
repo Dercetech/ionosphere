@@ -1,0 +1,299 @@
+@mixin desktop-menu-component-theme($theme) {
+
+  $nav: map-get($theme, NAV_DESKTOP);
+
+  desktop-menu {
+
+    z-index:10;
+    cursor: pointer;
+
+    flex: 0 0 map-get($nav, WIDTH_OPEN);
+
+    > ion-title, .compact-title {
+
+      position: relative;
+      z-index: 1;
+      text-align: center;
+
+      height: map-get($nav, TITLE_HEIGHT);
+      text-align: center;
+      background-color: map-get($nav, BG_COLOR);
+      box-shadow: map-get($nav, TITLE_BOX_SHADOW);
+
+      .toolbar-title{
+        font-variant:small-caps;
+        letter-spacing: 4px;
+
+        font-variant:small-caps;
+        letter-spacing: 4px;
+        color: map-get($nav, TITLE_COLOR);
+        font-size: map-get($nav, TITLE_SIZE);
+      }
+    }
+
+    .compact-title{
+      display: none;
+    }
+
+    > ion-content{
+      background-color: map-get($nav, BG_COLOR);
+      box-shadow: map-get($nav, CONTENT_BOX_SHADOW);
+      height: calc(100% - #{map-get($nav, TITLE_HEIGHT)});
+
+      > .fixed-content{
+        // contain a div.menu-flex-wrapper
+      }
+
+      > .scroll-content{
+        // contain a div.menu-flex-wrapper
+        overflow-y: auto;
+      }
+
+      div.menu-flex-wrapper {
+
+        height: 100%;
+        width: 100%;
+
+        > div.menu-scroll-container {
+          overflow-y: scroll;
+        }
+
+        div.flat-group{
+
+          > div > .menu-item, > .menu-item{
+            border-bottom: 1px solid map-get($nav, ITEM_SEPARATOR_COLOR);
+          }
+        }
+
+        div.group {
+
+          border-bottom: 1px solid map-get($nav, ITEM_SEPARATOR_COLOR);;
+
+          &.collapsed {
+
+            > .section {
+              background-color: map-get($nav, SECTION_GROUP_BG_COLOR);
+            }
+
+            > .section:hover {
+              background-color: map-get($nav, SECTION_TITLE_ALT_BG_COLOR);
+              color: map-get($nav, SECTION_TITLE_ALT_TEXT_COLOR);
+            }
+          }
+
+          &.expanded {
+            padding-bottom: 8px;
+            background-color: map-get($nav, SECTION_GROUP_EXPANDED_BG_COLOR);
+
+            > .section {
+              background-color: map-get($nav, SECTION_EXPANDED_TITLE_BG_COLOR);
+              color: map-get($nav, SECTION_EXPANDED_TITLE_COLOR);
+
+              &:hover{
+                background-color: map-get($nav, SECTION_EXPANDED_TITLE_ALT_BG_COLOR);
+                color: map-get($nav, SECTION_EXPANDED_TITLE_ALT_TEXT_COLOR);
+              }
+            }
+
+            > div.categories {
+              > .category {
+                //background-color: transparent; //map-get($nav, SECTION_EXPANDED_BG_COLOR);
+              }
+            }
+
+          }
+        }
+
+        > div.menu-footer{
+
+          > .menu-item{
+            border-top: 1px solid map-get($nav, ITEM_SEPARATOR_COLOR);;
+          }
+        }
+
+        > div.menu-drawer{
+          > .menu-item{
+            padding-right: 8px;
+          }
+        }
+      }
+
+
+      ion-item.menu-item {
+
+        padding-left:0px;
+        background-color: transparent;
+
+        &.menu-first-item{
+          border-top: 1px solid map-get($nav, ITEM_SEPARATOR_COLOR);
+        }
+
+        &:hover {
+          background-color: map-get($nav, ITEM_HOVER_BG_COLOR);
+        }
+
+        //background-color: map-get($nav, BG_COLOR);
+        padding-left:0px;
+
+        &.section{
+
+          border: none;
+          padding-left:16px;
+          color: map-get($nav, SECTION_TITLE_COLOR);
+          font-size: map-get($nav, SECTION_TITLE_SIZE);
+          letter-spacing: 1px;
+          line-height: 24px;
+          text-transform: uppercase;
+          font-weight: map-get($nav, SECTION_TITLE_WEIGHT);
+          margin: 0;
+
+          > .item-inner{
+            border: none;
+          }
+        }
+
+        &.category{
+
+          padding-left:16px;
+          color: map-get($nav, CATEGORY_TXT_COLOR);
+          font-size: map-get($nav, CATEGORY_TXT_SIZE);
+          font-weight: map-get($nav, CATEGORY_TXT_WEIGHT);
+
+          > ion-icon{
+            font-size: map-get($nav, CATEGORY_ICON_SIZE);
+          }
+
+          &:hover{
+            color: map-get($nav, CATEGORY_ALT_TXT_COLOR);
+            background-color: map-get($nav, CATEGORY_ALT_BG_COLOR);
+          }
+
+          > .item-inner{
+            margin-left: 8px;
+            border:none;
+          }
+
+          &:not(.expanded) {
+            //border-bottom: map-get($nav, CATEGORY_BORDER);
+          }
+
+          &.expanded {
+            border: none;
+            // margin-bottom: -4px;
+          }
+        }
+
+        &.sub-item{
+
+          flex: 0 0 28px;
+          padding-left:38px;
+          min-height: unset;
+          //margin-top: 4px;
+          //margin-bottom: 8px;
+          color: map-get($nav, SUB_TXT_COLOR);
+          font-size: map-get($nav, SUB_TXT_SIZE);
+          font-weight: map-get($nav, SUB_TXT_WEIGHT);
+
+          > ion-icon{
+            font-size: map-get($nav, SUB_ICON_SIZE);
+            margin: 0px;
+            min-height: unset;
+          }
+
+          &:hover{
+            color: map-get($nav, SUB_ALT_TXT_COLOR);
+            background-color: map-get($nav, SUB_ALT_BG_COLOR);
+          }
+
+          > .item-inner{
+            margin-left: 8px;
+            border:none;
+            height: 24px;
+            max-height: 24px;
+            min-height: unset;
+          }
+        }
+
+        &.menu-item-lit{
+          color: map-get($nav, CATEGORY_TXT_COLOR_HIGHLIGHT);
+        }
+
+        .fa-chevron-small{
+          font-size: 0.8em;
+          padding-top: 10px;
+        }
+      }
+
+      //}
+    }
+  }
+
+  desktop-menu:not(.compact){
+    .compact-only{
+      display: none;
+    }
+  }
+
+  desktop-menu.compact{
+
+    flex: 0 0 map-get($nav, WIDTH_OPEN_COMPACT);
+
+    ion-title{
+      display: none;
+    }
+
+    .compact-title{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      color: map-get($theme, PRIMARY);
+    }
+
+    ion-label{
+      display: none;
+    }
+
+    .menu-item{
+
+      padding-left: 0px!important;
+
+      &.section{
+        min-height: 22px;
+      }
+
+      ion-icon{
+        width: 100%;
+        margin-left: 6px;
+      }
+
+      .item-inner{
+        display: none;
+      }
+
+      .chevron-sub{
+        display: none;
+      }
+
+      .fa-chevron-small{
+        font-size: 0.8em!important;
+        padding-top: 10px;
+      }
+
+      &.sub-item{
+        padding-left:0px!important;
+
+        ion-icon{
+          margin-left: 0px!important;
+          padding: 6px 0;
+        }
+      }
+    }
+
+    .menu-drawer {
+
+      > .menu-item {
+        padding-right: 0px!important;
+      }
+    }
+  }
+}

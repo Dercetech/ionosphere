@@ -1,0 +1,16 @@
+@import '_components';
+
+// set in app.component.ts
+.ionosphere {
+
+  @include custom-components-theme(get-components-colors());
+
+  ion-content.not-in-use {
+
+    //@include linear-gradient(left,$facebook-messenger);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+  }
+
+}

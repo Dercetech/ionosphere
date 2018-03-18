@@ -1,0 +1,38 @@
+////////////////////////////////////////////////
+// Ionosphere theming gadget ///////////////////
+
+// Import all theming scss-theme files /////////
+
+// App theming
+@import '../../app/app.scss-theme';
+@import '../../app/styles.scss-theme';
+
+// Commons theming
+
+// Framework theming
+@import '../../framework/layout/components/desktop-menu/desktop-menu.scss-theme';
+
+// Pages theming
+@import '../../pages/home/home.scss-theme';
+
+
+// Centralize component theming ////////////////
+
+@mixin custom-components-theme($theme) {
+
+  // App
+  @include app-component-theme($theme);
+  @include app-generic-styles-theme($theme);
+
+  // Commons
+
+  // Framework
+  @include desktop-menu-component-theme($theme);
+
+  // Pages
+  @include home-component-theme($theme);
+}
+
+
+// Ionosphere theming gadget ///////////////////
+///////////////////////////////////////////////

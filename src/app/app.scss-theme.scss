@@ -1,0 +1,65 @@
+@mixin app-component-theme($theme) {
+
+  $defaults: map-get($theme, DFT);
+  $nav: map-get($theme, NAV_DESKTOP);
+  $header: map-get($theme, PAGE_HEADER);
+
+  ion-split-pane{
+
+    &.compact{
+
+      > ion-menu.split-pane-side{
+        min-width: map-get($nav, WIDTH_OPEN_COMPACT);
+        max-width: map-get($nav, WIDTH_OPEN_COMPACT);
+      }
+    }
+
+    > ion-menu.split-pane-side{
+      z-index:2;
+      border-right: none!important;
+      box-shadow: map-get($nav, CONTENT_BOX_SHADOW)!important;
+    }
+  }
+
+  ion-nav{
+
+    z-index: -1;
+
+    // Ionosphere won't have different global stylings for Desktop vs Mobile apps for now
+    // @media #{$DESKTOP_APP}, #{$PHONE_APP} {
+
+      > .ion-page {
+
+        ion-header{
+          .toolbar-background-md{
+            background-color: map-get($header, TOOLBAR_BG_COLOR);
+          }
+
+          &.no-shadow:after{
+            display: none!important;
+          }
+
+          .toolbar-title-md{
+            color: map-get($header, TOOLBAR_TXT_COLOR);
+          }
+
+          .bar-button{
+            color: map-get($header, TOOLBAR_TXT_COLOR);
+
+            &:hover{
+              color: map-get($header, TOOLBAR_ALT_TXT_COLOR)!important;
+            }
+          }
+
+          .bar-buttons-md[end]{
+            margin-right: 16px;
+          }
+        }
+
+        > ion-content{
+          background-color: map-get($defaults, BG_COLOR);
+        }
+      }
+    // }
+  }
+}
