@@ -4,6 +4,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 import {IonicModule} from "ionic-angular";
+import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import {IonicModule} from "ionic-angular";
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    PerfectScrollbarModule
     // CustomMaterialModule,
     // AngularFontAwesomeModule,
   ],
@@ -24,6 +26,7 @@ import {IonicModule} from "ionic-angular";
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    PerfectScrollbarModule
   ]
 })
 

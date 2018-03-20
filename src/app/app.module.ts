@@ -20,6 +20,7 @@ import {MenuModule} from "./features/menu/menu.module";
 import {HomePage} from "./features/home/home";
 
 import * as fromRootStore from "./shared/store/";
+import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 
 
 // Not for production
@@ -31,6 +32,9 @@ const environment = {
 const stores = [fromRootStore.RootStore];
 const metaReducers: MetaReducer<any>[] = !environment.prod ? [storeFreeze] : [];
 
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
 
 @NgModule({
   declarations: [
@@ -40,6 +44,7 @@ const metaReducers: MetaReducer<any>[] = !environment.prod ? [storeFreeze] : [];
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    PerfectScrollbarModule,
 
     StoreModule.forRoot({}, { metaReducers }),
     EffectsModule.forRoot([]),
@@ -60,7 +65,11 @@ const metaReducers: MetaReducer<any>[] = !environment.prod ? [storeFreeze] : [];
     StatusBar,
     SplashScreen,
     ...stores,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
+      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    }
   ]
 })
 export class AppModule {}

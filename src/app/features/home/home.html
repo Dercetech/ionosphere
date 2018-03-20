@@ -12,22 +12,22 @@
 </ion-header>
 
 <ion-content headerShadowAfterScroll>
+  <perfect-scrollbar >
+    <ion-header style="position: relative">
 
-  <ion-header style="position: relative">
-    <ion-toolbar *ngIf="false">
-      <ion-title></ion-title>
-    </ion-toolbar>
-    <ion-segment [(ngModel)]="activeSegment" class="ionosphere-bg">
-      <ion-segment-button value="all" style="font-size: 1em;">
-        all bots
-      </ion-segment-button>
-      <ion-segment-button value="processing" style="font-size: 1em;">
-        processing only
-      </ion-segment-button>
-    </ion-segment>
-  </ion-header>
-
-  <div padding fxLayout="row" fxLayoutWrap>
+      <ion-toolbar *ngIf="false">
+        <ion-title></ion-title>
+      </ion-toolbar>
+      <ion-segment [(ngModel)]="activeSegment" class="ionosphere-bg">
+        <ion-segment-button value="all" style="font-size: 1em;">
+          all bots
+        </ion-segment-button>
+        <ion-segment-button value="processing" style="font-size: 1em;">
+          processing only
+        </ion-segment-button>
+      </ion-segment>
+    </ion-header>
+    <div padding fxLayout="row" fxLayoutWrap>
 
     <ion-card *ngFor="let bot of bots" fxFlex="1 0 auto" fxFlex.gt-xs="0 0 45%" fxFlex.gt-sm="0 0 30%">
 
@@ -82,5 +82,6 @@
     </ion-card>
 
   </div>
+  </perfect-scrollbar>
 
 </ion-content>

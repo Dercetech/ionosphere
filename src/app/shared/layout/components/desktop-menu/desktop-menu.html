@@ -5,8 +5,9 @@
 <ion-content>
   <div ion-fixed class="menu-flex-wrapper" fxLayout="column">
 
-    <div *ngIf="(structure$ | async)?.scroll" class="menu-scroll-container">
-      <div *ngFor="let section of (structure$ | async)?.scroll"
+    <div fxFlex="1 1 auto" id="crap" [perfectScrollbar] *ngIf="(structure$ | async)?.scroll">
+      <div class="scrollable">
+        <div *ngFor="let section of (structure$ | async)?.scroll"
            [ngClass]="{
             'flat-group' : (section.type === 'flat-group'),
             'group' : (section.type === 'group'),
@@ -52,8 +53,9 @@
           </div>
         </div>
 
-      </div>
 
+      </div>
+      </div>
     </div>
 
     <div fxFlex></div>

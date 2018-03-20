@@ -21,7 +21,9 @@ export class HeaderShadowAfterScroll implements OnDestroy
 
   ngAfterViewInit() {
     const nativeElement = this._view.element.nativeElement;
-    const potentialHeaders = nativeElement.parentElement.getElementsByClassName('toggle-shadow');
+    let potentialHeaders = nativeElement.parentElement.getElementsByClassName('toggle-shadow');
+    if(!potentialHeaders) potentialHeaders = nativeElement.parentElement.parentElement.getElementsByClassName('toggle-shadow');
+debugger;
     if(potentialHeaders && (potentialHeaders.length > 0)){
       this.headerNativeElement = potentialHeaders[0];
       this.setHideShadowClass();

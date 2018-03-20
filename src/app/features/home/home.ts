@@ -8,7 +8,7 @@ import {Select} from "ngrx-actions";
 })
 export class HomePage implements OnInit{
 
-  @Select('menu') display$;
+  @Select('') display$;
 
   activeSegment: string = "processing";
 
@@ -42,8 +42,7 @@ export class HomePage implements OnInit{
 
   ngOnInit(){
     this.display$.subscribe(data => {
-      console.log('data ', data)
-      debugger;
+      console.log('data ', data);
     })
   }
 }
