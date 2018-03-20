@@ -5,9 +5,11 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { Store } from '@ngrx/store';
+import { Select } from 'ngrx-actions';
+
+import { MenuSetCompact } from './shared/store/menu';
 
 import { HomePage } from './features/home/home';
-import { MyAction } from './shared/store/menu';
 
 @Component({
   templateUrl: 'app.html'
@@ -22,34 +24,30 @@ export class MyApp implements OnInit {
   // Not in use unless there are variants of the .ionosphere theme (found in theme/variables > import /ionosphere/
   theme: string = 'ionosphere';
 
-  // Tell the split pane whether to enter compact mode or not
-  isCompact: boolean = false;
+  // Store
+  @Select('menu.displayed') menuDisplayed$;
+  @Select('menu.compact') menuCompact$;
 
+  // Routing
   rootPage: any = HomePage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
     private _store: Store<any>
   ) {
 
-    // Boilerplate
+    // Perform native calls here
     platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
     });
   }
 
-  ngOnInit(): void {
-    this._store.dispatch(new MyAction())
-  }
+  ngOnInit(): void { }
 
-  onCompact(isCompact: boolean): void {
-    this.isCompact = isCompact;
-  }
 
   onSplitChange(): void {
-    this.isCompact = false;
+    this._store.dispatch(new MenuSetCompact(false))
+    // this.isCompact = false;
   }
 }
 

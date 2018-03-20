@@ -1,6 +1,12 @@
-import {Component, EventEmitter, HostBinding, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnInit, Output, OnDestroy } from '@angular/core';
 
-import {Select} from "ngrx-actions";
+import { Store } from '@ngrx/store';
+import { Select } from "ngrx-actions";
+
+import { Subject } from 'rxjs/Subject';
+import {filter, takeUntil} from 'rxjs/operators';
+
+import { MenuToggleCompact } from '../../../store/menu';
 
 
 @Component({
@@ -8,34 +14,42 @@ import {Select} from "ngrx-actions";
   templateUrl: 'side-menu.html'
 })
 
-export class SideMenuComponent implements OnInit {
+export class SideMenuComponent implements OnInit, OnDestroy {
 
   private sectionsStates: any = {};
   private expandedCategory: string = null;
 
-  @Input('set-compact')
-  set _setCompact(value: boolean) {
-    this.compactClassActive = value;
-    this.small = value;
-  }
+  // @Input('compact')
+  // set _setCompact(value: boolean) {
+  //   this.compactClassActive = value;
+  //   this.small = value;
+  // }
 
-  @Output() compact: EventEmitter<boolean> = new EventEmitter<boolean>();
+  // @Output() compact: EventEmitter<boolean> = new EventEmitter<boolean>();
   @HostBinding('class.compact') compactClassActive: boolean = false;
-  small: boolean = false;
+  // small: boolean = false;
 
 
   @Select('menu.structure') structure$;
+  @Select('menu.compact') compact$;
 
-  constructor() {}
+  private _destroy$ = new Subject<null>();
+
+  constructor(private _store: Store<any>) { }
 
   ngOnInit() {
-    this.structure$.subscribe(data => console.log('found' , data));
+    this.compact$.pipe(takeUntil(this._destroy$)).subscribe(isCompact => this.compactClassActive = isCompact);
   }
 
-  toggleSize(): void {
-    this.compactClassActive = !this.compactClassActive;
-    this.compact.emit(this.compactClassActive);
-    this.small = !this.small;
+  ngOnDestroy() {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
+  toggleCompact(): void {
+    this._store.dispatch(new MenuToggleCompact())
+    // this.compact.emit(this.compactClassActive);
+    // this.small = !this.small;
   }
 
   toggleSectionExpanded(section: any): void {

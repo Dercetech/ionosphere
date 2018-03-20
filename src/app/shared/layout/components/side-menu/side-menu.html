@@ -68,7 +68,7 @@
     </div>
 
     <div *ngIf="(structure$ | async)?.drawer" fxHide.lt-md class="menu-footer menu-drawer" fxFlex="0 0 auto">
-      <ion-item class="menu-item category" (click)="toggleSize()">
+      <ion-item class="menu-item category" (click)="toggleCompact()">
         <ion-icon class="fa fa-chevron-right fa-chevron-small compact-only" item-start></ion-icon>
         <ion-icon class="fa fa-chevron-left fa-chevron-small" item-end></ion-icon>
       </ion-item>

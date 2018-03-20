@@ -5,20 +5,34 @@ import {menuContents} from "./menu.contents";
 import * as fromActions from './actions';
 
 export interface MenuState {
-  display: boolean,
+  displayed: boolean,
+  compact: boolean,
   structure: any
 }
 
 @Store({
-  display: false,
+  displayed: true,
+  compact: true,
   structure: menuContents
 })
 export class MenuStore {
 
   constructor(){}
 
-  @Action(fromActions.MyAction)
-  load(state: MenuState, { payload }: fromActions.MyAction ) {
-    console.log('PIPI HIHIHI');
+  @Action(fromActions.MenuSetCompact)
+  setMenuCompact(state: MenuState, { payload }: fromActions.MenuSetCompact ) {
+    return {
+      ...state,
+      compact: payload
+    }
   }
+
+  @Action(fromActions.MenuToggleCompact)
+  toggleMenuSize(state: MenuState, { payload }: fromActions.MenuToggleCompact ) {
+    return {
+      ...state,
+      compact: !state.compact
+    }
+  }
+
 }

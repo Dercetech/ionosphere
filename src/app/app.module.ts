@@ -7,6 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import {MetaReducer, StoreModule} from "@ngrx/store";
 import {EffectsModule} from "@ngrx/effects";
+import { StoreDevtoolsModule, StoreDevtools } from '@ngrx/store-devtools';
 import {NgrxActionsModule} from "ngrx-actions";
 import {storeFreeze} from "ngrx-store-freeze";
 
@@ -47,6 +48,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     StoreModule.forRoot({}, { metaReducers }),
     EffectsModule.forRoot([]),
     NgrxActionsModule.forRoot(fromStore.rootStores),
+    !environment.prod ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
 
     // FrameworkSingletonsModule.forRoot(),
     SharedModule,

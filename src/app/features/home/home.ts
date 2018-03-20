@@ -8,8 +8,6 @@ import {Select} from "ngrx-actions";
 })
 export class HomePage implements OnInit{
 
-  @Select('') display$;
-
   activeSegment: string = "processing";
 
   bots: any[] = [
@@ -40,9 +38,5 @@ export class HomePage implements OnInit{
 
   constructor() { }
 
-  ngOnInit(){
-    this.display$.subscribe(data => {
-      console.log('data ', data);
-    })
-  }
+  ngOnInit(){ }
 }
