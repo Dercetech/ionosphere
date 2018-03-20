@@ -1,9 +1,12 @@
 import * as fromMenu from './menu';
+import * as fromInterface from './interface';
 
 export const rootStores = {
-    menu: fromMenu.MenuStore
+    menu: fromMenu.MenuStore,
+    interface: fromInterface.InterfaceStore
 };
 
 export const rootStoresToProvide = [
-    fromMenu.MenuStore
+    fromMenu.MenuStore,
+    fromInterface.InterfaceStore
 ];
