@@ -9,8 +9,6 @@ import { Select } from 'ngrx-actions';
 
 import { MenuSetCompact } from './shared/store/menu';
 
-import { HomePage } from './features/home/home';
-
 @Component({
   templateUrl: 'app.html'
 })
@@ -29,7 +27,7 @@ export class MyApp implements OnInit {
   @Select('menu.compact') menuCompact$;
 
   // Routing
-  rootPage: any = HomePage;
+  rootPage: any = 'LandingPage';
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
     private _store: Store<any>
