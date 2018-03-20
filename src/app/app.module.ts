@@ -11,16 +11,15 @@ import { StoreDevtoolsModule, StoreDevtools } from '@ngrx/store-devtools';
 import {NgrxActionsModule} from "ngrx-actions";
 import {storeFreeze} from "ngrx-store-freeze";
 
+import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule} from "ngx-perfect-scrollbar";
+
 
 import { MyApp } from './app.component';
 
 import {LayoutModule} from './shared/layout/layout.module';
 import {SharedModule} from "./shared/shared.module";
 
-import {HomePage} from "./features/home/home";
-
 import * as fromStore from "./shared/store/";
-import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 
 
 // Not for production
@@ -37,8 +36,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
 @NgModule({
   declarations: [
-    MyApp,
-    HomePage
+    MyApp
   ],
   imports: [
     BrowserModule,
@@ -50,14 +48,12 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgrxActionsModule.forRoot(fromStore.rootStores),
     !environment.prod ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
 
-    // FrameworkSingletonsModule.forRoot(),
     SharedModule,
     LayoutModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    HomePage
+    MyApp
   ],
   providers: [
     StatusBar,
