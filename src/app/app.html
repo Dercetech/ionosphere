@@ -3,6 +3,6 @@
     <ion-menu [content]="nav" *ngIf="menuDisplayed$ | async">
       <side-menu></side-menu>
     </ion-menu>
-    <ion-nav main [root]="rootPage" #nav></ion-nav>
+    <ion-nav main [root]="rootPage" [ngClass]="navClasses$ | async" #nav></ion-nav>
   </ion-split-pane>
 </div>

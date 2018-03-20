@@ -1,4 +1,4 @@
-export class MenuToggleCompact {
-  readonly type = '[Interface] Toggle menu';
+export class InterfaceToggleMenuVisibility {
+  readonly type = '[Interface] Toggle menu visibility';
   constructor(public payload?: any) {}
 }

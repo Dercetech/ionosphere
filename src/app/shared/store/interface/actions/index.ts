@@ -1,2 +1,1 @@
-export * from './toggle-compact';
-export * from './set-compact';
+export * from './toggle-menu';

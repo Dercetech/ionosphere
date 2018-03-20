@@ -13,7 +13,7 @@
 @import '../../app/shared/layout/components/side-menu/side-menu.scss-theme';
 
 // Pages theming
-@import '../../app/features/home/home.scss-theme';
+// @import '../../app/features/home/home.scss-theme';
 
 
 // Centralize component theming ////////////////
@@ -30,7 +30,7 @@
   @include side-menu-component-theme($theme);
 
   // Pages
-  @include home-component-theme($theme);
+  // @include home-component-theme($theme);
 }
 
 

@@ -30,16 +30,11 @@
 
 
 
-//#ionosphere-wrapper{
-//  width: 100%;
-//  height: 100%;
-//
-//  @media #{$DESKTOP_APP} {
-//
-//    // Main contents must adapt to menu width
-//    ion-nav {
-//      flex: 1 1 auto;
-//      position: unset;
-//    }
-//  }
-//}
+ion-nav{
+
+    &:not(.interface-display-menu){
+        > .ion-page > ion-header{
+            display: none;
+        }
+    }
+}

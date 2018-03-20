@@ -7,6 +7,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Store } from '@ngrx/store';
 import { Select } from 'ngrx-actions';
 
+import {Observable} from 'rxjs/Observable';
+import {combineLatest} from 'rxjs/observable/combineLatest';
+import { map } from 'rxjs/operators';
+
 import { MenuSetCompact } from './shared/store/menu';
 
 @Component({
@@ -22,7 +26,11 @@ export class MyApp implements OnInit {
   // Not in use unless there are variants of the .ionosphere theme (found in theme/variables > import /ionosphere/
   theme: string = 'ionosphere';
 
-  // Store
+  // Interface tweaks
+  @Select('interface.displayMenu') interfaceDisplayMenu$;
+  navClasses$: Observable<string[]>;
+
+  // Menu
   @Select('menu.displayed') menuDisplayed$;
   @Select('menu.compact') menuCompact$;
 
@@ -38,6 +46,16 @@ export class MyApp implements OnInit {
       statusBar.styleDefault();
       splashScreen.hide();
     });
+
+    // Navigation tweaks
+    this.navClasses$ = combineLatest([
+      this.interfaceDisplayMenu$
+    ]).pipe(
+      map( ([interfaceDisplayMenu]) => [
+        interfaceDisplayMenu ? 'interface-display-menu' : ''
+      ] )
+    )
+    
   }
 
   ngOnInit(): void { }

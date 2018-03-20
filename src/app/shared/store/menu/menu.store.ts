@@ -11,7 +11,7 @@ export interface MenuState {
 }
 
 @Store({
-  displayed: true,
+  displayed: false,
   compact: true,
   structure: menuContents
 })
