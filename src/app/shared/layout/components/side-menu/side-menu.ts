@@ -2,14 +2,13 @@ import {Component, EventEmitter, HostBinding, Input, OnInit, Output} from '@angu
 
 import {Select} from "ngrx-actions";
 
-import {menuContents} from "../../../../features/menu/store/menu.contents";
 
 @Component({
-  selector: 'desktop-menu',
-  templateUrl: 'desktop-menu.html'
+  selector: 'side-menu',
+  templateUrl: 'side-menu.html'
 })
 
-export class DesktopMenuComponent implements OnInit {
+export class SideMenuComponent implements OnInit {
 
   private sectionsStates: any = {};
   private expandedCategory: string = null;
@@ -24,7 +23,8 @@ export class DesktopMenuComponent implements OnInit {
   @HostBinding('class.compact') compactClassActive: boolean = false;
   small: boolean = false;
 
-  @Select('menu.contents.structure') structure$; //: any = menuContents;
+
+  @Select('menu.structure') structure$;
 
   constructor() {}
 

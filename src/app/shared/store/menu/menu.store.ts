@@ -10,7 +10,7 @@ export interface MenuState {
 }
 
 @Store({
-  display: true,
+  display: false,
   structure: menuContents
 })
 export class MenuStore {

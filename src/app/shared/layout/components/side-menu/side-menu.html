@@ -5,7 +5,7 @@
 <ion-content>
   <div ion-fixed class="menu-flex-wrapper" fxLayout="column">
 
-    <div fxFlex="1 1 auto" id="crap" [perfectScrollbar] *ngIf="(structure$ | async)?.scroll">
+    <div fxFlex="1 1 auto" [perfectScrollbar] *ngIf="(structure$ | async)?.scroll">
       <div class="scrollable">
         <div *ngFor="let section of (structure$ | async)?.scroll"
            [ngClass]="{

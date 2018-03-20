@@ -15,11 +15,10 @@ import { MyApp } from './app.component';
 
 import {LayoutModule} from './shared/layout/layout.module';
 import {SharedModule} from "./shared/shared.module";
-import {MenuModule} from "./features/menu/menu.module";
 
 import {HomePage} from "./features/home/home";
 
-import * as fromRootStore from "./shared/store/";
+import * as fromStore from "./shared/store/";
 import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 
 
@@ -29,7 +28,6 @@ const environment = {
   prod: false
 };
 
-const stores = [fromRootStore.RootStore];
 const metaReducers: MetaReducer<any>[] = !environment.prod ? [storeFreeze] : [];
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -48,13 +46,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
     StoreModule.forRoot({}, { metaReducers }),
     EffectsModule.forRoot([]),
-    NgrxActionsModule.forRoot({}),
+    NgrxActionsModule.forRoot(fromStore.rootStores),
 
     // FrameworkSingletonsModule.forRoot(),
     SharedModule,
-    LayoutModule,
-
-    MenuModule
+    LayoutModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -64,7 +60,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   providers: [
     StatusBar,
     SplashScreen,
-    ...stores,
+    ...fromStore.rootStoresToProvide,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {
       provide: PERFECT_SCROLLBAR_CONFIG,

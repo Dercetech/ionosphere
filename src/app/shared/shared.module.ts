@@ -4,6 +4,8 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 import {IonicModule} from "ionic-angular";
+
+import { NgrxActionsModule } from "ngrx-actions";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 
 @NgModule({
@@ -16,9 +18,8 @@ import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    NgrxActionsModule,
     PerfectScrollbarModule
-    // CustomMaterialModule,
-    // AngularFontAwesomeModule,
   ],
   exports: [
     CommonModule,
@@ -26,6 +27,7 @@ import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    NgrxActionsModule,
     PerfectScrollbarModule
   ]
 })

@@ -10,7 +10,7 @@
 // Commons theming
 
 // Framework theming
-@import '../../app/shared/layout/components/desktop-menu/desktop-menu.scss-theme';
+@import '../../app/shared/layout/components/side-menu/side-menu.scss-theme';
 
 // Pages theming
 @import '../../app/features/home/home.scss-theme';
@@ -27,7 +27,7 @@
   // Commons
 
   // Framework
-  @include desktop-menu-component-theme($theme);
+  @include side-menu-component-theme($theme);
 
   // Pages
   @include home-component-theme($theme);

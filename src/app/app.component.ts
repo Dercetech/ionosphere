@@ -1,13 +1,18 @@
-import {Component, ViewChild} from '@angular/core';
-import {NavController, Platform} from 'ionic-angular';
+import { Component, ViewChild, OnInit } from '@angular/core';
+
+import { NavController, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { Store } from '@ngrx/store';
+
 import { HomePage } from './features/home/home';
+import { MyAction } from './shared/store/menu';
+
 @Component({
   templateUrl: 'app.html'
 })
-export class MyApp {
+export class MyApp implements OnInit {
 
   // Use @ViewChild as NavController is not available at this time
   // the <ion-nav> element is "kind of my nav controller" represented in a template.
@@ -20,15 +25,23 @@ export class MyApp {
   // Tell the split pane whether to enter compact mode or not
   isCompact: boolean = false;
 
-  rootPage:any = HomePage;
+  rootPage: any = HomePage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+    private _store: Store<any>
+  ) {
+
+    // Boilerplate
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
     });
+  }
+
+  ngOnInit(): void {
+    this._store.dispatch(new MyAction())
   }
 
   onCompact(isCompact: boolean): void {

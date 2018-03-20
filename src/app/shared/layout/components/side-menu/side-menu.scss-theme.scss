@@ -1,8 +1,8 @@
-@mixin desktop-menu-component-theme($theme) {
+@mixin side-menu-component-theme($theme) {
 
   $nav: map-get($theme, NAV_DESKTOP);
 
-  desktop-menu {
+  side-menu {
 
     z-index:10;
     cursor: pointer;
@@ -224,13 +224,13 @@
     }
   }
 
-  desktop-menu:not(.compact){
+  side-menu:not(.compact){
     .compact-only{
       display: none;
     }
   }
 
-  desktop-menu.compact{
+  side-menu.compact{
 
     flex: 0 0 map-get($nav, WIDTH_OPEN_COMPACT);
 

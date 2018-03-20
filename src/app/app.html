@@ -1,7 +1,7 @@
 <div [class]="theme">
   <ion-split-pane (ionChange)="onSplitChange()" [ngClass]="{ compact: isCompact }" when="(min-width: 960px)">
     <ion-menu [content]="nav">
-      <desktop-menu [set-compact]="isCompact" (compact)="onCompact($event)"></desktop-menu>
+      <side-menu [set-compact]="isCompact" (compact)="onCompact($event)"></side-menu>
     </ion-menu>
     <ion-nav main [root]="rootPage" #nav></ion-nav>
   </ion-split-pane>
