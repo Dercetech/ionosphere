@@ -1,10 +1,10 @@
-import { Component, EventEmitter, HostBinding, Input, OnInit, Output, OnDestroy } from '@angular/core';
+import { Component, HostBinding, OnInit, OnDestroy } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { Select } from "ngrx-actions";
 
 import { Subject } from 'rxjs/Subject';
-import {filter, takeUntil} from 'rxjs/operators';
+import { takeUntil} from 'rxjs/operators';
 
 import { MenuToggleCompact } from '../../../store/menu';
 

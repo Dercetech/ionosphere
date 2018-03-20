@@ -7,11 +7,12 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Store } from '@ngrx/store';
 import { Select } from 'ngrx-actions';
 
-import {Observable} from 'rxjs/Observable';
-import {combineLatest} from 'rxjs/observable/combineLatest';
+import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { map } from 'rxjs/operators';
 
 import { MenuSetCompact } from './shared/store/menu';
+import { InterfaceSetLanguage } from './shared/store/interface';
 
 @Component({
   templateUrl: 'app.html'
@@ -35,7 +36,7 @@ export class MyApp implements OnInit {
   @Select('menu.compact') menuCompact$;
 
   // Routing
-  rootPage: any = 'LandingPage';
+  rootPage: any = 'WelcomePage';
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
     private _store: Store<any>
@@ -51,19 +52,19 @@ export class MyApp implements OnInit {
     this.navClasses$ = combineLatest([
       this.interfaceDisplayMenu$
     ]).pipe(
-      map( ([interfaceDisplayMenu]) => [
+      map(([interfaceDisplayMenu]) => [
         interfaceDisplayMenu ? 'interface-display-menu' : ''
-      ] )
+      ])
     )
-    
+
   }
 
-  ngOnInit(): void { }
-
+  ngOnInit(): void {
+    setTimeout( () => { this._store.dispatch(new InterfaceSetLanguage('fr')); } , 1500);
+  }
 
   onSplitChange(): void {
     this._store.dispatch(new MenuSetCompact(false))
-    // this.isCompact = false;
   }
 }
 

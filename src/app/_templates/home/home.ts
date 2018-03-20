@@ -1,6 +1,4 @@
 import {Component, OnInit} from "@angular/core";
-import {NavController} from "ionic-angular";
-import {Select} from "ngrx-actions";
 
 @Component({
   selector: 'page-home',

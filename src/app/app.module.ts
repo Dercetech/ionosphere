@@ -5,19 +5,20 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
-import {MetaReducer, StoreModule} from "@ngrx/store";
-import {EffectsModule} from "@ngrx/effects";
-import { StoreDevtoolsModule, StoreDevtools } from '@ngrx/store-devtools';
-import {NgrxActionsModule} from "ngrx-actions";
-import {storeFreeze} from "ngrx-store-freeze";
+import { MetaReducer, StoreModule } from "@ngrx/store";
+import { EffectsModule } from "@ngrx/effects";
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { NgrxActionsModule } from "ngrx-actions";
+import { storeFreeze } from "ngrx-store-freeze";
 
-import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule} from "ngx-perfect-scrollbar";
+import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule } from "ngx-perfect-scrollbar";
 
 
 import { MyApp } from './app.component';
 
-import {LayoutModule} from './shared/layout/layout.module';
-import {SharedModule} from "./shared/shared.module";
+import { I18nModule } from './shared/i18n/i18n.module';
+import { SharedModule } from "./shared/shared.module";
+import { LayoutModule } from './shared/layout/layout.module';
 
 import * as fromStore from "./shared/store/";
 
@@ -48,6 +49,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgrxActionsModule.forRoot(fromStore.rootStores),
     !environment.prod ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
 
+    I18nModule.forRoot(),
     SharedModule,
     LayoutModule
   ],
@@ -59,11 +61,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     StatusBar,
     SplashScreen,
     ...fromStore.rootStoresToProvide,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     }
   ]
 })
-export class AppModule {}
+export class AppModule { }

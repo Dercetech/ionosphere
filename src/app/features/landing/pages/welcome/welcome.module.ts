@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
+
+import { SharedModule } from '../../../../shared/shared.module';
+
 import { WelcomePage } from './welcome';
 
 @NgModule({
@@ -8,6 +11,7 @@ import { WelcomePage } from './welcome';
   ],
   imports: [
     IonicPageModule.forChild(WelcomePage),
+    SharedModule
   ],
 })
 export class WelcomePageModule {}
