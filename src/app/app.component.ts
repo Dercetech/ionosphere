@@ -60,7 +60,7 @@ export class MyApp implements OnInit {
   }
 
   ngOnInit(): void {
-    setTimeout( () => { this._store.dispatch(new InterfaceSetLanguage('fr')); } , 1500);
+    //setTimeout( () => { this._store.dispatch(new InterfaceSetLanguage('fr')); } , 1500);
   }
 
   onSplitChange(): void {
