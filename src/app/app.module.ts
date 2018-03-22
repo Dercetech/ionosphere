@@ -11,6 +11,8 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { NgrxActionsModule } from "ngrx-actions";
 import { storeFreeze } from "ngrx-store-freeze";
 
+import { AngularFireModule } from "angularfire2";
+
 import {
   PERFECT_SCROLLBAR_CONFIG,
   PerfectScrollbarConfigInterface,
@@ -45,6 +47,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     EffectsModule.forRoot([]),
     NgrxActionsModule.forRoot(fromStore.rootStores),
     !ENV.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
+
+    AngularFireModule.initializeApp(ENV.firebase),
 
     I18nModule.forRoot(),
     SharedModule,
