@@ -6,7 +6,17 @@
 
 </ion-header>
 
-<ion-content padding>
-  <p>{{ 'welcome.title' | translate$ | async }}</p>
+<ion-content>
+  
+  <div fxFlex></div>
+  <ion-card padding fxFlex="0 1 960px">
+    <p>{{ 'welcome.title' | translate$ | async }}</p>
+
+    <p text-center>Countdown till ICO</p>
+
+    <p text-center>Ether raised so far</p>
+
+  </ion-card>
+  <div fxFlex></div>
 
 </ion-content>

@@ -1,11 +1,10 @@
-import {Component, OnInit} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 
-@Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
-})
-export class HomePage implements OnInit{
-
+// @Component({
+//   selector: 'page-home',
+//   templateUrl: 'home.html'
+// })
+export class HomePage implements OnInit {
   activeSegment: string = "processing";
 
   bots: any[] = [
@@ -34,7 +33,7 @@ export class HomePage implements OnInit{
     }
   ];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(){ }
+  ngOnInit() {}
 }
