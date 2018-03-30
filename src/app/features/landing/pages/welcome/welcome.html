@@ -7,14 +7,15 @@
 </ion-header>
 
 <ion-content>
-  
+
   <div fxFlex></div>
   <ion-card padding fxFlex="0 1 960px">
     <p>{{ 'welcome.title' | translate$ | async }}</p>
+    <p>{{ 'welcome.title' | translate$ | async }}</p>
+    <p>{{ 'welcome.title' | translate$ | async }}</p>
 
-    <p text-center>Countdown till ICO</p>
-
-    <p text-center>Ether raised so far</p>
+    <button ion-button (click)="switchLang('fr')">fr</button>
+    <button ion-button mat-button (click)="switchLang('en')">en</button>
 
   </ion-card>
   <div fxFlex></div>

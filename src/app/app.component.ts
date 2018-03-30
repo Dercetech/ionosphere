@@ -18,7 +18,6 @@ import { InterfaceSetLanguage } from './shared/store/interface';
   templateUrl: 'app.html'
 })
 export class MyApp implements OnInit {
-
   // Use @ViewChild as NavController is not available at this time
   // the <ion-nav> element is "kind of my nav controller" represented in a template.
   // View child will be selectEntry after my template has been rendered and a reference of type "NavController" will be stored in a "nav" variable.
@@ -38,10 +37,12 @@ export class MyApp implements OnInit {
   // Routing
   rootPage: any = 'WelcomePage';
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
+  constructor(
+    platform: Platform,
+    statusBar: StatusBar,
+    splashScreen: SplashScreen,
     private _store: Store<any>
   ) {
-
     // Perform native calls here
     platform.ready().then(() => {
       statusBar.styleDefault();
@@ -49,22 +50,19 @@ export class MyApp implements OnInit {
     });
 
     // Navigation tweaks
-    this.navClasses$ = combineLatest([
-      this.interfaceDisplayMenu$
-    ]).pipe(
+    this.navClasses$ = combineLatest([this.interfaceDisplayMenu$]).pipe(
       map(([interfaceDisplayMenu]) => [
         interfaceDisplayMenu ? 'interface-display-menu' : ''
       ])
-    )
-
+    );
   }
 
   ngOnInit(): void {
     //setTimeout( () => { this._store.dispatch(new InterfaceSetLanguage('fr')); } , 1500);
+    this._store.dispatch(new InterfaceSetLanguage('fr'));
   }
 
   onSplitChange(): void {
-    this._store.dispatch(new MenuSetCompact(false))
+    this._store.dispatch(new MenuSetCompact(false));
   }
 }
-
