@@ -1,17 +1,22 @@
-import {NgModule} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {FlexLayoutModule} from "@angular/flex-layout";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import {IonicModule} from "ionic-angular";
+import { IonicModule } from 'ionic-angular';
 
-import { NgrxActionsModule } from "ngrx-actions";
-import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
-import { I18nModule } from "./i18n/i18n.module";
+import { NgrxActionsModule } from 'ngrx-actions';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { I18nModule } from './i18n/i18n.module';
+
+import { ScrollHideDirective } from './layout/directives/scroll-hide';
+import { ScrollEffectDirective } from './layout/directives/scroll-effect';
 
 @NgModule({
   declarations: [
-
+    // Directives
+    ScrollHideDirective,
+    ScrollEffectDirective
   ],
   imports: [
     CommonModule,
@@ -21,7 +26,7 @@ import { I18nModule } from "./i18n/i18n.module";
     FlexLayoutModule,
     NgrxActionsModule,
     PerfectScrollbarModule,
-    I18nModule,
+    I18nModule
   ],
   exports: [
     CommonModule,
@@ -32,7 +37,12 @@ import { I18nModule } from "./i18n/i18n.module";
     NgrxActionsModule,
     PerfectScrollbarModule,
     I18nModule,
+
+    // Components
+
+    // Directives
+    ScrollHideDirective,
+    ScrollEffectDirective
   ]
 })
-
 export class SharedModule {}
