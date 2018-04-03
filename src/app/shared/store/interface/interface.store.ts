@@ -1,8 +1,10 @@
 import { Store, Action, Effect } from 'ngrx-actions';
-
-import * as fromActions from './actions';
-import { I18nService } from '../../i18n/services/i18n-service';
 import { map } from 'rxjs/operators';
+
+import { I18nService } from '../../i18n/services/i18n-service';
+
+import { ENV } from '@app/env';
+import * as fromActions from './actions';
 
 export interface InterfaceState {
   displayMenu: boolean;
@@ -11,7 +13,7 @@ export interface InterfaceState {
 }
 
 @Store({
-  displayMenu: false,
+  displayMenu: ENV.interface.showHeader,
   activeLanguage: 'en',
   languageLoading: true
 })

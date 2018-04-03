@@ -3,4 +3,8 @@ export interface Environment {
   mode: string;
   isDebugMode: boolean;
   firebase: any;
+  interface: {
+    showMenu: boolean;
+    showHeader: boolean;
+  }
 }

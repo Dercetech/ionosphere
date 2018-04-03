@@ -2,6 +2,7 @@ import { Store, Action } from 'ngrx-actions';
 
 import {menuContents} from "./menu.contents";
 
+import { ENV } from '@app/env';
 import * as fromActions from './actions';
 
 export interface MenuState {
@@ -11,7 +12,7 @@ export interface MenuState {
 }
 
 @Store({
-  displayed: false,
+  displayed: ENV.interface.showMenu,
   compact: true,
   structure: menuContents
 })

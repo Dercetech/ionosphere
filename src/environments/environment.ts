@@ -4,5 +4,9 @@ export const ENV: Environment = {
   production: true,
   mode: "Production",
   isDebugMode: true,
-  firebase: {}
+  firebase: {},
+  interface: {
+    showMenu: true,
+    showHeader: true
+  }
 };

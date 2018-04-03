@@ -11,5 +11,9 @@ export const ENV: Environment = {
     projectId: "flycare-ico-dev",
     storageBucket: "flycare-ico-dev.appspot.com",
     messagingSenderId: "643888185880"
+  },
+  interface: {
+    showMenu: true,
+    showHeader: true
   }
 };
