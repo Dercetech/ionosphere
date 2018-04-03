@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 import { I18nService } from '../services/i18n-service';
 
