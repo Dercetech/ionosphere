@@ -44,13 +44,16 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     IonicModule.forRoot(MyApp),
     PerfectScrollbarModule,
 
+    // Redux & store
     StoreModule.forRoot({}, { metaReducers }),
     EffectsModule.forRoot([]),
     NgrxActionsModule.forRoot(fromStore.rootStores),
     !ENV.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
 
+    // Firebase
     AngularFireModule.initializeApp(ENV.firebase),
 
+    // Ionosphere
     ServicesModule.forRoot(),
     I18nModule.forRoot(),
     SharedModule,
