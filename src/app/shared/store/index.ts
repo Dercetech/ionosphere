@@ -15,11 +15,3 @@ export const rootStoresToProvide = Object.keys(rootStores).reduce(
   },
   []
 );
-
-/*
-export const rootStoresToProvide = [
-  fromAuthentication.AuthenticationStore,
-  fromMenu.MenuStore,
-  fromInterface.InterfaceStore
-];
-*/

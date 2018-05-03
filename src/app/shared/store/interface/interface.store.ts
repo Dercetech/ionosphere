@@ -4,16 +4,16 @@ import { map } from 'rxjs/operators';
 import { I18nService } from '../../i18n/services/i18n-service';
 
 import { ENV } from '@app/env';
-import * as fromActions from './actions';
+import * as fromActions from './interface.actions';
 
 export interface InterfaceState {
-  displayMenu: boolean;
+  displayMenu: boolean; // Horizontal top menu
   activeLanguage: string;
   languageLoading: boolean;
 }
 
 @Store({
-  displayMenu: ENV.interface.showHeader,
+  displayMenu: false,
   activeLanguage: 'en',
   languageLoading: true
 })

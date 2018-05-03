@@ -1,2 +1,2 @@
-export * from './actions';
-export {InterfaceStore, InterfaceState} from "./interface.store";
+export * from './interface.actions';
+export { InterfaceStore, InterfaceState } from './interface.store';

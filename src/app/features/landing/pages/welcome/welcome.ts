@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Store } from '@ngrx/store';
 
-import { InterfaceSetLanguage } from '../../../../shared/store/interface';
+import { InterfaceSetLanguage } from '../../../../shared/store/interface/interface.actions';
 
 @IonicPage()
 @Component({
