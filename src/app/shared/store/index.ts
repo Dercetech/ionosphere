@@ -1,17 +1,3 @@
-import * as fromAuthentication from './authentication';
-import * as fromMenu from './menu';
-import * as fromInterface from './interface';
+import * as fromInterface from './interface/interface.state';
 
-export const rootStores = {
-  authentication: fromAuthentication.AuthenticationStore,
-  menu: fromMenu.MenuStore,
-  interface: fromInterface.InterfaceStore
-};
-
-export const rootStoresToProvide = Object.keys(rootStores).reduce(
-  (accumulator, current) => {
-    accumulator.push(current);
-    return accumulator;
-  },
-  []
-);
+export const rootStates = [fromInterface.InterfaceState];

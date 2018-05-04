@@ -1,14 +1,9 @@
-export class InterfaceSetLanguage {
-  readonly type = '[Interface] Set language';
-  constructor(public payload: string) {}
+export class SetMenuCompact {
+  static readonly type = '[interface] set menu compact';
+  constructor(public payload: boolean) {}
 }
 
-export class InterfaceLanguageLoadSuccess {
-  readonly type = '[Interface] Language load complete';
+export class ToggleMenuCompact {
+  static readonly type = '[interface] toggle menu compact';
   constructor() {}
-}
-
-export class InterfaceToggleMenuVisibility {
-  readonly type = '[Interface] Toggle menu visibility';
-  constructor(public payload?: any) {}
 }

@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
-import { Select } from 'ngrx-actions';
-
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { map, filter, switchMap, tap, catchError, take } from 'rxjs/operators';
 
 @Injectable()
 export class I18nService {
-  @Select('interface.activeLanguage')
+  // @Select('interface.activeLanguage')
   private _currentLanguage$: Observable<string>;
 
-  @Select('interface.languageLoading')
+  // @Select('interface.languageLoading')
   private _languageLoading$: Observable<boolean>;
 
   private _keys: {};

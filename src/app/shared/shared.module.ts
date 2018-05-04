@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from 'ionic-angular';
 
-import { NgrxActionsModule } from 'ngrx-actions';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { I18nModule } from './i18n/i18n.module';
 
@@ -24,7 +23,6 @@ import { ScrollEffectDirective } from './layout/directives/scroll-effect';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    NgrxActionsModule,
     PerfectScrollbarModule,
     I18nModule
   ],
@@ -34,7 +32,6 @@ import { ScrollEffectDirective } from './layout/directives/scroll-effect';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    NgrxActionsModule,
     PerfectScrollbarModule,
     I18nModule,
 

@@ -7,54 +7,51 @@
 
     <div fxFlex="1 1 auto" [perfectScrollbar] *ngIf="(structure$ | async)?.scroll">
       <div class="scrollable">
-        <div *ngFor="let section of (structure$ | async)?.scroll"
-           [ngClass]="{
+        <div *ngFor="let section of (structure$ | async)?.scroll" [ngClass]="{
             'flat-group' : (section.type === 'flat-group'),
             'group' : (section.type === 'group'),
             'collapsed' : (section.type === 'group' && !isSectionExpanded(section)),
             'expanded' : (section.type === 'group' && isSectionExpanded(section))
           }">
 
-        <div *ngIf="section.type === 'flat-group'" fxLayout="column">
-          <ion-item *ngFor="let category of section.categories; let isFirst = first"
-                    class="menu-item category"
-                    [ngClass]="{
+          <div *ngIf="section.type === 'flat-group'" fxLayout="column">
+            <ion-item *ngFor="let category of section.categories; let isFirst = first" class="menu-item category" [ngClass]="{
                       'menu-first-item' : isFirst,
                       'menu-item-lit' : false
-                    }"
-                    fxFlex="0 0 auto">
-            <ion-icon [ngClass]="category.fa" item-start></ion-icon>
-            {{ category.title }}
-          </ion-item>
-        </div>
+                    }" fxFlex="0 0 auto">
+              <ion-icon [ngClass]="category.fa" item-start></ion-icon>
+              {{ category.title }}
+            </ion-item>
+          </div>
 
-        <div *ngIf="section.type === 'group'">
-          <ion-item class="menu-item section" (click)="toggleSectionExpanded(section);">
-            <ion-icon item-start class="compact-only fa-chevron-small fa fa-chevron-right" [ngClass]="[(isSectionExpanded(section) ? 'fa-rotate-90' : '')]"></ion-icon>
-            <ion-icon item-end class="fa-chevron-small fa fa-chevron-right" [ngClass]="[(isSectionExpanded(section) ? 'fa-rotate-90' : '')]"></ion-icon>
-            {{ section.title }}
-          </ion-item>
+          <div *ngIf="section.type === 'group'">
+            <ion-item class="menu-item section" (click)="toggleSectionExpanded(section);">
+              <ion-icon item-start class="compact-only fa-chevron-small fa fa-chevron-right" [ngClass]="[(isSectionExpanded(section) ? 'fa-rotate-90' : '')]"></ion-icon>
+              <ion-icon item-end class="fa-chevron-small fa fa-chevron-right" [ngClass]="[(isSectionExpanded(section) ? 'fa-rotate-90' : '')]"></ion-icon>
+              {{ section.title }}
+            </ion-item>
 
-          <div class="categories" *ngIf="isSectionExpanded(section)">
-            <div *ngFor="let category of section.categories">
-              <ion-item class="menu-item category" (click)="setExpandedCategory(section, category)" [ngClass]="{ 'expanded' : isCategoryExpanded(section, category) }">
-                <ion-icon [ngClass]="category.fa" item-start></ion-icon>
-                <ion-icon *ngIf="category.sub" class="chevron-sub fa-chevron-small fa fa-chevron-right" [ngClass]="[(isCategoryExpanded(section, category) ? 'fa-rotate-90' : '')]" item-end></ion-icon>
-                {{ category.title }}
-              </ion-item>
-
-              <div *ngIf="category.sub && isCategoryExpanded(section, category)">
-                <ion-item *ngFor="let sub of category.sub" class="menu-item sub-item">
-                  <ion-icon [ngClass]="sub.fa" item-left></ion-icon>
-                  {{ sub.title }}
+            <div class="categories" *ngIf="isSectionExpanded(section)">
+              <div *ngFor="let category of section.categories">
+                <ion-item class="menu-item category" (click)="setExpandedCategory(section, category)" [ngClass]="{ 'expanded' : isCategoryExpanded(section, category) }">
+                  <ion-icon [ngClass]="category.fa" item-start></ion-icon>
+                  <ion-icon *ngIf="category.sub" class="chevron-sub fa-chevron-small fa fa-chevron-right" [ngClass]="[(isCategoryExpanded(section, category) ? 'fa-rotate-90' : '')]"
+                    item-end></ion-icon>
+                  {{ category.title }}
                 </ion-item>
+
+                <div *ngIf="category.sub && isCategoryExpanded(section, category)">
+                  <ion-item *ngFor="let sub of category.sub" class="menu-item sub-item">
+                    <ion-icon [ngClass]="sub.fa" item-left></ion-icon>
+                    {{ sub.title }}
+                  </ion-item>
+                </div>
               </div>
             </div>
           </div>
+
+
         </div>
-
-
-      </div>
       </div>
     </div>
 

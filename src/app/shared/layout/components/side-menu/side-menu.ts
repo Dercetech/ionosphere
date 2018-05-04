@@ -1,21 +1,21 @@
 import { Component, HostBinding, OnInit, OnDestroy } from '@angular/core';
 
-import { Store } from '@ngrx/store';
-import { Select } from "ngrx-actions";
-
 import { Subject } from 'rxjs/Subject';
-import { takeUntil} from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
+import { takeUntil } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
-import { MenuToggleCompact } from '../../../store/menu';
+import { Select, Store } from '@ngxs/store';
 
+import { ToggleMenuCompact } from '../../../store/interface/interface.actions';
+
+import { menuContents } from '../../../../menu.contents';
 
 @Component({
   selector: 'side-menu',
   templateUrl: 'side-menu.html'
 })
-
 export class SideMenuComponent implements OnInit, OnDestroy {
-
   private sectionsStates: any = {};
   private expandedCategory: string = null;
 
@@ -29,16 +29,20 @@ export class SideMenuComponent implements OnInit, OnDestroy {
   @HostBinding('class.compact') compactClassActive: boolean = false;
   // small: boolean = false;
 
+  structure$;
 
-  @Select('menu.structure') structure$;
-  @Select('menu.compact') compact$;
+  @Select('interface.menuCompact') compact$;
 
   private _destroy$ = new Subject<null>();
 
-  constructor(private _store: Store<any>) { }
+  constructor(private _store: Store) {
+    this.structure$ = of(menuContents);
+  }
 
   ngOnInit() {
-    this.compact$.pipe(takeUntil(this._destroy$)).subscribe(isCompact => this.compactClassActive = isCompact);
+    this.compact$
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(isCompact => (this.compactClassActive = isCompact));
   }
 
   ngOnDestroy() {
@@ -47,31 +51,37 @@ export class SideMenuComponent implements OnInit, OnDestroy {
   }
 
   toggleCompact(): void {
-    this._store.dispatch(new MenuToggleCompact())
+    this._store.dispatch(new ToggleMenuCompact());
     // this.compact.emit(this.compactClassActive);
     // this.small = !this.small;
   }
 
   toggleSectionExpanded(section: any): void {
     const sectionId = section.id;
-    this.sectionsStates[sectionId] = this.sectionsStates[sectionId] ? false : true;
+    this.sectionsStates[sectionId] = this.sectionsStates[sectionId]
+      ? false
+      : true;
   }
 
   isSectionExpanded(section: any): boolean {
     const sectionId = section.id;
-    return this.sectionsStates[sectionId] ? this.sectionsStates[sectionId] : false;
+    return this.sectionsStates[sectionId]
+      ? this.sectionsStates[sectionId]
+      : false;
   }
 
   setExpandedCategory(section: any, category: any): void {
     const sectionId = section.id;
     const categoryId = category.id;
-    this.expandedCategory = this.expandedCategory === (categoryId + sectionId) ? null : (categoryId + sectionId);
+    this.expandedCategory =
+      this.expandedCategory === categoryId + sectionId
+        ? null
+        : categoryId + sectionId;
   }
 
   isCategoryExpanded(section: any, category: any): boolean {
     const sectionId = section.id;
     const categoryId = category.id;
-    return this.expandedCategory === (categoryId + sectionId);
+    return this.expandedCategory === categoryId + sectionId;
   }
-
 }
