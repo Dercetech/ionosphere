@@ -9,8 +9,6 @@ import { Select, Store } from '@ngxs/store';
 
 import { ToggleMenuCompact } from '../../../store/interface/interface.actions';
 
-import { menuContents } from '../../../../menu.contents';
-
 @Component({
   selector: 'side-menu',
   templateUrl: 'side-menu.html'
@@ -19,25 +17,14 @@ export class SideMenuComponent implements OnInit, OnDestroy {
   private sectionsStates: any = {};
   private expandedCategory: string = null;
 
-  // @Input('compact')
-  // set _setCompact(value: boolean) {
-  //   this.compactClassActive = value;
-  //   this.small = value;
-  // }
-
-  // @Output() compact: EventEmitter<boolean> = new EventEmitter<boolean>();
   @HostBinding('class.compact') compactClassActive: boolean = false;
-  // small: boolean = false;
 
-  structure$;
-
+  @Select('interface.menuContents') contents$;
   @Select('interface.menuCompact') compact$;
 
   private _destroy$ = new Subject<null>();
 
-  constructor(private _store: Store) {
-    this.structure$ = of(menuContents);
-  }
+  constructor(private _store: Store) {}
 
   ngOnInit() {
     this.compact$

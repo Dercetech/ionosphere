@@ -15,14 +15,12 @@ import { SetMenuCompact } from './shared/store/interface/interface.actions';
   templateUrl: 'app.html'
 })
 export class MyApp implements OnInit {
-  // Use @ViewChild as NavController is not available at this time
-  // the <ion-nav> element is "kind of my nav controller" represented in a template.
-  // View child will be selectEntry after my template has been rendered and a reference of type "NavController" will be stored in a "nav" variable.
-  @ViewChild('nav') nav: NavController;
-
   // Not in use unless there are variants of the .ionosphere theme (found in theme/variables > import /ionosphere/
   theme: string = 'ionosphere';
 
+  @ViewChild('nav') nav: NavController;
+
+  //
   navClasses$: Observable<string[]>;
 
   // Header
@@ -56,7 +54,7 @@ export class MyApp implements OnInit {
   }
 
   ngOnInit(): void {
-    //setTimeout( () => { this._store.dispatch(new InterfaceSetLanguage('fr')); } , 1500);
+    // setTimeout( () => { this._store.dispatch(new InterfaceSetLanguage('fr')); } , 1500);
     // this._store.dispatch(new InterfaceSetLanguage('fr'));
   }
 

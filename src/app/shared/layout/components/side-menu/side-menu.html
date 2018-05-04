@@ -5,9 +5,9 @@
 <ion-content>
   <div ion-fixed class="menu-flex-wrapper" fxLayout="column">
 
-    <div fxFlex="1 1 auto" [perfectScrollbar] *ngIf="(structure$ | async)?.scroll">
+    <div fxFlex="1 1 auto" [perfectScrollbar] *ngIf="(contents$ | async)?.scroll">
       <div class="scrollable">
-        <div *ngFor="let section of (structure$ | async)?.scroll" [ngClass]="{
+        <div *ngFor="let section of (contents$ | async)?.scroll" [ngClass]="{
             'flat-group' : (section.type === 'flat-group'),
             'group' : (section.type === 'group'),
             'collapsed' : (section.type === 'group' && !isSectionExpanded(section)),
@@ -57,14 +57,14 @@
 
     <div fxFlex></div>
 
-    <div *ngIf="(structure$ | async)?.footer" class="menu-footer" fxFlex="0 0 auto">
-      <ion-item *ngFor="let category of (structure$ | async)?.footer" class="menu-item category">
+    <div *ngIf="(contents$ | async)?.footer" class="menu-footer" fxFlex="0 0 auto">
+      <ion-item *ngFor="let category of (contents$ | async)?.footer" class="menu-item category">
         <ion-icon [ngClass]="category.fa" item-start></ion-icon>
         {{ category.title }}
       </ion-item>
     </div>
 
-    <div *ngIf="(structure$ | async)?.drawer" fxHide.lt-md class="menu-footer menu-drawer" fxFlex="0 0 auto">
+    <div *ngIf="(contents$ | async)?.drawer" fxHide.lt-md class="menu-footer menu-drawer" fxFlex="0 0 auto">
       <ion-item class="menu-item category" (click)="toggleCompact()">
         <ion-icon class="fa fa-chevron-right fa-chevron-small compact-only" item-start></ion-icon>
         <ion-icon class="fa fa-chevron-left fa-chevron-small" item-end></ion-icon>
