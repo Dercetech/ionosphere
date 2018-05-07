@@ -13,7 +13,7 @@ export interface InterfaceStateModel {
 @State<InterfaceStateModel>({
   name: 'interface',
   defaults: {
-    headerDisplayed: false,
+    headerDisplayed: true,
     menuDisplayed: true,
     menuCompact: false,
     menuContents

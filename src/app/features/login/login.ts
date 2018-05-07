@@ -1,25 +1,45 @@
 import { Component } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Store } from '@ngxs/store';
+import {
+  LoginWithGoogle,
+  Login
+} from '../../shared/store/authentication/authentication.actions';
 
 @IonicPage()
 @Component({
   selector: 'page-login',
-  templateUrl: 'login.html',
+  templateUrl: 'login.html'
 })
 export class LoginPage {
+  private loginForm: FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private _store: Store,
+    private formBuilder: FormBuilder
+  ) {
+    this.loginForm = this.formBuilder.group({
+      username: ['bad', [Validators.required]],
+      password: ['bad', Validators.required]
+    });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+  ionViewDidLoad() {}
+
+  signIn() {
+    this._store.dispatch(
+      new Login({
+        username: this.loginForm.value.username,
+        password: this.loginForm.value.password
+      })
+    );
   }
 
+  signIn_google() {
+    this._store.dispatch(new LoginWithGoogle());
+  }
 }

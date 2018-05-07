@@ -1,16 +1,16 @@
-import { Environment } from "./environment.d";
+import { Environment } from './environment.d';
 
 export const ENV: Environment = {
   production: false,
-  mode: "Dev",
+  mode: 'Dev',
   isDebugMode: true,
   firebase: {
-    apiKey: "AIzaSyArMdEnPRo8IgJg1mfegoL4efAcx8p-t5Q",
-    authDomain: "flycare-ico-dev.firebaseapp.com",
-    databaseURL: "https://flycare-ico-dev.firebaseio.com",
-    projectId: "flycare-ico-dev",
-    storageBucket: "flycare-ico-dev.appspot.com",
-    messagingSenderId: "643888185880"
+    apiKey: 'AIzaSyAhmHrh9QPBx8pQuRaBTpFvNq68arEHDzc',
+    authDomain: 'ionosphere-dev.firebaseapp.com',
+    databaseURL: 'https://ionosphere-dev.firebaseio.com',
+    projectId: 'ionosphere-dev',
+    storageBucket: '',
+    messagingSenderId: '188924942427'
   },
   interface: {
     showMenu: true,

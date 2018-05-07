@@ -1,3 +1,4 @@
-import * as fromInterface from './interface/interface.state';
+import { AuthenticationState } from './authentication/authentication.state';
+import { InterfaceState } from './interface/interface.state';
 
-export const rootStates = [fromInterface.InterfaceState];
+export const rootStates = [AuthenticationState, InterfaceState];

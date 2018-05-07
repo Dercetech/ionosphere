@@ -1,14 +1,20 @@
+import {
+  ErrorHandler,
+  NgModule,
+  enableProdMode,
+  APP_INITIALIZER
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule, enableProdMode } from '@angular/core';
 
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { rootStates } from './shared/store';
 
-import { AngularFireModule } from 'angularfire2';
+import { FirebaseModule } from './firebase.module';
 
 import {
   PERFECT_SCROLLBAR_CONFIG,
@@ -21,11 +27,10 @@ ENV.production && enableProdMode();
 
 import { MyApp } from './app.component';
 
+import { ServicesModule } from './shared/services/services.module';
 import { I18nModule } from './shared/i18n/i18n.module';
 import { SharedModule } from './shared/shared.module';
 import { LayoutModule } from './shared/layout/layout.module';
-
-import { ServicesModule } from './shared/services/services.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -38,18 +43,17 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     IonicModule.forRoot(MyApp),
     PerfectScrollbarModule,
 
-    // Redux & store
+    // Redux
     NgxsModule.forRoot(rootStates),
-
-    // !ENV.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
+    NgxsReduxDevtoolsPluginModule.forRoot(),
 
     // Firebase
-    AngularFireModule.initializeApp(ENV.firebase),
+    FirebaseModule,
 
     // Ionosphere
+    SharedModule,
     ServicesModule.forRoot(),
     I18nModule.forRoot(),
-    SharedModule,
     LayoutModule
   ],
   bootstrap: [IonicApp],
@@ -59,13 +63,20 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     {
+      provide: APP_INITIALIZER,
+      useFactory: () =>
+        function() {
+          console.log('APP STARTED with env ' + ENV.mode);
+        },
+      deps: [],
+      multi: true
+    },
+    {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     }
   ]
 })
 export class AppModule {
-  constructor() {
-    console.log('APP STARTED with env ' + ENV.mode);
-  }
+  constructor() {}
 }

@@ -1,12 +1,43 @@
-<ion-header>
+<ion-content>
 
-  <ion-navbar>
-    <ion-title>caca</ion-title>
-  </ion-navbar>
+  <!-- Mobile only -->
+  <ion-grid fxHide.gt-xs class="mobile-wrapper" no-padding>
+    <ion-row class="title">
+      <ion-col>
+        <h1>bipol'app</h1>
+        <h2>getting better - staying well</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row class="contents">
+      <ion-col>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-</ion-header>
+  <!-- Desktop only -->
+  <div fxHide.xs class="destkop-wrapper">
+    <ion-card class="logon-box">
+      <ion-card-header>
+        <h1>bipol'app</h1>
+        <h2>getting better - staying well</h2>
+      </ion-card-header>
+      <ion-card-content>
+        <form [formGroup]="loginForm" (submit)="signIn()" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="16px">
 
+          <ion-item>
+            <ion-label color="primary" floating>username</ion-label>
+            <ion-input formControlName="username"></ion-input>
+          </ion-item>
 
-<ion-content padding>
-
+          <ion-item>
+            <ion-label color="primary" floating>password</ion-label>
+            <ion-input type="password" formControlName="password"></ion-input>
+          </ion-item>
+          <button ion-button>
+            sign-in
+          </button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
