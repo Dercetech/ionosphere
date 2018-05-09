@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { tap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 
@@ -43,16 +44,26 @@ export class AuthenticationState {
   ) {
     // return this._authService.authenticate(payload).pipe(
     console.log('sync processing');
-    return of('abc').pipe(
+
+    const result = new Observable(observer => {
+      observer.next({
+        data: 'crap',
+        obs: Observable
+      });
+      observer.complete();
+    }).pipe(
+      // return of('abc').pipe(
       tap(result => {
         console.log('async processing');
-        patchState({ token: result });
+        // patchState();
       }),
       catchError(err => {
         console.log('async error');
         return null;
       })
     );
+
+    return result;
   }
 
   @Action(LoginWithGoogle)

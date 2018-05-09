@@ -1,7 +1,9 @@
 import { State, Action, StateContext } from '@ngxs/store';
 import { SetMenuCompact, ToggleMenuCompact } from './interface.actions';
+import { of } from 'rxjs/observable/of';
 
 import { menuContents } from '../../../menu.contents';
+import { tap } from 'rxjs/operators';
 
 export interface InterfaceStateModel {
   headerDisplayed: boolean;
@@ -27,6 +29,8 @@ export class InterfaceState {
   }: StateContext<InterfaceStateModel>) {
     const { menuCompact } = getState();
     patchState({ menuCompact: !menuCompact });
+    console.log('try here');
+    return of('123').pipe(tap(result => console.log('result')));
   }
 
   @Action(SetMenuCompact)
