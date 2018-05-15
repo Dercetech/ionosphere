@@ -2,11 +2,9 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { Store } from '@ngxs/store';
-import {
-  LoginWithGoogle,
-  Login
-} from '../../shared/store/authentication/authentication.actions';
+import { LoginRequestAction } from '../../shared/store/features/authentication/authentication.actions';
+
+import { StoreService } from '../../shared/services/store.service';
 
 @IonicPage()
 @Component({
@@ -19,7 +17,7 @@ export class LoginPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private _store: Store,
+    private _storeService: StoreService,
     private formBuilder: FormBuilder
   ) {
     this.loginForm = this.formBuilder.group({
@@ -31,15 +29,11 @@ export class LoginPage {
   ionViewDidLoad() {}
 
   signIn() {
-    this._store.dispatch(
-      new Login({
+    this._storeService.dispatch(
+      new LoginRequestAction({
         username: this.loginForm.value.username,
         password: this.loginForm.value.password
       })
     );
-  }
-
-  signIn_google() {
-    this._store.dispatch(new LoginWithGoogle());
   }
 }

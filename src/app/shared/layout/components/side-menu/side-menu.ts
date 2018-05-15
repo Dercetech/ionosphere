@@ -1,13 +1,11 @@
 import { Component, HostBinding, OnInit, OnDestroy } from '@angular/core';
 
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
-import { Select, Store } from '@ngxs/store';
+import { StoreService } from '../../../services/store.service';
 
-import { ToggleMenuCompact } from '../../../store/interface/interface.actions';
+import { ToggleMenuCompactAction } from '../../../store/features/interface/interface.actions';
 
 @Component({
   selector: 'side-menu',
@@ -19,12 +17,15 @@ export class SideMenuComponent implements OnInit, OnDestroy {
 
   @HostBinding('class.compact') compactClassActive: boolean = false;
 
-  @Select('interface.menuContents') contents$;
-  @Select('interface.menuCompact') compact$;
+  contents$;
+  compact$;
 
-  private _destroy$ = new Subject<null>();
+  private _destroy$ = new Subject<any>();
 
-  constructor(private _store: Store) {}
+  constructor(private _store: StoreService) {
+    this.contents$ = this._store.select.interface.menuContents$;
+    this.compact$ = this._store.select.interface.menuCompact$;
+  }
 
   ngOnInit() {
     this.compact$
@@ -38,7 +39,7 @@ export class SideMenuComponent implements OnInit, OnDestroy {
   }
 
   toggleCompact(): void {
-    this._store.dispatch(new ToggleMenuCompact());
+    this._store.dispatch(new ToggleMenuCompactAction());
     // this.compact.emit(this.compactClassActive);
     // this.small = !this.small;
   }

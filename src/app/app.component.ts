@@ -8,8 +8,8 @@ import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { map } from 'rxjs/operators';
 
-import { Select, Store } from '@ngxs/store';
-import { SetMenuCompact } from './shared/store/interface/interface.actions';
+import { SetMenuCompactAction } from './shared/store/features/interface/interface.actions';
+import { StoreService } from './shared/services/store.service';
 
 @Component({
   templateUrl: 'app.html'
@@ -24,11 +24,11 @@ export class MyApp implements OnInit {
   navClasses$: Observable<string[]>;
 
   // Header
-  @Select('interface.headerDisplayed') headerDisplayed$: Observable<boolean>;
+  //@Select('interface.headerDisplayed') headerDisplayed$: Observable<boolean>;
 
   // Menu
-  @Select('interface.menuDisplayed') menuDisplayed$;
-  @Select('interface.menuCompact') menuCompact$;
+  //@Select('interface.menuDisplayed') menuDisplayed$;
+  //@Select('interface.menuCompact') menuCompact$;
 
   // Routing
   rootPage: any = 'LoginPage';
@@ -37,7 +37,7 @@ export class MyApp implements OnInit {
     platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
-    private _store: Store
+    private _store: StoreService
   ) {
     // Perform native calls here
     platform.ready().then(() => {
@@ -46,11 +46,13 @@ export class MyApp implements OnInit {
     });
 
     // Navigation tweaks
+    /*
     this.navClasses$ = combineLatest([this.headerDisplayed$]).pipe(
       map(([interfaceDisplayMenu]) => [
         interfaceDisplayMenu ? 'interface-display-menu' : ''
       ])
     );
+    */
   }
 
   ngOnInit(): void {
@@ -59,6 +61,6 @@ export class MyApp implements OnInit {
   }
 
   onSplitChange(): void {
-    this._store.dispatch(new SetMenuCompact(false));
+    this._store.dispatch(new SetMenuCompactAction(false));
   }
 }

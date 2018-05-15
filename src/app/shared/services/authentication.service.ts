@@ -1,29 +1,26 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { delay, tap } from 'rxjs/operators';
-
-import { Store } from '@ngxs/store';
+import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import {
-  LoginSuccess,
-  Logout
-} from '../store/authentication/authentication.actions';
+  LoginSuccessAction,
+  LogoutRequestAction
+} from '../store/features/authentication/authentication.actions';
+
+import { StoreService } from './store.service';
 
 @Injectable()
 export class AuthenticationService {
-  constructor(private _store: Store, private _afAuth: AngularFireAuth) {
-    this._afAuth.authState
-      .pipe(tap(user => console.log('user is ', user)))
-      .subscribe(user =>
-        this._store.dispatch(
-          user ? new LoginSuccess({ username: user.displayName }) : new Logout()
-        )
-      );
+  constructor(private _store: StoreService, private _afAuth: AngularFireAuth) {
+    this._afAuth.authState.subscribe(user =>
+      this._store.dispatch(
+        user ? new LoginSuccessAction() : new LogoutRequestAction()
+      )
+    );
     // .switchMap(user => {
     //   if (user) {
     //     return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
@@ -41,7 +38,7 @@ export class AuthenticationService {
       credentials.username !== 'bad'
         ? { success: true }
         : { success: false, error: 'bad user' };
-    return of({ success: true }).pipe(delay(750));
+    return of(result).pipe(delay(750));
   }
 
   googleLogin() {
@@ -57,6 +54,8 @@ export class AuthenticationService {
   }
 
   signOut() {
-    this._afAuth.auth.signOut().then(() => this._store.dispatch(new Logout()));
+    this._afAuth.auth
+      .signOut()
+      .then(() => this._store.dispatch(new LogoutRequestAction()));
   }
 }

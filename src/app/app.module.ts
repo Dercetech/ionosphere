@@ -10,12 +10,6 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
-import { Observable } from 'rxjs/Rx';
-
-import { NgxsModule } from '@ngxs/store';
-import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
-import { rootStates } from './shared/store';
-
 import { FirebaseModule } from './firebase.module';
 
 import {
@@ -29,6 +23,7 @@ ENV.production && enableProdMode();
 
 import { MyApp } from './app.component';
 
+import { RootStoreModule } from './shared/store/store.module';
 import { ServicesModule } from './shared/services/services.module';
 import { I18nModule } from './shared/i18n/i18n.module';
 import { SharedModule } from './shared/shared.module';
@@ -45,14 +40,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     IonicModule.forRoot(MyApp),
     PerfectScrollbarModule,
 
-    // Redux
-    NgxsModule.forRoot(rootStates),
-    NgxsReduxDevtoolsPluginModule.forRoot(),
-
-    // Firebase
+    RootStoreModule.forRoot(),
     FirebaseModule,
 
-    // Ionosphere
     SharedModule,
     ServicesModule.forRoot(),
     I18nModule.forRoot(),

@@ -1,7 +1,4 @@
 import { AuthenticationService } from './authentication.service';
-import { InterfaceService } from './interface.service';
+import { StoreService } from './store.service';
 
-export * from './authentication.service';
-export * from './interface.service';
-
-export const services = [AuthenticationService, InterfaceService];
+export const services = [AuthenticationService, StoreService];
