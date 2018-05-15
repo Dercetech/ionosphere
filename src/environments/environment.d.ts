@@ -4,7 +4,7 @@ export interface Environment {
   isDebugMode: boolean;
   firebase: any;
   interface: {
-    showMenu: boolean;
-    showHeader: boolean;
-  }
+    allowMenu: boolean;
+    allowHeader: boolean;
+  };
 }

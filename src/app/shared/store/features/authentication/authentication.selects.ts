@@ -3,7 +3,6 @@ import { NgrxService } from '../../services/ngrx.service';
 import { authenticationKey } from '../../store.keys';
 
 const _selectsFactory = store => {
-  // Authentication state$
   const authenticationStatus = createSelector(
     NgrxService.getSelector(authenticationKey, 'authenticated'),
     NgrxService.getSelector(authenticationKey, 'token'),
@@ -11,9 +10,7 @@ const _selectsFactory = store => {
       authenticated ? 'authenticated | ' + token : 'not authenticated'
   );
 
-  const status$ = store.select(authenticationStatus);
-
-  return { status$ };
+  return { status$: store.select(authenticationStatus) };
 };
 
 export const selectsFactory = _selectsFactory;

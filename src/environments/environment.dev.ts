@@ -13,7 +13,7 @@ export const ENV: Environment = {
     messagingSenderId: '188924942427'
   },
   interface: {
-    showMenu: true,
-    showHeader: true
+    allowMenu: true,
+    allowHeader: true
   }
 };

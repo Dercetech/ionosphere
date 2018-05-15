@@ -21,7 +21,7 @@ export interface InterfaceState {
 
 const initialState: InterfaceState = {
   headerDisplayed: true,
-  menuDisplayed: true,
+  menuDisplayed: false, // see custom selector
   menuCompact: false,
   menuContents
 };
