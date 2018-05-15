@@ -20,7 +20,7 @@ export interface InterfaceState {
 }
 
 const initialState: InterfaceState = {
-  headerDisplayed: true,
+  headerDisplayed: true, // see custom selector
   menuDisplayed: false, // see custom selector
   menuCompact: false,
   menuContents

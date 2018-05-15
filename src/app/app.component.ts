@@ -4,9 +4,8 @@ import { NavController, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { Observable } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { map } from 'rxjs/operators';
+import { Observable, combineLatest, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 import { SetMenuCompactAction } from './shared/store/features/interface/interface.actions';
 import { StoreService } from './shared/services/store.service';
@@ -21,9 +20,8 @@ export class MyApp implements OnInit {
   @ViewChild('nav') nav: NavController;
 
   // Classes to apply to the main view (i.e. toggle the header)
-  navClasses$: Observable<string[]>;
+  navClasses$: Observable<string[]> = of('interface-display-menu');
 
-  headerDisplayed$: Observable<boolean>;
   menuDisplayed$: Observable<boolean>;
   menuCompact$: Observable<boolean>;
 
@@ -41,18 +39,17 @@ export class MyApp implements OnInit {
       splashScreen.hide();
     });
 
-    this.headerDisplayed$ = this._storeService.select.interface.headerDisplayed$;
     this.menuDisplayed$ = this._storeService.select.interface.menuDisplayed$;
     this.menuCompact$ = this._storeService.select.interface.menuCompact$;
 
     // Navigation tweaks
-    /*
-    this.navClasses$ = combineLatest([this.headerDisplayed$]).pipe(
-      map(([interfaceDisplayMenu]) => [
-        interfaceDisplayMenu ? 'interface-display-menu' : ''
+    this.navClasses$ = combineLatest(
+      this._storeService.select.interface.headerDisplayed$
+    ).pipe(
+      map(([headerDisplayed]) => [
+        headerDisplayed ? 'interface-display-menu' : ''
       ])
     );
-    */
   }
 
   ngOnInit(): void {
