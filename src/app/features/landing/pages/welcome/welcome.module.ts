@@ -4,14 +4,10 @@ import { IonicPageModule } from 'ionic-angular';
 import { SharedModule } from '../../../../shared/shared.module';
 
 import { WelcomePage } from './welcome';
+import { LandingModule } from '../../landing.module';
 
 @NgModule({
-  declarations: [
-    WelcomePage,
-  ],
-  imports: [
-    IonicPageModule.forChild(WelcomePage),
-    SharedModule
-  ],
+  declarations: [WelcomePage],
+  imports: [IonicPageModule.forChild(WelcomePage), SharedModule, LandingModule]
 })
 export class WelcomePageModule {}
