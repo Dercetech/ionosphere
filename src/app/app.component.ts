@@ -4,7 +4,7 @@ import { NavController, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { map } from 'rxjs/operators';
 
@@ -12,7 +12,7 @@ import { SetMenuCompactAction } from './shared/store/features/interface/interfac
 import { StoreService } from './shared/services/store.service';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.component.html'
 })
 export class MyApp implements OnInit {
   // Not in use unless there are variants of the .ionosphere theme (found in theme/variables > import /ionosphere/
@@ -23,27 +23,27 @@ export class MyApp implements OnInit {
   // Classes to apply to the main view (i.e. toggle the header)
   navClasses$: Observable<string[]>;
 
-  // Header
-  //@Select('interface.headerDisplayed') headerDisplayed$: Observable<boolean>;
+  headerDisplayed$: Observable<boolean>;
+  menuDisplayed$: Observable<boolean>;
+  menuCompact$: Observable<boolean>;
 
-  // Menu
-  //@Select('interface.menuDisplayed') menuDisplayed$;
-  //@Select('interface.menuCompact') menuCompact$;
-
-  // Routing
   rootPage: any = 'WelcomePage';
 
   constructor(
     platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
-    private _store: StoreService
+    private _storeService: StoreService
   ) {
     // Perform native calls here
     platform.ready().then(() => {
       statusBar.styleDefault();
       splashScreen.hide();
     });
+
+    this.headerDisplayed$ = this._storeService.select.interface.headerDisplayed$;
+    this.menuDisplayed$ = this._storeService.select.interface.menuDisplayed$;
+    this.menuCompact$ = this._storeService.select.interface.menuCompact$;
 
     // Navigation tweaks
     /*
@@ -61,6 +61,6 @@ export class MyApp implements OnInit {
   }
 
   onSplitChange(): void {
-    this._store.dispatch(new SetMenuCompactAction(false));
+    this._storeService.dispatch(new SetMenuCompactAction(false));
   }
 }

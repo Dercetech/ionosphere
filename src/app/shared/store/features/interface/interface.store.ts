@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions } from '@ngrx/effects';
 
 import { StoreService } from '../../../services/store.service';
 
@@ -27,9 +27,9 @@ const initialState: InterfaceState = {
 };
 
 @Injectable()
-export class AuthenticationStore extends GenericStore {
+export class InterfaceStore extends GenericStore {
   constructor(
-    private _actions$: Actions,
+    _actions$: Actions,
     private _store: Store<any>,
     private _storeService: StoreService
   ) {

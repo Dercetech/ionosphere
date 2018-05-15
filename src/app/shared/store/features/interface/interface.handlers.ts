@@ -11,7 +11,7 @@ const _handlers = {};
 
 _handlers[SetMenuCompactAction.TYPE] = {
   action: (state: InterfaceState, { payload }: SetMenuCompactAction) => {
-    const menuCompact = !payload;
+    const menuCompact = payload;
     return { ...state, menuCompact };
   }
 };

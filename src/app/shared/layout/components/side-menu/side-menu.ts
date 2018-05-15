@@ -40,8 +40,6 @@ export class SideMenuComponent implements OnInit, OnDestroy {
 
   toggleCompact(): void {
     this._store.dispatch(new ToggleMenuCompactAction());
-    // this.compact.emit(this.compactClassActive);
-    // this.small = !this.small;
   }
 
   toggleSectionExpanded(section: any): void {
