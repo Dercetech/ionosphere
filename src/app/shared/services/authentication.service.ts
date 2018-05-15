@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import {
@@ -39,18 +38,6 @@ export class AuthenticationService {
         ? { success: true }
         : { success: false, error: 'bad user' };
     return of(result).pipe(delay(750));
-  }
-
-  googleLogin() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    return this.oAuthLogin(provider);
-  }
-
-  private oAuthLogin(provider) {
-    // return this._afAuth.auth.signInWithPopup(provider).then(credential => {
-    return this._afAuth.auth.signInWithRedirect(provider).then(credential => {
-      console.log('a nigga got logged in');
-    });
   }
 
   signOut() {

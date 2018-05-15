@@ -31,7 +31,7 @@ export class MyApp implements OnInit {
   //@Select('interface.menuCompact') menuCompact$;
 
   // Routing
-  rootPage: any = 'LoginPage';
+  rootPage: any = 'WelcomePage';
 
   constructor(
     platform: Platform,

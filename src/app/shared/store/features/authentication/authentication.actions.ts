@@ -21,7 +21,12 @@ export class LogoutRequestAction extends TypedAction {
   }
 }
 
+export class LogoutSuccessAction extends TypedAction {
+  static TYPE = '[Auth] Logout success';
+}
+
 export type LoginActions =
   | LoginRequestAction
   | LoginSuccessAction
-  | LogoutRequestAction;
+  | LogoutRequestAction
+  | LogoutSuccessAction;
