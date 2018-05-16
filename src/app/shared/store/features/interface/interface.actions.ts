@@ -9,4 +9,7 @@ export class SetMenuCompactAction extends TypedAction {
 
 export class ToggleMenuCompactAction extends TypedAction {
   static TYPE = '[interface] toggle menu compact';
+  constructor() {
+    super();
+  }
 }

@@ -26,24 +26,23 @@ const initialState: AuthenticationState = {
 export class AuthenticationStore extends GenericStore {
   constructor(
     private _actions$: Actions,
-    private _store: Store<any>,
-    private _storeService: StoreService,
+    _store: Store<any>,
+    _storeService: StoreService,
     _authService: AuthenticationService
   ) {
-    super(/*context */ { actions$: _actions$, _authService });
-    this.registerSelects();
+    super(
+      { actions$: _actions$, _authService },
+      {
+        _storeService,
+        featureKey: authenticationKey,
+        propertyKeys: Object.keys(initialState),
+        customSelects: selectsFactory(_store)
+      }
+    );
   }
 
   static reducer(state = initialState, action): AuthenticationState {
     return super.processState(handlers, state, action);
-  }
-
-  registerSelects() {
-    this._storeService.registerSelects(
-      authenticationKey,
-      Object.keys(initialState),
-      selectsFactory(this._store)
-    );
   }
 
   @Effect()

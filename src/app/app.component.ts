@@ -20,7 +20,7 @@ export class MyApp implements OnInit {
   @ViewChild('nav') nav: NavController;
 
   // Classes to apply to the main view (i.e. toggle the header)
-  navClasses$: Observable<string[]> = of('interface-display-menu');
+  navClasses$: Observable<string[]> = of(['interface-display-menu']);
 
   menuDisplayed$: Observable<boolean>;
   menuCompact$: Observable<boolean>;
