@@ -8,17 +8,23 @@ import { IonicModule } from 'ionic-angular';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { I18nModule } from './i18n/i18n.module';
 
+import { LoadingFullscreenComponent } from './components/loading-fullscreen/loading-fullscreen';
+
 import { ScrollHideDirective } from './layout/directives/scroll-hide';
 import { ScrollEffectDirective } from './layout/directives/scroll-effect';
 
 @NgModule({
   declarations: [
+    // Components
+    LoadingFullscreenComponent,
+
     // Directives
     ScrollHideDirective,
     ScrollEffectDirective
   ],
   imports: [
     CommonModule,
+
     IonicModule,
     FormsModule,
     ReactiveFormsModule,
@@ -36,6 +42,7 @@ import { ScrollEffectDirective } from './layout/directives/scroll-effect';
     I18nModule,
 
     // Components
+    LoadingFullscreenComponent,
 
     // Directives
     ScrollHideDirective,

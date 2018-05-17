@@ -5,6 +5,7 @@ import {
   APP_INITIALIZER
 } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -37,6 +38,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   declarations: [MyApp],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+
     IonicModule.forRoot(MyApp),
     PerfectScrollbarModule,
 

@@ -6,3 +6,4 @@
     <ion-nav main [root]="rootPage" [ngClass]="navClasses$ | async" #nav></ion-nav>
   </ion-split-pane>
 </div>
+<loading-fullscreen *ngIf="!(appReady$ | async)"></loading-fullscreen>

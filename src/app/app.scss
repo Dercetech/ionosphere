@@ -1,6 +1,5 @@
 // http://ionicframework.com/docs/theming/
 
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -18,23 +17,20 @@
 // Perfect scrollbar
 @import '../../node_modules/perfect-scrollbar/css/perfect-scrollbar';
 
-
 // Actual theme is imported in ../theme/variables, this import runs an @include method injecting the template (at the bottom of the resulting .css file)
-@import "../theme/ionosphere/_ionosphere";
-
+@import '../theme/ionosphere/_ionosphere';
 
 // The following is made obsolete by the (tweaked) ionic splitpane.
 // Tweaking happens in app.scss-theme.scss app-component-theme mixin.
 // Mixins are used to centralize global theming with no hard references.
 // This approach makes Jem@Dercetech very proud of his solution. Attaboy to myself.
 
-
-
-ion-nav{
-
-    &:not(.interface-display-menu){
-        > .ion-page > ion-header{
-            display: none;
-        }
+ion-app {
+  ion-nav {
+    &:not(.interface-display-menu) {
+      > .ion-page > ion-header {
+        display: none;
+      }
     }
+  }
 }
