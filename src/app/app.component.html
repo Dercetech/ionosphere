@@ -1,9 +1,9 @@
-<div [class]="theme">
-  <ion-split-pane (ionChange)="onSplitChange()" [ngClass]="{ compact: (menuCompact$ | async) }" when="(min-width: 960px)">
-    <ion-menu [content]="nav" *ngIf="menuDisplayed$ | async">
+<div [class]="theme" *ngIf="(appReady$ | async)">
+  <ion-split-pane (ionChange)=" onSplitChange() " [ngClass]="{ compact: (menuCompact$ | async) } " when="(min-width: 960px) ">
+    <ion-menu [content]="nav " *ngIf="menuDisplayed$ | async ">
       <side-menu></side-menu>
     </ion-menu>
-    <ion-nav main [root]="rootPage" [ngClass]="navClasses$ | async" #nav></ion-nav>
+    <ion-nav main [root]="rootPage " [ngClass]="navClasses$ | async " #nav></ion-nav>
   </ion-split-pane>
 </div>
-<loading-fullscreen *ngIf="!(appReady$ | async)"></loading-fullscreen>
+<loading-fullscreen *ngIf="false && !(appReady$ | async) "></loading-fullscreen>

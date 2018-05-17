@@ -1,4 +1,14 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  OnInit,
+  HostBinding,
+  trigger,
+  state,
+  style,
+  transition,
+  animate
+} from '@angular/core';
 
 import { NavController, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -10,12 +20,24 @@ import { map, tap } from 'rxjs/operators';
 import { SetMenuCompactAction } from './shared/store/features/interface/interface.actions';
 import { StoreService } from './shared/services/store.service';
 
+const stateEnteringDom = { opacity: 0 };
+const stateInDOM = { opacity: 1 };
+const stateLeavingDom = { opacity: 0 };
+
 @Component({
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
+  animations: [
+    trigger('visibilityTrigger', [
+      state('in', style(stateInDOM)),
+      transition('void => *', [style(stateEnteringDom), animate(500)]),
+      transition('* => void', [animate(1, style(stateLeavingDom))])
+    ])
+  ]
 })
 export class MyApp implements OnInit {
-  // Not in use unless there are variants of the .ionosphere theme (found in theme/variables > import /ionosphere/
   theme: string = 'ionosphere';
+
+  @HostBinding('@visibilityTrigger') visibilityTrigger = null;
 
   @ViewChild('nav') nav: NavController;
 

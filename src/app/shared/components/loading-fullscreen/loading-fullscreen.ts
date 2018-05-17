@@ -19,7 +19,7 @@ const stateLeavingDom = { opacity: 0 };
     trigger('coverTrigger', [
       state('in', style(stateInDOM)),
       transition('void => *', [style(stateEnteringDom)]),
-      transition('* => void', [animate(300, style(stateLeavingDom))])
+      transition('* => void', [animate(200, style(stateLeavingDom))])
     ])
   ]
 })
