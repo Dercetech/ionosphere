@@ -14,7 +14,6 @@ export interface SelectRegistrationContext {
 export class GenericStore {
   //constructor(private _context: any) {}
   constructor(private _context: any, registration: SelectRegistrationContext) {
-    debugger;
     GenericStore.registerSelects(registration);
   }
 

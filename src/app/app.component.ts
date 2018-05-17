@@ -22,6 +22,8 @@ export class MyApp implements OnInit {
   // Classes to apply to the main view (i.e. toggle the header)
   navClasses$: Observable<string[]> = of(['interface-display-menu']);
 
+  appReady$: Observable<boolean>;
+
   menuDisplayed$: Observable<boolean>;
   menuCompact$: Observable<boolean>;
 
@@ -38,6 +40,10 @@ export class MyApp implements OnInit {
       statusBar.styleDefault();
       splashScreen.hide();
     });
+
+    this.appReady$ = this._storeService.select.app.ready$;
+
+    this.appReady$.subscribe(data => console.log(data));
 
     this.menuDisplayed$ = this._storeService.select.interface.menuDisplayed$;
     this.menuCompact$ = this._storeService.select.interface.menuCompact$;

@@ -10,10 +10,7 @@ import {
 
 const _handlers = {};
 
-const setFirstLoginCheckComplete = (
-  state: AppState,
-  { payload }: LoginSuccessAction
-) => {
+const setFirstLoginCheckComplete = (state: AppState) => {
   const loginCheckComplete = true;
   return { ...state, loginCheckComplete };
 };
