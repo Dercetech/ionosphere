@@ -30,7 +30,7 @@ const stateLeavingDom = { opacity: 0 };
   animations: [
     trigger('visibilityTrigger', [
       state('in', style(stateInDOM)),
-      transition('void => *', [style(stateEnteringDom), animate(750)]),
+      transition('void => *', [style(stateEnteringDom), animate(1000)]),
       transition('* => void', [animate(1, style(stateLeavingDom))])
     ])
   ]
