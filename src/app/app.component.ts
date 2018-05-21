@@ -19,6 +19,7 @@ import { map, tap } from 'rxjs/operators';
 
 import { SetMenuCompactAction } from './shared/store/features/interface/interface.actions';
 import { StoreService } from './shared/services/store.service';
+import { RoutingService } from './routing/routing.service';
 
 const stateEnteringDom = { opacity: 0 };
 const stateInDOM = { opacity: 1 };
@@ -29,7 +30,7 @@ const stateLeavingDom = { opacity: 0 };
   animations: [
     trigger('visibilityTrigger', [
       state('in', style(stateInDOM)),
-      transition('void => *', [style(stateEnteringDom), animate(500)]),
+      transition('void => *', [style(stateEnteringDom), animate(750)]),
       transition('* => void', [animate(1, style(stateLeavingDom))])
     ])
   ]
@@ -45,16 +46,15 @@ export class MyApp implements OnInit {
   navClasses$: Observable<string[]> = of(['interface-display-menu']);
 
   appReady$: Observable<boolean>;
-
   menuDisplayed$: Observable<boolean>;
   menuCompact$: Observable<boolean>;
-
-  rootPage: any = 'WelcomePage';
+  rootPage$: Observable<boolean>;
 
   constructor(
     platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
+    private _routingService: RoutingService,
     private _storeService: StoreService
   ) {
     // Perform native calls here
@@ -64,11 +64,9 @@ export class MyApp implements OnInit {
     });
 
     this.appReady$ = this._storeService.select.app.ready$;
-
-    this.appReady$.subscribe(data => console.log(data));
-
     this.menuDisplayed$ = this._storeService.select.interface.menuDisplayed$;
     this.menuCompact$ = this._storeService.select.interface.menuCompact$;
+    this.rootPage$ = this._storeService.select.routing.rootPage$;
 
     // Navigation tweaks
     this.navClasses$ = combineLatest(
@@ -83,6 +81,8 @@ export class MyApp implements OnInit {
   ngOnInit(): void {
     // setTimeout( () => { this._store.dispatch(new InterfaceSetLanguage('fr')); } , 1500);
     // this._store.dispatch(new InterfaceSetLanguage('fr'));
+    // At this stage, it is guaranteed to have root store entries ready (i.e. including select.app slice)
+    this._routingService.initRouting(this.nav);
   }
 
   onSplitChange(): void {

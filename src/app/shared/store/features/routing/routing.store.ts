@@ -4,30 +4,24 @@ import { Actions } from '@ngrx/effects';
 
 import { StoreService } from '../../../services/store.service';
 
-import { interfaceKey } from '../../store.keys';
+import { routingKey } from '../../store.keys';
 import { GenericStore } from '../../classes/generic-store';
 
-import { handlers } from './interface.handlers';
-import { selectsFactory } from './interface.selects';
+import { handlers } from './routing.handlers';
+import { selectsFactory } from './routing.selects';
 
 import { menuContents } from '../../../../menu.contents';
 
-export interface InterfaceState {
-  headerDisplayed: boolean;
-  menuDisplayed: boolean;
-  menuCompact: boolean;
-  menuContents: any;
+export interface RoutingState {
+  rootPage: string;
 }
 
-const initialState: InterfaceState = {
-  headerDisplayed: true, // see custom selector
-  menuDisplayed: true, // see custom selector
-  menuCompact: false,
-  menuContents
+const initialState: RoutingState = {
+  rootPage: null
 };
 
 @Injectable()
-export class InterfaceStore extends GenericStore {
+export class RouteStore extends GenericStore {
   constructor(
     _actions$: Actions,
     _store: Store<any>,
@@ -37,14 +31,14 @@ export class InterfaceStore extends GenericStore {
       { actions$: _actions$ },
       {
         _storeService,
-        featureKey: interfaceKey,
+        featureKey: routingKey,
         propertyKeys: Object.keys(initialState),
         customSelects: selectsFactory(_store)
       }
     );
   }
 
-  static reducer(state = initialState, action: any): InterfaceState {
+  static reducer(state = initialState, action: any): RoutingState {
     return super.processState(handlers, state, action);
   }
 }

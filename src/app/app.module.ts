@@ -29,6 +29,8 @@ import { ServicesModule } from './shared/services/services.module';
 import { I18nModule } from './shared/i18n/i18n.module';
 import { SharedModule } from './shared/shared.module';
 import { LayoutModule } from './shared/layout/layout.module';
+import { RoutingModule } from './routing/routing.module';
+import { RoutingService } from './routing/routing.service';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -45,11 +47,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
     RootStoreModule.forRoot(),
     FirebaseModule,
-
     SharedModule,
     ServicesModule.forRoot(),
     I18nModule.forRoot(),
-    LayoutModule
+    LayoutModule,
+    RoutingModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [MyApp],
@@ -60,10 +62,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     {
       provide: APP_INITIALIZER,
       useFactory: () =>
-        function() {
+        function(RoutingService) {
           console.log('APP STARTED with env ' + ENV.mode);
         },
-      deps: [],
+      deps: [RoutingService],
       multi: true
     },
     {

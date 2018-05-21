@@ -15,6 +15,17 @@ export class I18nService {
 
   private _keys: {};
 
+  private static KEYS: {} = {};
+
+  static forRoot(rootDict: any): any {
+    I18nService.KEYS = { ...I18nService.KEYS, ...rootDict };
+    return I18nService;
+  }
+
+  static registerFeature(featureName: string, dict: any) {
+    I18nService.KEYS[featureName] = dict;
+  }
+
   constructor(private http: Http) {}
 
   public switchToLanguage$(langCode: string): Observable<boolean> {

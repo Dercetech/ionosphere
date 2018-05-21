@@ -7,7 +7,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 import {
   LoginSuccessAction,
-  LogoutRequestAction
+  LogoutRequestAction,
+  LogoutSuccessAction
 } from '../store/features/authentication/authentication.actions';
 
 import { StoreService } from './store.service';
@@ -17,7 +18,7 @@ export class AuthenticationService {
   constructor(private _store: StoreService, private _afAuth: AngularFireAuth) {
     this._afAuth.authState.subscribe(user =>
       this._store.dispatch(
-        user ? new LoginSuccessAction() : new LogoutRequestAction()
+        user ? new LoginSuccessAction() : new LogoutSuccessAction()
       )
     );
     // .switchMap(user => {
