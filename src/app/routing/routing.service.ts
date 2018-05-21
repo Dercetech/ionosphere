@@ -28,7 +28,9 @@ export class RoutingService {
         this._storeService.select.authentication.authenticated$.pipe(take(1))
       )
       .subscribe(isAuthenticated =>
-        this._storeService.dispatch(new SetRootPageAction('LoginPage'))
+        this._storeService.dispatch(
+          new SetRootPageAction(isAuthenticated ? 'LoginPage' : 'WelcomePage')
+        )
       );
 
     // Listen to rootPage$ change events
