@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { LoginRequestAction } from '../../shared/store/features/authentication/authentication.actions';
+import { LoginRequestAction } from '../../../shared/store/features/authentication/authentication.actions';
 
-import { StoreService } from '../../shared/services/store.service';
+import { StoreService } from '../../../shared/services/store.service';
 
 @IonicPage()
 @Component({

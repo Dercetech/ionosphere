@@ -15,7 +15,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { Observable, combineLatest, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, filter, take } from 'rxjs/operators';
 
 import { SetMenuCompactAction } from './shared/store/features/interface/interface.actions';
 import { StoreService } from './shared/services/store.service';

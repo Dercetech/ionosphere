@@ -1,7 +1,5 @@
-<div [class]="theme"
-     *ngIf="(appReady$ | async)">
-  <ion-split-pane *ngIf="(rootPage$ | async)"
-                  (ionChange)=" onSplitChange() "
+<div [class]="theme">
+  <ion-split-pane (ionChange)=" onSplitChange() "
                   [ngClass]="{ compact: (menuCompact$ | async) } "
                   when="(min-width: 960px) ">
     <ion-menu [content]="nav "
@@ -9,7 +7,7 @@
       <side-menu></side-menu>
     </ion-menu>
     <ion-nav main
-             [root]="(rootPage$ | async)"
+             [root]="null"
              [ngClass]="navClasses$ | async "
              #nav></ion-nav>
   </ion-split-pane>

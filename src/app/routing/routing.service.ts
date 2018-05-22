@@ -7,7 +7,11 @@ import { StoreService } from '../shared/services/store.service';
 import { NavController } from 'ionic-angular';
 
 import { routes } from './routes';
-import { SetRootPageAction } from '../shared/store/features/routing/routing.actions';
+import {
+  SetRootPageAction,
+  PushPageAction,
+  PopPageAction
+} from './store/routing.actions';
 
 @Injectable()
 export class RoutingService {
@@ -27,31 +31,22 @@ export class RoutingService {
       .switchMap(() =>
         this._storeService.select.authentication.authenticated$.pipe(take(1))
       )
-      .subscribe(isAuthenticated =>
-        this._storeService.dispatch(
-          new SetRootPageAction(isAuthenticated ? 'LoginPage' : 'WelcomePage')
-        )
-      );
-
-    // Listen to rootPage$ change events
-    this._storeService.select.routing.rootPage$
-      .pipe(filter((page: string) => page !== null))
-      .subscribe(page => console.log('routing to ', page));
+      .subscribe(isAuthenticated => {
+        const route = isAuthenticated ? routes.welcome : routes.login;
+        const params = {};
+        this._storeService.dispatch(new SetRootPageAction({ route, params }));
+      });
   }
 
-  setRoot(route: string) {
-    this.routes.root = route;
-  }
-
-  goto(route: string, params: any = {}) {
+  setRoot(route: string, params?: any) {
     this._nav.setRoot(route, params);
   }
 
-  gotoLoginPage() {
-    this._nav.setRoot('LoginPage');
+  push(route: string, params?: any) {
+    this._storeService.dispatch(new PushPageAction({ route, params }));
   }
 
-  gotoAuthenticatedHome() {
-    this._nav.setRoot('LoginPage');
+  pop() {
+    this._storeService.dispatch(new PopPageAction());
   }
 }

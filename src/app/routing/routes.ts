@@ -1,3 +1,4 @@
 export const routes = {
-  root: 'WelcomePage'
+  welcome: 'WelcomePage',
+  login: 'LoginPage'
 };
