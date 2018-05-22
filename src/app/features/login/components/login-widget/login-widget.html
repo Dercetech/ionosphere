@@ -1,0 +1,164 @@
+<div class="segments"
+     padding>
+  <ion-segment [(ngModel)]="mode">
+    <ion-segment-button value="login">
+      login
+    </ion-segment-button>
+    <ion-segment-button value="register">
+      register
+    </ion-segment-button>
+  </ion-segment>
+</div>
+
+<!-- Login form -->
+<div *ngIf="mode === 'login'"
+     class="flexy-container">
+
+  <form [formGroup]="loginForm"
+        (submit)="onLogin()">
+    <div class="fields">
+      <ion-list no-lines>
+        <ion-item>
+          <ion-label floating>
+            <ion-icon name="md-mail"
+                      margin-right></ion-icon>login</ion-label>
+          <ion-input formControlName="email"
+                     type="email"
+                     autocomplete="on"
+                     name="email"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>
+            <ion-icon name="md-key"
+                      margin-right></ion-icon>password</ion-label>
+          <ion-input formControlName="password"
+                     type="password"
+                     autocomplete="on"
+                     name="password"></ion-input>
+        </ion-item>
+        <ion-item>
+          <button ion-button
+                  full
+                  round
+                  padding
+                  margin-top
+                  (click)="onLogin()"
+                  type="submit"
+                  [disabled]="!loginForm.valid">login</button>
+        </ion-item>
+        <ion-item>
+          <button ion-button
+                  full
+                  round
+                  padding
+                  margin-bottom
+                  (click)="onPasswordLost()"
+                  color="light">password lost</button>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div class="buttons"
+         *ngIf="false">
+      <button ion-button
+              round
+              (click)="onLogin()"
+              type="submit"
+              [disabled]="!loginForm.valid">login</button>
+      <button ion-button
+              round
+              (click)="onPasswordLost()"
+              color="light">lost password</button>
+    </div>
+  </form>
+</div>
+
+<!-- Register form -->
+<div *ngIf="mode === 'register'"
+     class="flexy-container">
+  <form [formGroup]="registerForm"
+        padding
+        inset>
+    <ion-list no-lines>
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="md-person"
+                    margin-right></ion-icon>display name</ion-label>
+        <ion-input formControlName="displayName"
+                   type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="md-mail"
+                    margin-right></ion-icon>email</ion-label>
+        <ion-input formControlName="email"
+                   type="email"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="registerForm.get('password').hasError('exists')">
+        <ion-label color="danger">email exists</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="md-mail"
+                    margin-right></ion-icon>confirm email</ion-label>
+        <ion-input formControlName="emailConfirm"
+                   type="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="md-key"
+                    margin-right></ion-icon>password</ion-label>
+        <ion-input formControlName="password"
+                   type="password"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="registerForm.get('password').hasError('weak')">
+        <ion-label color="danger">password too weak</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="md-key"
+                    margin-right></ion-icon>confirm password</ion-label>
+        <ion-input formControlName="passwordConfirm"
+                   type="password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <button ion-button
+                full
+                round
+                padding
+                margin-top
+                margin-bottom
+                (click)="onRegister()"
+                [disabled]="!registerForm.valid">register</button>
+      </ion-item>
+    </ion-list>
+  </form>
+</div>
+
+<!-- Password request form -->
+<div *ngIf="mode === 'recovery'"
+     class="flexy-container">
+
+  <form [formGroup]="passwordRecoveryForm"
+        padding
+        inset>
+    <ion-list>
+      <ion-item>
+        <ion-label floating>
+          <ion-icon name="md-mail"
+                    margin-right></ion-icon>login</ion-label>
+        <ion-input formControlName="email"
+                   type="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <button ion-button
+                full
+                round
+                padding
+                margin-top
+                margin-bottom
+                (click)="onNewPasswordRequest()"
+                [disabled]="!passwordRecoveryForm.valid">ask new password</button>
+      </ion-item>
+    </ion-list>
+  </form>
+</div>

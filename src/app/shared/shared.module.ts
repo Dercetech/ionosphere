@@ -7,6 +7,7 @@ import { IonicModule } from 'ionic-angular';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { I18nModule } from './i18n/i18n.module';
+import { ValidatorsModule } from './tools/validators.module';
 
 import { LoadingFullscreenComponent } from './components/loading-fullscreen/loading-fullscreen';
 
@@ -30,7 +31,8 @@ import { ScrollEffectDirective } from './layout/directives/scroll-effect';
     ReactiveFormsModule,
     FlexLayoutModule,
     PerfectScrollbarModule,
-    I18nModule
+    I18nModule,
+    ValidatorsModule
   ],
   exports: [
     CommonModule,
@@ -40,6 +42,7 @@ import { ScrollEffectDirective } from './layout/directives/scroll-effect';
     FlexLayoutModule,
     PerfectScrollbarModule,
     I18nModule,
+    ValidatorsModule,
 
     // Components
     LoadingFullscreenComponent,
