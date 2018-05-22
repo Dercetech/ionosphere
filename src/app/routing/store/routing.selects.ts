@@ -1,5 +1,3 @@
-import { createSelector } from '@ngrx/store';
-
 const _selectsFactory = store => {
   return {};
 };

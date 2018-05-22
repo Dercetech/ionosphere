@@ -42,13 +42,12 @@ export class MyApp implements OnInit {
 
   @ViewChild('nav') nav: NavController;
 
-  // Classes to apply to the main view (i.e. toggle the header)
-  navClasses$: Observable<string[]> = of(['interface-display-menu']);
-
   appReady$: Observable<boolean>;
   menuDisplayed$: Observable<boolean>;
   menuCompact$: Observable<boolean>;
-  rootPage$: Observable<boolean>;
+
+  // Classes to apply to the main view (i.e. toggle the header)
+  navClasses$: Observable<string[]> = of(['interface-display-menu']);
 
   constructor(
     platform: Platform,
@@ -66,7 +65,6 @@ export class MyApp implements OnInit {
     this.appReady$ = this._storeService.select.app.ready$;
     this.menuDisplayed$ = this._storeService.select.interface.menuDisplayed$;
     this.menuCompact$ = this._storeService.select.interface.menuCompact$;
-    this.rootPage$ = this._storeService.select.routing.rootPage$;
 
     // Navigation tweaks
     this.navClasses$ = combineLatest(
@@ -81,6 +79,7 @@ export class MyApp implements OnInit {
   ngOnInit(): void {
     // setTimeout( () => { this._store.dispatch(new InterfaceSetLanguage('fr')); } , 1500);
     // this._store.dispatch(new InterfaceSetLanguage('fr'));
+
     // At this stage, it is guaranteed to have root store entries ready (i.e. including select.app slice)
     this._routingService.initRouting(this.nav);
   }
