@@ -1,15 +1,13 @@
 import { of, pipe } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import {
-  SetRootPageAction,
-  PushPageAction,
-  PopPageAction
-} from './routing.actions';
+import { GenericContext } from '../../shared/store/classes/generic-store';
+
+import { SetRootPageAction, PushPageAction, PopPageAction } from './routing.actions';
 import { RoutingState } from './routing.store';
 import { RoutingService } from '../routing.service';
 
-export interface RoutingHandlerContext {
+export interface RoutingHandlerContext extends GenericContext {
   routingService: RoutingService;
 }
 
@@ -23,24 +21,19 @@ _handlers[SetRootPageAction.TYPE] = {
 
   effect: (action$, context: RoutingHandlerContext) =>
     action$.pipe(
-      switchMap(({ payload }: SetRootPageAction) =>
-        of(context.routingService.setRoot(payload.route, payload.params))
-      )
+      switchMap(({ payload }: SetRootPageAction) => of(context.routingService.setRoot(payload.route, payload.params)))
     )
 };
 
 _handlers[PushPageAction.TYPE] = {
   effect: (action$, context: RoutingHandlerContext) =>
     action$.pipe(
-      switchMap(({ payload }: PushPageAction) =>
-        of(context.routingService.push(payload.route, payload.params))
-      )
+      switchMap(({ payload }: PushPageAction) => of(context.routingService.push(payload.route, payload.params)))
     )
 };
 
 _handlers[PopPageAction.TYPE] = {
-  effect: (action$, context: RoutingHandlerContext) =>
-    action$.pipe(switchMap(() => of(context.routingService.pop())))
+  effect: (action$, context: RoutingHandlerContext) => action$.pipe(switchMap(() => of(context.routingService.pop())))
 };
 
 export const handlers = _handlers;

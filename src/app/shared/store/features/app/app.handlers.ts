@@ -1,12 +1,12 @@
 import { of, pipe } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
+import { GenericContext } from '../../classes/generic-store';
+
 import { AppState } from './appstore';
-import {
-  LoginSuccessAction,
-  LogoutSuccessAction,
-  LogoutRequestAction
-} from '../authentication/authentication.actions';
+import { LoginSuccessAction, LogoutSuccessAction, LogoutRequestAction } from '../authentication/authentication.actions';
+
+export interface AppHandlerContext extends GenericContext {}
 
 const _handlers = {};
 

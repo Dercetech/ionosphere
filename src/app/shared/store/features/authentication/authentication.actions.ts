@@ -27,9 +27,3 @@ export class LogoutSuccessAction extends TypedAction {
     super();
   }
 }
-
-export type LoginActions =
-  | LoginRequestAction
-  | LoginSuccessAction
-  | LogoutRequestAction
-  | LogoutSuccessAction;

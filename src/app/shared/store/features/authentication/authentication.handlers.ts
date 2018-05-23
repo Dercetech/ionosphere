@@ -1,7 +1,13 @@
-import { of, pipe } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
+import { GenericContext } from '../../classes/generic-store';
+
 import * as actions from './authentication.actions';
+import { AuthenticationService } from '../../../services/authentication.service';
+
+export interface AuthenticationHandlerContext extends GenericContext {
+  authService: AuthenticationService;
+}
 
 const _handlers = {};
 
@@ -14,10 +20,10 @@ _handlers[actions.LoginRequestAction.TYPE] = {
     return { ...state, authenticated, authenticating, token };
   },
 
-  effect: (action$, context) =>
+  effect: (action$, context: AuthenticationHandlerContext) =>
     action$.pipe(
       switchMap(({ payload }: actions.LoginRequestAction) =>
-        context._authService.authenticate(payload).pipe(
+        context.authService.authenticate(payload).pipe(
           map((token: string) => new actions.LoginSuccessAction({ token }))
           // catchError(err => of(new userActions.loadUsersFailed(err)) )
         )

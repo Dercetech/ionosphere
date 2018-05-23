@@ -9,7 +9,7 @@ import { authenticationKey } from '../../store.keys';
 import { GenericStore } from '../../classes/generic-store';
 
 import { LoginRequestAction } from './authentication.actions';
-import { handlers } from './authentication.handlers';
+import { handlers, AuthenticationHandlerContext } from './authentication.handlers';
 import { selectsFactory } from './authentication.selects';
 
 export interface AuthenticationState {
@@ -23,20 +23,15 @@ const initialState: AuthenticationState = {
 };
 
 @Injectable()
-export class AuthenticationStore extends GenericStore {
-  constructor(
-    private _actions$: Actions,
-    _store: Store<any>,
-    _storeService: StoreService,
-    _authService: AuthenticationService
-  ) {
+export class AuthenticationStore extends GenericStore<AuthenticationHandlerContext> {
+  constructor(actions$: Actions, store: Store<any>, storeService: StoreService, authService: AuthenticationService) {
     super(
-      { actions$: _actions$, _authService },
+      { actions$, authService },
       {
-        _storeService,
+        storeService,
         featureKey: authenticationKey,
         propertyKeys: Object.keys(initialState),
-        customSelects: selectsFactory(_store)
+        customSelects: selectsFactory(store)
       }
     );
   }
@@ -45,6 +40,5 @@ export class AuthenticationStore extends GenericStore {
     return super.processState(handlers, state, action);
   }
 
-  @Effect()
-  loginRequest = this.processEffect(handlers, LoginRequestAction.TYPE);
+  @Effect() loginRequest = this.processEffect(handlers, LoginRequestAction.TYPE);
 }

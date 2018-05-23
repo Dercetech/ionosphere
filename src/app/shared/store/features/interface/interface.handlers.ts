@@ -1,11 +1,12 @@
 import { of, pipe } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import {
-  SetMenuCompactAction,
-  ToggleMenuCompactAction
-} from './interface.actions';
+import { GenericContext } from '../../classes/generic-store';
+
+import { SetMenuCompactAction, ToggleMenuCompactAction } from './interface.actions';
 import { InterfaceState } from './interface.store';
+
+export interface InterfaceHandlerContext extends GenericContext {}
 
 const _handlers = {};
 

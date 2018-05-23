@@ -6,14 +6,10 @@ import { GenericStore } from '../../shared/store/classes/generic-store';
 import { StoreService } from '../../shared/services/store.service';
 
 import { RoutingService } from '../routing.service';
-import { handlers } from './routing.handlers';
+import { handlers, RoutingHandlerContext } from './routing.handlers';
 import { selectsFactory } from './routing.selects';
 import { routingKey } from './routing.key';
-import {
-  PushPageAction,
-  PopPageAction,
-  SetRootPageAction
-} from './routing.actions';
+import { PushPageAction, PopPageAction, SetRootPageAction } from './routing.actions';
 
 export interface RoutingState {
   rootPage: string;
@@ -26,17 +22,12 @@ const initialState: RoutingState = {
 };
 
 @Injectable()
-export class RouteStore extends GenericStore {
-  constructor(
-    actions$: Actions,
-    store: Store<any>,
-    _storeService: StoreService,
-    routingService: RoutingService
-  ) {
+export class RouteStore extends GenericStore<RoutingHandlerContext> {
+  constructor(actions$: Actions, store: Store<any>, storeService: StoreService, routingService: RoutingService) {
     super(
       { actions$, routingService },
       {
-        _storeService,
+        storeService,
         featureKey: routingKey,
         propertyKeys: Object.keys(initialState),
         customSelects: selectsFactory(store)

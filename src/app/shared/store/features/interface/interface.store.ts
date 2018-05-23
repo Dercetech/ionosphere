@@ -7,7 +7,7 @@ import { StoreService } from '../../../services/store.service';
 import { interfaceKey } from '../../store.keys';
 import { GenericStore } from '../../classes/generic-store';
 
-import { handlers } from './interface.handlers';
+import { handlers, InterfaceHandlerContext } from './interface.handlers';
 import { selectsFactory } from './interface.selects';
 
 import { menuContents } from '../../../../menu.contents';
@@ -27,19 +27,15 @@ const initialState: InterfaceState = {
 };
 
 @Injectable()
-export class InterfaceStore extends GenericStore {
-  constructor(
-    _actions$: Actions,
-    _store: Store<any>,
-    _storeService: StoreService
-  ) {
+export class InterfaceStore extends GenericStore<InterfaceHandlerContext> {
+  constructor(actions$: Actions, store: Store<any>, storeService: StoreService) {
     super(
-      { actions$: _actions$ },
+      { actions$ },
       {
-        _storeService,
+        storeService,
         featureKey: interfaceKey,
         propertyKeys: Object.keys(initialState),
-        customSelects: selectsFactory(_store)
+        customSelects: selectsFactory(store)
       }
     );
   }

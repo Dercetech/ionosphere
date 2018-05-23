@@ -1,11 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  AlertController,
-  LoadingController,
-  NavController
-} from 'ionic-angular';
+import { AlertController, LoadingController, NavController } from 'ionic-angular';
+
 import { CustomValidators } from '../../../../shared/tools/custom-validators';
+import { StoreService } from '../../../../shared/services/store.service';
+import { LoginRequestAction } from '../../../../shared/store/features/authentication/authentication.actions';
 
 @Component({
   selector: 'login-widget',
@@ -20,53 +19,34 @@ export class LoginWidgetComponent {
   private passwordRecoveryForm: FormGroup;
 
   constructor(
-    public navCtrl: NavController,
-    private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
-    private formBuilder: FormBuilder,
-    private _customValidators: CustomValidators
+    //private loadingCtrl: LoadingController,
+    //private alertCtrl: AlertController,
+    private _formBuilder: FormBuilder,
+    private _customValidators: CustomValidators,
+    private _storeService: StoreService
   ) {
-    this.loginForm = this.formBuilder.group({
-      email: [
-        '',
-        [Validators.required, this._customValidators.getEmailValidator()]
-      ],
+    this.loginForm = this._formBuilder.group({
+      email: ['', [Validators.required, this._customValidators.getEmailValidator()]],
       password: ['', Validators.required]
     });
 
-    this.registerForm = this.formBuilder.group({
+    this.registerForm = this._formBuilder.group({
       displayName: [''],
-      email: [
-        '',
-        [Validators.required, this._customValidators.getEmailValidator()]
-      ],
-      emailConfirm: [
-        '',
-        [
-          Validators.required,
-          this._customValidators.matchOtherValidator('email')
-        ]
-      ],
+      email: ['', [Validators.required, this._customValidators.getEmailValidator()]],
+      emailConfirm: ['', [Validators.required, this._customValidators.matchOtherValidator('email')]],
       password: ['', Validators.required],
-      passwordConfirm: [
-        '',
-        [
-          Validators.required,
-          this._customValidators.matchOtherValidator('password')
-        ]
-      ]
+      passwordConfirm: ['', [Validators.required, this._customValidators.matchOtherValidator('password')]]
     });
 
-    this.passwordRecoveryForm = this.formBuilder.group({
-      email: [
-        '',
-        [Validators.required, this._customValidators.getEmailValidator()]
-      ]
+    this.passwordRecoveryForm = this._formBuilder.group({
+      email: ['', [Validators.required, this._customValidators.getEmailValidator()]]
     });
   }
 
   onLogin(): void {
-    this.signIn(this.loginForm.value.email, this.loginForm.value.password);
+    const username = this.loginForm.value.email;
+    const password = this.loginForm.value.password;
+    this.signIn({ username, password });
   }
 
   onOpenRegisterScreen(): void {
@@ -74,6 +54,9 @@ export class LoginWidgetComponent {
   }
 
   onRegister(): void {
+    const displayName = this.registerForm.value.displayName;
+    const username = this.registerForm.value.email;
+    const password = this.registerForm.value.password;
     /*
     const watchForAuthentication = this.authService.authenticated$
       .filter(isAuthenticated => isAuthenticated === true)
@@ -140,10 +123,7 @@ export class LoginWidgetComponent {
   }
 
   onPasswordLost(): void {
-    if (this.loginForm.value.email)
-      this.passwordRecoveryForm.controls.email.setValue(
-        this.loginForm.value.email
-      );
+    if (this.loginForm.value.email) this.passwordRecoveryForm.controls.email.setValue(this.loginForm.value.email);
     this.mode = 'recovery';
   }
 
@@ -179,7 +159,8 @@ export class LoginWidgetComponent {
       */
   }
 
-  signIn(email: string, password: string) {
+  private signIn(credentials: { username: string; password: string }) {
+    this._storeService.dispatch(new LoginRequestAction(credentials));
     /*
     // Loading... message
     const loading = this.loadingCtrl.create({
@@ -212,4 +193,6 @@ export class LoginWidgetComponent {
     );
     */
   }
+
+  private register;
 }

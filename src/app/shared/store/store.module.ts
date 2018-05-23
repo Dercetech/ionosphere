@@ -7,27 +7,22 @@ import { EffectsModule } from '@ngrx/effects';
 import { ENV } from '@app/env';
 
 import { NgrxService } from './services/ngrx.service';
-import { authenticationKey, interfaceKey, appKey } from './store.keys';
+import { authenticationKey, interfaceKey, appKey, usersKey } from './store.keys';
 import { AuthenticationStore } from './features/authentication/authentication.store';
 import { InterfaceStore } from './features/interface/interface.store';
 import { AppStore } from './features/app/appstore';
 
-const reducers: ActionReducerMap<any> = {
-  // [authenticationKey]: AuthenticationStore.reducer,
-  // [appKey]: AppStore.reducer,
-  // [interfaceKey]: InterfaceStore.reducer
-};
-
+const stores: any[] = [AuthenticationStore, AppStore, InterfaceStore];
+const reducers: ActionReducerMap<any> = {};
 const metaReducers = ENV.production ? {} : {};
-
-export const stores: any[] = [AuthenticationStore, AppStore, InterfaceStore];
 
 @NgModule({
   imports: [
     StoreModule.forRoot(reducers, metaReducers),
-    StoreModule.forFeature(authenticationKey, AuthenticationStore.reducer),
     StoreModule.forFeature(appKey, AppStore.reducer),
+    StoreModule.forFeature(authenticationKey, AuthenticationStore.reducer),
     StoreModule.forFeature(interfaceKey, InterfaceStore.reducer),
+    StoreModule.forFeature(usersKey, UsersS.reducer),
     ENV.production ? [] : StoreDevtoolsModule.instrument({ maxAge: 15 }),
     EffectsModule.forRoot([...stores])
   ],

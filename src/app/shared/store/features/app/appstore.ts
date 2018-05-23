@@ -7,10 +7,8 @@ import { StoreService } from '../../../services/store.service';
 import { appKey } from '../../store.keys';
 import { GenericStore } from '../../classes/generic-store';
 
-import { handlers } from './app.handlers';
+import { handlers, AppHandlerContext } from './app.handlers';
 import { selectsFactory } from './app.selects';
-
-import { menuContents } from '../../../../menu.contents';
 
 export interface AppState {
   ready: boolean;
@@ -23,19 +21,15 @@ const initialState: AppState = {
 };
 
 @Injectable()
-export class AppStore extends GenericStore {
-  constructor(
-    _actions$: Actions,
-    _store: Store<any>,
-    _storeService: StoreService
-  ) {
+export class AppStore extends GenericStore<AppHandlerContext> {
+  constructor(actions$: Actions, store: Store<any>, storeService: StoreService) {
     super(
-      { actions$: _actions$ },
+      { actions$ },
       {
-        _storeService,
+        storeService,
         featureKey: appKey,
         propertyKeys: Object.keys(initialState),
-        customSelects: selectsFactory(_store)
+        customSelects: selectsFactory(store)
       }
     );
   }

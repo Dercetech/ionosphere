@@ -3,7 +3,7 @@ import { StoreService } from '../../services/store.service';
 import { Observable } from 'rxjs';
 
 export interface SelectRegistrationContext {
-  _storeService: StoreService;
+  storeService: StoreService;
   featureKey: string;
   propertyKeys: string[];
   customSelects?: {
@@ -11,9 +11,13 @@ export interface SelectRegistrationContext {
   };
 }
 
-export class GenericStore {
+export interface GenericContext {
+  actions$: any;
+}
+
+export class GenericStore<T extends GenericContext> {
   //constructor(private _context: any) {}
-  constructor(private _context: any, registration: SelectRegistrationContext) {
+  constructor(private _context: T, registration: SelectRegistrationContext) {
     GenericStore.registerSelects(registration);
   }
 
@@ -22,25 +26,15 @@ export class GenericStore {
     return actionHandler ? actionHandler(state, action) : state;
   }
 
-  static registerSelects({
-    _storeService,
-    featureKey,
-    propertyKeys,
-    customSelects
-  }: SelectRegistrationContext) {
-    _storeService.registerSelects(featureKey, propertyKeys, customSelects);
+  static registerSelects({ storeService, featureKey, propertyKeys, customSelects }: SelectRegistrationContext) {
+    storeService.registerSelects(featureKey, propertyKeys, customSelects);
   }
 
   processEffect(handlers: any, actionType: string) {
     const effectHandler = handlers[actionType] && handlers[actionType].effect;
     if (!effectHandler) {
-      throw new Error(
-        actionType + ' > action has no registered effect handler'
-      );
+      throw new Error(actionType + ' > action has no registered effect handler');
     }
-    return effectHandler(
-      this._context.actions$.ofType(actionType),
-      this._context
-    );
+    return effectHandler(this._context.actions$.ofType(actionType), this._context);
   }
 }
