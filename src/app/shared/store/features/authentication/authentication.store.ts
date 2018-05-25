@@ -15,11 +15,13 @@ import { selectsFactory } from './authentication.selects';
 export interface AuthenticationState {
   authenticated: boolean;
   authenticating: boolean;
+  authenticationError: string;
 }
 
 const initialState: AuthenticationState = {
   authenticated: false,
-  authenticating: true
+  authenticating: true,
+  authenticationError: null
 };
 
 @Injectable()

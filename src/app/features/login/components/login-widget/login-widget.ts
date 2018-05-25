@@ -2,10 +2,13 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, LoadingController, NavController } from 'ionic-angular';
 
+import { Observable, Subject, combineLatest } from 'rxjs';
+
 import { CustomValidators } from '../../../../shared/tools/custom-validators';
 import { StoreService } from '../../../../shared/services/store.service';
 import { LoginRequestAction } from '../../../../shared/store/features/authentication/authentication.actions';
 import { UserCreationRequestAction } from '../../../../shared/store/features/users/users.actions';
+import { takeUntil, take, filter, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'login-widget',
@@ -21,7 +24,7 @@ export class LoginWidgetComponent {
 
   constructor(
     //private loadingCtrl: LoadingController,
-    //private alertCtrl: AlertController,
+    private _alertCtrl: AlertController,
     private _formBuilder: FormBuilder,
     private _customValidators: CustomValidators,
     private _storeService: StoreService
@@ -162,37 +165,34 @@ export class LoginWidgetComponent {
   }
 
   private signIn(credentials: { username: string; password: string }) {
-    this._storeService.dispatch(new LoginRequestAction(credentials));
-    /*
-    // Loading... message
-    const loading = this.loadingCtrl.create({
-      content: this.i18n.getTranslationInCurrentLanguage(
-        'pages.signin.authenticating-in-progress'
-      )
+    const { authenticating$, authenticated$, authenticationError$ } = this._storeService.select.authentication;
+    const done$: Observable<void> = new Subject();
+
+    let loading = this._alertCtrl.create({
+      title: 'authenticating...',
+      message: 'signing-in...',
+      enableBackdropDismiss: false
     });
+
     loading.present();
+    this._storeService.dispatch(new LoginRequestAction(credentials));
 
-    // Call: sign in
-    return (
-      this.authService
-        .signIn(email, password)
-
-        // Success
-        .then(data => {
-          loading.dismiss();
-        })
-        .catch(error => {
-          loading.dismiss();
-          const alert = this.alertCtrl.create({
-            title: this.i18n.getTranslationInCurrentLanguage(
-              'pages.signin.authenticating-failed'
-            ),
-            message: error.message,
+    authenticating$
+      .pipe(
+        filter(authenticating => !authenticating),
+        switchMap(() => combineLatest(authenticated$.pipe(take(1)), authenticationError$.pipe(take(1))))
+      )
+      .pipe(take(1))
+      .subscribe(([authenticated, error]) => {
+        loading.dismiss();
+        if (!authenticated) {
+          const alert = this._alertCtrl.create({
+            title: 'authentication error',
+            message: error,
             buttons: ['ok']
           });
           alert.present();
-        })
-    );
-    */
+        }
+      });
   }
 }

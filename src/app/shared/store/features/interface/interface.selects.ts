@@ -8,10 +8,7 @@ import { authenticationKey } from '../../store.keys';
 const _selectsFactory = store => {
   const menuDisplayedSelector = createSelector(
     NgrxService.getSelector(authenticationKey, 'authenticated'),
-    authenticated => {
-      console.log('authenticated ' + authenticated);
-      return ENV.interface.allowMenu && authenticated;
-    }
+    authenticated => ENV.interface.allowMenu && authenticated
   );
 
   const headerDisplayedSelector = createSelector(

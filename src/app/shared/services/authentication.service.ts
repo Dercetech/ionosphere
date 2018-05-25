@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, of, Observer } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Observable, of, Observer, throwError } from 'rxjs';
+import { delay, catchError } from 'rxjs/operators';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -12,6 +12,7 @@ import {
 } from '../store/features/authentication/authentication.actions';
 
 import { StoreService } from './store.service';
+import { map } from 'rxjs-compat/operator/map';
 
 @Injectable()
 export class AuthenticationService {
@@ -30,7 +31,7 @@ export class AuthenticationService {
 
   authenticate(credentials: { username: string; password: string }): Observable<any> {
     const { auth } = this._afAuth;
-    return new Observable<any>((observer: Observer<any>) => {
+    const obs: Observable<any> = new Observable<any>((observer: Observer<any>) => {
       auth
         .signInWithEmailAndPassword(credentials.username, credentials.password)
         .then(() => {
@@ -39,9 +40,10 @@ export class AuthenticationService {
         })
         .catch(err => {
           observer.error(err);
-          observer.complete();
         });
     });
+
+    return obs;
   }
 
   signOut(): Observable<any> {
