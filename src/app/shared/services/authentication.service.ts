@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
+import { Observable, of, Observer } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -17,9 +17,7 @@ import { StoreService } from './store.service';
 export class AuthenticationService {
   constructor(private _store: StoreService, private _afAuth: AngularFireAuth) {
     this._afAuth.authState.subscribe(user =>
-      this._store.dispatch(
-        user ? new LoginSuccessAction() : new LogoutSuccessAction()
-      )
+      this._store.dispatch(user ? new LoginSuccessAction() : new LogoutSuccessAction())
     );
     // .switchMap(user => {
     //   if (user) {
@@ -30,20 +28,35 @@ export class AuthenticationService {
     // })
   }
 
-  authenticate(credentials: {
-    username: string;
-    password: string;
-  }): Observable<any> {
-    const result =
-      credentials.username !== 'bad'
-        ? { success: true }
-        : { success: false, error: 'bad user' };
-    return of(result).pipe(delay(750));
+  authenticate(credentials: { username: string; password: string }): Observable<any> {
+    const { auth } = this._afAuth;
+    return new Observable<any>((observer: Observer<any>) => {
+      auth
+        .signInWithEmailAndPassword(credentials.username, credentials.password)
+        .then(() => {
+          observer.next('ok');
+          observer.complete();
+        })
+        .catch(err => {
+          observer.error(err);
+          observer.complete();
+        });
+    });
   }
 
-  signOut() {
-    this._afAuth.auth
-      .signOut()
-      .then(() => this._store.dispatch(new LogoutRequestAction()));
+  signOut(): Observable<any> {
+    const { auth } = this._afAuth;
+    return new Observable<any>((observer: Observer<any>) => {
+      auth
+        .signOut()
+        .then(() => {
+          observer.next('ok');
+          observer.complete();
+        })
+        .catch(err => {
+          observer.error(err);
+          observer.complete();
+        });
+    });
   }
 }

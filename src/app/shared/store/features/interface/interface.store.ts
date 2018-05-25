@@ -13,15 +13,15 @@ import { selectsFactory } from './interface.selects';
 import { menuContents } from '../../../../menu.contents';
 
 export interface InterfaceState {
-  headerDisplayed: boolean;
-  menuDisplayed: boolean;
+  //headerDisplayed: boolean;
+  //menuDisplayed: boolean;
   menuCompact: boolean;
   menuContents: any;
 }
 
 const initialState: InterfaceState = {
-  headerDisplayed: true, // see custom selector
-  menuDisplayed: true, // see custom selector
+  //headerDisplayed: true, // see custom selector
+  //menuDisplayed: true, // see custom selector
   menuCompact: false,
   menuContents
 };

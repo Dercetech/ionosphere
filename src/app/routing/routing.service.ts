@@ -6,12 +6,8 @@ import { of } from 'rxjs';
 import { StoreService } from '../shared/services/store.service';
 import { NavController } from 'ionic-angular';
 
-import { routes } from './routes';
-import {
-  SetRootPageAction,
-  PushPageAction,
-  PopPageAction
-} from './store/routing.actions';
+import { routes, Route } from './routes';
+import { SetRootPageAction, PushPageAction, PopPageAction } from './store/routing.actions';
 
 @Injectable()
 export class RoutingService {
@@ -28,13 +24,11 @@ export class RoutingService {
     // Set root as the app becomes ready. Either login page OR last visited (defaults to dashboard)
     this._storeService.select.app.ready$
       .pipe(filter((isReady: boolean) => isReady))
-      .switchMap(() =>
-        this._storeService.select.authentication.authenticated$.pipe(take(1))
-      )
+      .switchMap(() => this._storeService.select.authentication.authenticated$.pipe(take(1)))
       .subscribe(isAuthenticated => {
-        const route = isAuthenticated ? routes.welcome : routes.login;
+        const route: Route = isAuthenticated ? routes.dashboard : routes.login;
         const params = {};
-        this._storeService.dispatch(new SetRootPageAction({ route, params }));
+        this._storeService.dispatch(new SetRootPageAction({ route: route.page, params }));
       });
   }
 

@@ -84,6 +84,7 @@
          class="menu-footer"
          fxFlex="0 0 auto">
       <ion-item *ngFor="let category of (contents$ | async)?.footer"
+                (click)="onMenuElement(category)"
                 class="menu-item category">
         <ion-icon [ngClass]="category.fa"
                   item-start></ion-icon>

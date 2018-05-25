@@ -21,10 +21,12 @@ _handlers[actions.UserCreationRequestAction.TYPE] = {
   effect: (action$, context: UsersHandlerContext) =>
     action$.pipe(
       switchMap(({ payload }: actions.UserCreationRequestAction) =>
-        context.usersService.createUser(payload).pipe(
-          map((token: string) => new actions.LoginSuccessAction({ token }))
-          // catchError(err => of(new userActions.loadUsersFailed(err)) )
-        )
+        context.usersService
+          .createUserWithEmailAndPassword(payload)
+          .pipe(
+            map(() => new actions.UserCreationSuccessAction()),
+            catchError(error => of(new actions.UserCreationErrorAction({ error })))
+          )
       )
     )
 };

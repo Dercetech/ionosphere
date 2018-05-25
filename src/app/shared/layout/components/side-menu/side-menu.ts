@@ -6,6 +6,8 @@ import { takeUntil } from 'rxjs/operators';
 import { StoreService } from '../../../services/store.service';
 
 import { ToggleMenuCompactAction } from '../../../store/features/interface/interface.actions';
+import { SetRootPageAction } from '../../../../routing/store/routing.actions';
+import { LogoutRequestAction } from '../../../store/features/authentication/authentication.actions';
 
 @Component({
   selector: 'side-menu',
@@ -23,14 +25,12 @@ export class SideMenuComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject<any>();
 
   constructor(private _store: StoreService) {
-    this.contents$ = this._store.select.interface.menuContents$;
+    this.contents$ = <Observable<any>>this._store.select.interface.menuContents$;
     this.compact$ = this._store.select.interface.menuCompact$;
   }
 
   ngOnInit() {
-    this.compact$
-      .pipe(takeUntil(this._destroy$))
-      .subscribe(isCompact => (this.compactClassActive = isCompact));
+    this.compact$.pipe(takeUntil(this._destroy$)).subscribe(isCompact => (this.compactClassActive = isCompact));
   }
 
   ngOnDestroy() {
@@ -44,30 +44,34 @@ export class SideMenuComponent implements OnInit, OnDestroy {
 
   toggleSectionExpanded(section: any): void {
     const sectionId = section.id;
-    this.sectionsStates[sectionId] = this.sectionsStates[sectionId]
-      ? false
-      : true;
+    this.sectionsStates[sectionId] = this.sectionsStates[sectionId] ? false : true;
   }
 
   isSectionExpanded(section: any): boolean {
     const sectionId = section.id;
-    return this.sectionsStates[sectionId]
-      ? this.sectionsStates[sectionId]
-      : false;
+    return this.sectionsStates[sectionId] ? this.sectionsStates[sectionId] : false;
   }
 
   setExpandedCategory(section: any, category: any): void {
     const sectionId = section.id;
     const categoryId = category.id;
-    this.expandedCategory =
-      this.expandedCategory === categoryId + sectionId
-        ? null
-        : categoryId + sectionId;
+    this.expandedCategory = this.expandedCategory === categoryId + sectionId ? null : categoryId + sectionId;
   }
 
   isCategoryExpanded(section: any, category: any): boolean {
     const sectionId = section.id;
     const categoryId = category.id;
     return this.expandedCategory === categoryId + sectionId;
+  }
+
+  onMenuElement({ action, destination }: any) {
+    if (action) {
+      this._store.dispatch(new LogoutRequestAction());
+    }
+    if (destination) {
+      if (typeof destination === 'string') {
+        this._store.dispatch(new SetRootPageAction({ route: destination }));
+      }
+    }
   }
 }

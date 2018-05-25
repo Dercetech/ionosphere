@@ -8,7 +8,7 @@ import { AuthenticationService } from '../../../services/authentication.service'
 import { authenticationKey } from '../../store.keys';
 import { GenericStore } from '../../classes/generic-store';
 
-import { LoginRequestAction } from './authentication.actions';
+import { LoginRequestAction, LogoutRequestAction } from './authentication.actions';
 import { handlers, AuthenticationHandlerContext } from './authentication.handlers';
 import { selectsFactory } from './authentication.selects';
 
@@ -41,4 +41,6 @@ export class AuthenticationStore extends GenericStore<AuthenticationHandlerConte
   }
 
   @Effect() loginRequest = this.processEffect(handlers, LoginRequestAction.TYPE);
+
+  @Effect() logoutRequest = this.processEffect(handlers, LogoutRequestAction.TYPE);
 }

@@ -11,14 +11,10 @@ import { ENV } from '@app/env';
   imports: [
     AngularFireModule.initializeApp(ENV.firebase, 'Ionosphere'),
     AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     AngularFireStorageModule
   ],
-  exports: [
-    AngularFireModule,
-    AngularFirestoreModule,
-    AngularFireAuthModule,
-    AngularFireStorageModule
-  ]
+  exports: [AngularFireModule, AngularFirestoreModule, AngularFireAuthModule, AngularFireStorageModule]
 })
 export class FirebaseModule {}

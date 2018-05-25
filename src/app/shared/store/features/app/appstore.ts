@@ -11,12 +11,12 @@ import { handlers, AppHandlerContext } from './app.handlers';
 import { selectsFactory } from './app.selects';
 
 export interface AppState {
-  ready: boolean;
+  //ready: boolean;
   loginCheckComplete: boolean;
 }
 
 const initialState: AppState = {
-  ready: false, // see custom selector
+  //ready: false, // see custom selector
   loginCheckComplete: false
 };
 

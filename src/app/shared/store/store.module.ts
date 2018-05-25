@@ -11,8 +11,10 @@ import { authenticationKey, interfaceKey, appKey, usersKey } from './store.keys'
 import { AuthenticationStore } from './features/authentication/authentication.store';
 import { InterfaceStore } from './features/interface/interface.store';
 import { AppStore } from './features/app/appstore';
+import { UsersService } from '../services/users.service';
+import { UsersStore } from './features/users/users.store';
 
-const stores: any[] = [AuthenticationStore, AppStore, InterfaceStore];
+const stores: any[] = [AuthenticationStore, AppStore, InterfaceStore, UsersStore];
 const reducers: ActionReducerMap<any> = {};
 const metaReducers = ENV.production ? {} : {};
 
@@ -22,7 +24,7 @@ const metaReducers = ENV.production ? {} : {};
     StoreModule.forFeature(appKey, AppStore.reducer),
     StoreModule.forFeature(authenticationKey, AuthenticationStore.reducer),
     StoreModule.forFeature(interfaceKey, InterfaceStore.reducer),
-    StoreModule.forFeature(usersKey, UsersS.reducer),
+    StoreModule.forFeature(usersKey, UsersStore.reducer),
     ENV.production ? [] : StoreDevtoolsModule.instrument({ maxAge: 15 }),
     EffectsModule.forRoot([...stores])
   ],

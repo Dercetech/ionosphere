@@ -1,10 +1,11 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, LoadingController, NavController } from 'ionic-angular';
 
 import { CustomValidators } from '../../../../shared/tools/custom-validators';
 import { StoreService } from '../../../../shared/services/store.service';
 import { LoginRequestAction } from '../../../../shared/store/features/authentication/authentication.actions';
+import { UserCreationRequestAction } from '../../../../shared/store/features/users/users.actions';
 
 @Component({
   selector: 'login-widget',
@@ -26,16 +27,16 @@ export class LoginWidgetComponent {
     private _storeService: StoreService
   ) {
     this.loginForm = this._formBuilder.group({
-      email: ['', [Validators.required, this._customValidators.getEmailValidator()]],
-      password: ['', Validators.required]
+      email: ['jem@dercetech.com', [Validators.required, this._customValidators.getEmailValidator()]],
+      password: ['password', Validators.required]
     });
 
     this.registerForm = this._formBuilder.group({
-      displayName: [''],
-      email: ['', [Validators.required, this._customValidators.getEmailValidator()]],
-      emailConfirm: ['', [Validators.required, this._customValidators.matchOtherValidator('email')]],
-      password: ['', Validators.required],
-      passwordConfirm: ['', [Validators.required, this._customValidators.matchOtherValidator('password')]]
+      displayName: ['Jem'],
+      email: ['jem@dercetech.com', [Validators.required, this._customValidators.getEmailValidator()]],
+      emailConfirm: ['jem@dercetech.com', [Validators.required, this._customValidators.matchOtherValidator('email')]],
+      password: ['password', Validators.required],
+      passwordConfirm: ['password', [Validators.required, this._customValidators.matchOtherValidator('password')]]
     });
 
     this.passwordRecoveryForm = this._formBuilder.group({
@@ -57,6 +58,7 @@ export class LoginWidgetComponent {
     const displayName = this.registerForm.value.displayName;
     const username = this.registerForm.value.email;
     const password = this.registerForm.value.password;
+    this._storeService.dispatch(new UserCreationRequestAction({ displayName, username, password }));
     /*
     const watchForAuthentication = this.authService.authenticated$
       .filter(isAuthenticated => isAuthenticated === true)
@@ -193,6 +195,4 @@ export class LoginWidgetComponent {
     );
     */
   }
-
-  private register;
 }
