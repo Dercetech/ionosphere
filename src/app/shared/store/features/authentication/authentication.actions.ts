@@ -16,6 +16,9 @@ export class LoginSuccessAction extends TypedAction {
 
 export class LoginFailureAction extends TypedAction {
   static TYPE = '[Auth] Login failure';
+  constructor(public payload: { message: string }) {
+    super();
+  }
 }
 
 export class LogoutRequestAction extends TypedAction {

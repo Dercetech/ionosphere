@@ -3,6 +3,7 @@ import { IonicModule } from 'ionic-angular';
 
 import { SharedModule } from '../shared.module';
 
+import { LayoutService } from './services/layout.service';
 import { SideMenuComponent } from './components/side-menu/side-menu';
 import { HeaderShadowAfterScroll } from './directives/header-shadow-after-scroll.directive';
 
@@ -15,7 +16,7 @@ export class LayoutModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: LayoutModule,
-      providers: []
+      providers: [LayoutService]
     };
   }
 }

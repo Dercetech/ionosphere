@@ -5,6 +5,7 @@ import { AlertController, LoadingController, NavController } from 'ionic-angular
 import { Observable, Subject, combineLatest } from 'rxjs';
 
 import { CustomValidators } from '../../../../shared/tools/custom-validators';
+import { LayoutService } from '../../../../shared/layout/services/layout.service';
 import { StoreService } from '../../../../shared/services/store.service';
 import { LoginRequestAction } from '../../../../shared/store/features/authentication/authentication.actions';
 import { UserCreationRequestAction } from '../../../../shared/store/features/users/users.actions';
@@ -27,7 +28,8 @@ export class LoginWidgetComponent {
     private _alertCtrl: AlertController,
     private _formBuilder: FormBuilder,
     private _customValidators: CustomValidators,
-    private _storeService: StoreService
+    private _storeService: StoreService,
+    private _layoutService: LayoutService
   ) {
     this.loginForm = this._formBuilder.group({
       email: ['jem@dercetech.com', [Validators.required, this._customValidators.getEmailValidator()]],
@@ -165,34 +167,11 @@ export class LoginWidgetComponent {
   }
 
   private signIn(credentials: { username: string; password: string }) {
-    const { authenticating$, authenticated$, authenticationError$ } = this._storeService.select.authentication;
-    const done$: Observable<void> = new Subject();
-
-    let loading = this._alertCtrl.create({
-      title: 'authenticating...',
-      message: 'signing-in...',
-      enableBackdropDismiss: false
-    });
-
-    loading.present();
     this._storeService.dispatch(new LoginRequestAction(credentials));
-
-    authenticating$
-      .pipe(
-        filter(authenticating => !authenticating),
-        switchMap(() => combineLatest(authenticated$.pipe(take(1)), authenticationError$.pipe(take(1))))
-      )
-      .pipe(take(1))
-      .subscribe(([authenticated, error]) => {
-        loading.dismiss();
-        if (!authenticated) {
-          const alert = this._alertCtrl.create({
-            title: 'authentication error',
-            message: error,
-            buttons: ['ok']
-          });
-          alert.present();
-        }
-      });
+    const { authenticating$, authenticated$, authenticationError$ } = this._storeService.select.authentication;
+    this._layoutService.createModal(
+      { title: 'authenticating', message: 'please wait...', error: { title: 'authentication error ', btnOk: 'ok' } },
+      { waitToBeFalse$: authenticating$, successIfTrue$: authenticated$, error$: authenticationError$ }
+    );
   }
 }

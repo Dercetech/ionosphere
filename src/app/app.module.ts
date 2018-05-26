@@ -1,9 +1,4 @@
-import {
-  ErrorHandler,
-  NgModule,
-  enableProdMode,
-  APP_INITIALIZER
-} from '@angular/core';
+import { ErrorHandler, NgModule, enableProdMode, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -50,7 +45,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SharedModule,
     ServicesModule.forRoot(),
     I18nModule.forRoot(),
-    LayoutModule,
+    LayoutModule.forRoot(),
     RoutingModule.forRoot()
   ],
   bootstrap: [IonicApp],

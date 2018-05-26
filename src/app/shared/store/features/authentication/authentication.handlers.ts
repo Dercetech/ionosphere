@@ -28,8 +28,9 @@ _handlers[actions.LoginRequestAction.TYPE] = {
       switchMap(({ payload }: actions.LoginRequestAction) =>
         context.authService.authenticate(payload).pipe(
           map(data => new SetRootPageAction({ route: routes.dashboard.page })),
-          catchError((err: Error) => {
-            return of(new actions.LoginFailureAction());
+          catchError((error: Error) => {
+            const { message } = error;
+            return of(new actions.LoginFailureAction({ message }));
           })
         )
       )
@@ -38,7 +39,7 @@ _handlers[actions.LoginRequestAction.TYPE] = {
 
 // Login succcess
 _handlers[actions.LoginSuccessAction.TYPE] = {
-  action: (state, action: actions.LoginSuccessAction) => {
+  action: (state, { payload }: actions.LoginSuccessAction) => {
     const authenticating = false;
     const authenticated = true;
     return { ...state, authenticated, authenticating };
@@ -47,10 +48,10 @@ _handlers[actions.LoginSuccessAction.TYPE] = {
 
 // Login failure
 _handlers[actions.LoginFailureAction.TYPE] = {
-  action: (state, action: actions.LoginFailureAction) => {
+  action: (state, { payload }: actions.LoginFailureAction) => {
     const authenticating = false;
     const authenticated = false;
-    const authenticationError = 'GFY';
+    const authenticationError = payload.message;
     return { ...state, authenticated, authenticating, authenticationError };
   }
 };
