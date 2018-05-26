@@ -1,4 +1,5 @@
 import { TypedAction } from '../../classes/typed-action';
+import { UserCreationError } from '../../../services/users.service';
 
 export class UserCreationRequestAction extends TypedAction {
   static TYPE = '[Users] User creation request with username & pwd';
@@ -13,7 +14,7 @@ export class UserCreationSuccessAction extends TypedAction {
 
 export class UserCreationErrorAction extends TypedAction {
   static TYPE = '[Users] User creation error';
-  constructor(public payload: { error: any }) {
+  constructor(public payload: UserCreationError) {
     super();
   }
 }

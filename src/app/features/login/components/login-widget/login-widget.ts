@@ -5,9 +5,12 @@ import { AlertController, LoadingController, NavController } from 'ionic-angular
 import { Observable, Subject, combineLatest } from 'rxjs';
 
 import { CustomValidators } from '../../../../shared/tools/custom-validators';
-import { LayoutService } from '../../../../shared/layout/services/layout.service';
+import { LayoutService } from '../../../../shared/layout/layout.service';
 import { StoreService } from '../../../../shared/services/store.service';
-import { LoginRequestAction } from '../../../../shared/store/features/authentication/authentication.actions';
+import {
+  LoginRequestAction,
+  PasswordResetRequestAction
+} from '../../../../shared/store/features/authentication/authentication.actions';
 import { UserCreationRequestAction } from '../../../../shared/store/features/users/users.actions';
 import { takeUntil, take, filter, switchMap } from 'rxjs/operators';
 
@@ -64,74 +67,23 @@ export class LoginWidgetComponent {
     const username = this.registerForm.value.email;
     const password = this.registerForm.value.password;
     this._storeService.dispatch(new UserCreationRequestAction({ displayName, username, password }));
-    /*
-    const watchForAuthentication = this.authService.authenticated$
-      .filter(isAuthenticated => isAuthenticated === true)
-      .first()
-      .subscribe(isAuthenticated => {
-        if (isAuthenticated) {
-          this._userService.updateUserData({
-            displayName: this.registerForm.value.displayName,
-            email: this.registerForm.value.email
-          });
-        }
-      });
-      */
-    // TODO move to UserService for a cleaner architecture
-    /*
-    this.authService
-      .signUp(this.registerForm.value.email, this.registerForm.value.password)
-      .then(
-        () => {},
-        err => {
-          let isWeak = false;
-          let emailExists = false;
-          let specificErrorsCount = 0;
 
-          function checkError(err) {
-            if (err.message && err.message.indexOf('WEAK_PASSWORD') !== -1) {
-              isWeak = true;
-              specificErrorsCount++;
-            }
-            if (err.code && err.code.indexOf('auth/weak-password') !== -1) {
-              isWeak = true;
-              specificErrorsCount++;
-            }
-            if (err.message && err.message.indexOf('EMAIL_EXISTS') !== -1) {
-              emailExists = true;
-              specificErrorsCount++;
-            }
-            if (
-              err.code &&
-              err.code.indexOf('auth/email-already-in-use') !== -1
-            ) {
-              emailExists = true;
-              specificErrorsCount++;
-            }
-          }
+    const { authenticated$ } = this._storeService.select.authentication;
+    const { registering$, registeringErrorMessage$ } = this._storeService.select.users;
 
-          // Single error
-          if (err && err.code) checkError(err);
+    authenticated$.subscribe(is => console.log('<<<< ' + is));
 
-          // Multiple errors
-          if (err && err.errors) {
-            err.errors.forEach(err => checkError(err));
-          }
-
-          if (isWeak)
-            this.registerForm.controls.password.setErrors({ weak: true });
-          if (emailExists)
-            this.registerForm.controls.password.setErrors({ exists: true });
-
-          watchForAuthentication.unsubscribe();
-        }
-      );
-      */
+    this._layoutService.createModal(
+      { title: 'registration', message: 'please wait...', error: { title: 'registration error ', btnOk: 'ok' } },
+      { waitToBeFalse$: registering$, successIfTrue$: authenticated$, error$: registeringErrorMessage$ }
+    );
   }
 
   onPasswordLost(): void {
     if (this.loginForm.value.email) this.passwordRecoveryForm.controls.email.setValue(this.loginForm.value.email);
     this.mode = 'recovery';
+    const username = this.passwordRecoveryForm.value.email;
+    this._storeService.dispatch(new PasswordResetRequestAction({ username }));
   }
 
   onNewPasswordRequest(): void {

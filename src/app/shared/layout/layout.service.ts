@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LoadingController, AlertController } from 'ionic-angular';
 
-import { Observable, combineLatest } from 'rxjs';
-import { switchMap, take, filter } from 'rxjs/operators';
+import { Observable, combineLatest, Subject } from 'rxjs';
+import { switchMap, take, filter, tap, takeUntil } from 'rxjs/operators';
 
 export interface AlertOptions {
   title: string;
@@ -29,11 +29,27 @@ export class LayoutService {
       enableBackdropDismiss: false
     });
 
+    const success$: Subject<void> = new Subject();
+
+    function finalize() {
+      success$.next();
+      success$.complete();
+      alert.dismiss();
+    }
+
     events.waitToBeFalse$
-      .pipe(filter(pending => !pending), switchMap(() => combineLatest(events.error$, events.successIfTrue$)), take(1))
-      .subscribe(([error, authenticated]) => {
-        alert.dismiss();
-        if (!authenticated) {
+      .pipe(
+        filter(pending => !pending),
+        switchMap(() => combineLatest(events.error$, events.successIfTrue$)),
+        takeUntil(success$)
+      )
+      .subscribe(([error, success]) => {
+        debugger;
+        if (success) {
+          finalize();
+        }
+        if (!success && error) {
+          finalize();
           const errorAlert = this._alertCtrl.create({
             title: options.error.title,
             message: error,

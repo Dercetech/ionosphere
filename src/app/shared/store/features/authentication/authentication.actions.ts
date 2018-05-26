@@ -2,7 +2,7 @@ import { TypedAction } from '../../classes/typed-action';
 
 export class LoginRequestAction extends TypedAction {
   static TYPE = '[Auth] Login requested';
-  constructor(public payload?: { username: string; password: string }) {
+  constructor(public payload: { username: string; password: string }) {
     super();
   }
 }
@@ -19,6 +19,21 @@ export class LoginFailureAction extends TypedAction {
   constructor(public payload: { message: string }) {
     super();
   }
+}
+
+export class PasswordResetRequestAction extends TypedAction {
+  static TYPE = '[Auth] Password reset requested';
+  constructor(public payload: { username: string }) {
+    super();
+  }
+}
+
+export class PasswordResetSuccessAction extends TypedAction {
+  static TYPE = '[Auth] Password reset success';
+}
+
+export class PasswordResetFailureAction extends TypedAction {
+  static TYPE = '[Auth] Password reset failure';
 }
 
 export class LogoutRequestAction extends TypedAction {

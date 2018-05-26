@@ -1,4 +1,4 @@
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { GenericContext } from '../../classes/generic-store';
 
@@ -53,6 +53,46 @@ _handlers[actions.LoginFailureAction.TYPE] = {
     const authenticated = false;
     const authenticationError = payload.message;
     return { ...state, authenticated, authenticating, authenticationError };
+  }
+};
+
+// Password reset request
+_handlers[actions.PasswordResetRequestAction.TYPE] = {
+  action: (state, action: actions.LoginRequestAction) => {
+    const resettingPassword = true;
+    const resetPasswordError = null;
+    return { ...state, resettingPassword, resetPasswordError };
+  },
+
+  effect: (action$, context: AuthenticationHandlerContext) =>
+    action$.pipe(
+      switchMap(({ payload }: actions.PasswordResetRequestAction) =>
+        context.authService.askForNewPassword(payload.username).pipe(
+          map(data => new actions.PasswordResetSuccessAction()),
+          catchError((error: Error) => {
+            const { message } = error;
+            return of(new actions.PasswordResetFailureAction());
+          })
+        )
+      )
+    )
+};
+
+// Password reset succcess
+_handlers[actions.PasswordResetSuccessAction.TYPE] = {
+  action: (state, { payload }: actions.LoginSuccessAction) => {
+    const resettingPassword = false;
+    const resetPasswordError = null;
+    return { ...state, resettingPassword, resetPasswordError };
+  }
+};
+
+// Password reset failure
+_handlers[actions.PasswordResetFailureAction.TYPE] = {
+  action: (state, { payload }: actions.LoginFailureAction) => {
+    const resettingPassword = false;
+    const resetPasswordError = 'GFY';
+    return { ...state, resettingPassword, resetPasswordError };
   }
 };
 

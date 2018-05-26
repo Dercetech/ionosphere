@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, of, Observer, throwError } from 'rxjs';
+import { Observable, of, Observer, throwError, from } from 'rxjs';
 import { delay, catchError } from 'rxjs/operators';
 
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -44,6 +44,12 @@ export class AuthenticationService {
     });
 
     return obs;
+  }
+
+  askForNewPassword(email: string): Observable<any> {
+    const { auth } = this._afAuth;
+    debugger;
+    return from(auth.sendPasswordResetEmail(email));
   }
 
   signOut(): Observable<any> {
