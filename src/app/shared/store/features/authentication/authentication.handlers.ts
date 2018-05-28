@@ -1,6 +1,6 @@
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import { GenericContext } from '../../classes/generic-store';
+import { GenericContext, fire } from '../../classes/generic-store';
 
 import * as actions from './authentication.actions';
 import { AuthenticationService } from '../../../services/authentication.service';
@@ -18,7 +18,7 @@ const _handlers = {};
 // Login request
 _handlers[actions.LoginRequestAction.TYPE] = {
   action: (state, action: actions.LoginRequestAction) => {
-    const login: ActionState<string> = { processing: true, error: null, data: null };
+    const login: ActionState<string> = fire.request();
     return { ...state, authenticated: false, login };
   },
 
@@ -38,7 +38,7 @@ _handlers[actions.LoginRequestAction.TYPE] = {
 // Login succcess
 _handlers[actions.LoginSuccessAction.TYPE] = {
   action: (state, { payload }: actions.LoginSuccessAction) => {
-    const login = { ...state.login, processing: false };
+    const login = fire.succeed(state.login);
     return { ...state, authenticated: true, login };
   }
 };
@@ -46,9 +46,7 @@ _handlers[actions.LoginSuccessAction.TYPE] = {
 // Login failure
 _handlers[actions.LoginFailureAction.TYPE] = {
   action: (state, { payload }: actions.LoginFailureAction) => {
-    console.log('processing action for login failure');
-    const error = payload;
-    const login = { ...state.login, processing: false, error };
+    const login = fire.fail(state.login, payload);
     return { ...state, login };
   }
 };
@@ -56,7 +54,7 @@ _handlers[actions.LoginFailureAction.TYPE] = {
 // Password reset request
 _handlers[actions.PasswordResetRequestAction.TYPE] = {
   action: (state, action: actions.PasswordResetRequestAction) => {
-    const passwordReset: ActionState<string> = { ...state.passwordReset, processing: true, data: null, error: null };
+    const passwordReset: ActionState<string> = fire.request();
     return { ...state, passwordReset };
   },
 
@@ -76,7 +74,7 @@ _handlers[actions.PasswordResetRequestAction.TYPE] = {
 // Password reset succcess
 _handlers[actions.PasswordResetSuccessAction.TYPE] = {
   action: (state, { payload }: actions.LoginSuccessAction) => {
-    const passwordReset = { ...state.passwordReset, processing: false };
+    const passwordReset = fire.succeed(state.passwordReset);
     return { ...state, passwordReset };
   }
 };
@@ -84,8 +82,7 @@ _handlers[actions.PasswordResetSuccessAction.TYPE] = {
 // Password reset failure
 _handlers[actions.PasswordResetFailureAction.TYPE] = {
   action: (state, { payload }: actions.LoginFailureAction) => {
-    const error = payload;
-    const passwordReset = { ...state.passwordReset, processing: false, error };
+    const passwordReset = fire.fail(state.passwordReset, payload);
     return { ...state, passwordReset };
   }
 };

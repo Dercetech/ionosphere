@@ -1,7 +1,7 @@
 import { of, pipe } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import { GenericContext } from '../../classes/generic-store';
+import { GenericContext, fire } from '../../classes/generic-store';
 import { UsersService, UserCreationError } from '../../../services/users.service';
 import { ActionState } from '../../interfaces/action-state';
 
@@ -16,7 +16,7 @@ const _handlers = {};
 // User creation request
 _handlers[actions.UserCreationRequestAction.TYPE] = {
   action: (state, action: actions.UserCreationRequestAction) => {
-    const registration: ActionState<string> = { processing: true, error: null, data: null };
+    const registration: ActionState<string> = fire.request();
     return { ...state, registration };
   },
 
@@ -36,7 +36,7 @@ _handlers[actions.UserCreationRequestAction.TYPE] = {
 // User creation success
 _handlers[actions.UserCreationSuccessAction.TYPE] = {
   action: (state, action: actions.UserCreationSuccessAction) => {
-    const registration = { ...state.registration, processing: false };
+    const registration = fire.succeed(state.registration);
     return { ...state, registration };
   }
 };
@@ -44,8 +44,7 @@ _handlers[actions.UserCreationSuccessAction.TYPE] = {
 // User creation failure
 _handlers[actions.UserCreationErrorAction.TYPE] = {
   action: (state, { payload }: actions.UserCreationErrorAction) => {
-    const error = payload;
-    const registration = { ...state.registration, processing: false, error };
+    const registration = fire.fail(state.registration, payload);
     return { ...state, registration };
   }
 };

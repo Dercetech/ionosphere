@@ -1,6 +1,7 @@
 import { TypedAction } from './typed-action';
 import { StoreService } from '../../services/store.service';
 import { Observable } from 'rxjs';
+import { ActionState } from '../interfaces/action-state';
 
 export interface SelectRegistrationContext {
   storeService: StoreService;
@@ -10,6 +11,12 @@ export interface SelectRegistrationContext {
     [key: string]: Observable<any>;
   };
 }
+
+export const fire = {
+  request: () => ({ processing: true, error: null, data: null }),
+  succeed: (state, data?) => ({ ...state, error: null, data, processing: false }),
+  fail: (state, error, data?) => ({ ...state, error, data, processing: false })
+};
 
 export interface GenericContext {
   actions$: any;
