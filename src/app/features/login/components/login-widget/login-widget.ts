@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController, LoadingController, NavController } from 'ionic-angular';
+import { AlertController, LoadingController, NavController, ToastController } from 'ionic-angular';
 
 import { Observable, Subject, combineLatest } from 'rxjs';
 
@@ -29,6 +29,7 @@ export class LoginWidgetComponent {
   constructor(
     private _loadingCtrl: LoadingController,
     private _alertCtrl: AlertController,
+    private _toastCtrl: ToastController,
     private _formBuilder: FormBuilder,
     private _customValidators: CustomValidators,
     private _storeService: StoreService,
@@ -82,44 +83,35 @@ export class LoginWidgetComponent {
   onPasswordLost(): void {
     if (this.loginForm.value.email) this.passwordRecoveryForm.controls.email.setValue(this.loginForm.value.email);
     this.mode = 'recovery';
-    this.onNewPasswordRequest();
   }
 
   onNewPasswordRequest(): void {
+    const { select } = this._storeService;
     const username = this.passwordRecoveryForm.value.email;
-    //this._storeService.dispatch(new PasswordResetRequestAction({ username }));
-
     const loading = this._loadingCtrl.create({ content: 'requesting reset link...' });
+
+    // Loading...
     loading.present();
-    /*
-    this.authService
-      .askForNewPassword(this.passwordRecoveryForm.value.email)
-      .then(
-        () => {
-          const alert = this.alertCtrl.create({
-            title: this.i18n.getTranslationInCurrentLanguage(
-              'pages.signin.new-pwd-title'
-            ),
-            message: this.i18n.getTranslationInCurrentLanguage(
-              'pages.signin.new-pwd-requested'
-            ),
-            buttons: ['ok']
-          });
-          alert.present();
-          this.mode = 'login';
-        },
-        err => {
-          const alert = this.alertCtrl.create({
-            title: this.i18n.getTranslationInCurrentLanguage(
-              'pages.signin.new-pwd-title'
-            ),
-            message: err,
-            buttons: ['ok']
-          });
-          alert.present();
-        }
-      );
-      */
+    this._storeService.dispatch(new PasswordResetRequestAction({ username }));
+
+    // Success
+    select.authentication.passwordReset.processing$.pipe(filter(processing => !processing), take(1)).subscribe(done => {
+      loading.dismiss();
+      this._toastCtrl
+        .create({
+          position: 'top',
+          showCloseButton: true,
+          closeButtonText: 'ok',
+          message: 'A reset link has been sent to this email address.'
+        })
+        .present();
+      this.mode = 'login';
+    });
+
+    // Error
+    select.authentication.passwordReset.completed$
+      .pipe(filter(completed => !!completed), take(1))
+      .subscribe(result => console.log('result ' + result));
   }
 
   private signIn(credentials: { username: string; password: string }) {

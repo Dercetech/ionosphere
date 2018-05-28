@@ -28,7 +28,7 @@ export class NgrxService implements StoreAntiCorruptionLayer {
     // 1. Register generic properties
     const properties = Object.keys(initialState);
     properties.forEach(propertyKey => {
-      if (initialState[propertyKey] && initialState[propertyKey] === 'object') {
+      if (initialState[propertyKey] && typeof initialState[propertyKey] === 'object') {
         featureSelects[propertyKey] = featureSelects[propertyKey] ? featureSelects[propertyKey] : {};
         const complexProperty = initialState[propertyKey];
         Object.keys(complexProperty).forEach(
@@ -71,7 +71,10 @@ export class NgrxService implements StoreAntiCorruptionLayer {
       // Create & cache memoized selector for full path
       const propertyName = segments[1];
       const subPropertyName = segments[2];
-      const propertySelector = createSelector(featureSelector, state => state[propertyName]);
+      const propertySelector = createSelector(
+        featureSelector,
+        state => (subPropertyName ? state[propertyName][subPropertyName] : state[propertyName])
+      );
       NgrxService._memoizedCache[absolutePath] = propertySelector;
     }
 

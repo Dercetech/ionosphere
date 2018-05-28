@@ -44,7 +44,6 @@ export class LayoutService {
         takeUntil(success$)
       )
       .subscribe(([error, success]) => {
-        debugger;
         if (success) {
           finalize();
         }

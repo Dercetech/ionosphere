@@ -59,7 +59,7 @@ _handlers[actions.LoginFailureAction.TYPE] = {
 // Password reset request
 _handlers[actions.PasswordResetRequestAction.TYPE] = {
   action: (state, action: actions.LoginRequestAction) => {
-    const passwordReset = { ...state.passwordReset };
+    const passwordReset = { ...state.passwordReset, processing: true, completed: false };
     return { ...state, passwordReset };
   },
 
@@ -70,7 +70,7 @@ _handlers[actions.PasswordResetRequestAction.TYPE] = {
           map(data => new actions.PasswordResetSuccessAction()),
           catchError((error: Error) => {
             const { message } = error;
-            return of(new actions.PasswordResetFailureAction());
+            return of(new actions.PasswordResetFailureAction({ message }));
           })
         )
       )
@@ -80,7 +80,7 @@ _handlers[actions.PasswordResetRequestAction.TYPE] = {
 // Password reset succcess
 _handlers[actions.PasswordResetSuccessAction.TYPE] = {
   action: (state, { payload }: actions.LoginSuccessAction) => {
-    const passwordReset = { ...state.passwordReset };
+    const passwordReset = { ...state.passwordReset, processing: false, completed: true };
     return { ...state, passwordReset };
   }
 };
@@ -88,7 +88,7 @@ _handlers[actions.PasswordResetSuccessAction.TYPE] = {
 // Password reset failure
 _handlers[actions.PasswordResetFailureAction.TYPE] = {
   action: (state, { payload }: actions.LoginFailureAction) => {
-    const passwordReset = { ...state.passwordReset };
+    const passwordReset = { ...state.passwordReset, processing: false, completed: payload.message };
     return { ...state, passwordReset };
   }
 };

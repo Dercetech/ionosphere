@@ -48,7 +48,6 @@ export class AuthenticationService {
 
   askForNewPassword(email: string): Observable<any> {
     const { auth } = this._afAuth;
-    debugger;
     return from(auth.sendPasswordResetEmail(email));
   }
 
