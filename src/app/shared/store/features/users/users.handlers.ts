@@ -3,6 +3,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { GenericContext } from '../../classes/generic-store';
 import { UsersService, UserCreationError } from '../../../services/users.service';
+import { ActionState } from '../../interfaces/action-state';
 
 import * as actions from './users.actions';
 
@@ -15,13 +16,8 @@ const _handlers = {};
 // User creation request
 _handlers[actions.UserCreationRequestAction.TYPE] = {
   action: (state, action: actions.UserCreationRequestAction) => {
-    return {
-      ...state,
-      registering: true,
-      registeringErrorMessage: null,
-      registeringErrorPwdTooWeak: false,
-      registeringErrorEmailTaken: false
-    };
+    const registration: ActionState<string> = { processing: true, error: null, data: null };
+    return { ...state, registration };
   },
 
   effect: (action$, context: UsersHandlerContext) =>
@@ -40,23 +36,17 @@ _handlers[actions.UserCreationRequestAction.TYPE] = {
 // User creation success
 _handlers[actions.UserCreationSuccessAction.TYPE] = {
   action: (state, action: actions.UserCreationSuccessAction) => {
-    return {
-      ...state,
-      registering: false
-    };
+    const registration = { ...state.registration, processing: false };
+    return { ...state, registration };
   }
 };
 
 // User creation failure
 _handlers[actions.UserCreationErrorAction.TYPE] = {
   action: (state, { payload }: actions.UserCreationErrorAction) => {
-    return {
-      ...state,
-      registering: false,
-      registeringErrorMessage: payload.message,
-      registeringErrorPwdTooWeak: payload.errors.isWeak,
-      registeringErrorEmailTaken: payload.errors.emailExists
-    };
+    const error = payload;
+    const registration = { ...state.registration, processing: false, error };
+    return { ...state, registration };
   }
 };
 

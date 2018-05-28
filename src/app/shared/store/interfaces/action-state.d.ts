@@ -1,5 +1,5 @@
 export interface ActionState<T> {
-  completed: boolean | Error;
+  error: Error;
   processing: boolean;
-  token: T;
+  data: T;
 }

@@ -17,7 +17,7 @@ export class LoginSuccessAction extends TypedAction {
 
 export class LoginFailureAction extends TypedAction {
   static TYPE = '[Auth] Login failure';
-  constructor(public payload: { message: string }) {
+  constructor(public payload: Error) {
     super();
   }
 }
@@ -36,7 +36,7 @@ export class PasswordResetSuccessAction extends TypedAction {
 
 export class PasswordResetFailureAction extends TypedAction {
   static TYPE = '[Auth] Password reset failure';
-  constructor(public payload: { message: string }) {
+  constructor(public payload: Error) {
     super();
   }
 }

@@ -7,6 +7,7 @@ import { AuthenticationService } from '../../../services/authentication.service'
 import { of } from 'rxjs';
 import { SetRootPageAction } from '../../../../routing/store/routing.actions';
 import { routes } from '../../../../routing/routes';
+import { ActionState } from '../../interfaces/action-state';
 
 export interface AuthenticationHandlerContext extends GenericContext {
   authService: AuthenticationService;
@@ -17,22 +18,19 @@ const _handlers = {};
 // Login request
 _handlers[actions.LoginRequestAction.TYPE] = {
   action: (state, action: actions.LoginRequestAction) => {
-    const authenticating = true;
-    const authenticated = false;
-    const authenticationError = null;
-    return { ...state, authenticated, authenticating, authenticationError };
+    const login: ActionState<string> = { processing: true, error: null, data: null };
+    return { ...state, authenticated: false, login };
   },
 
   effect: (action$, context: AuthenticationHandlerContext) =>
     action$.pipe(
       switchMap(({ payload }: actions.LoginRequestAction) =>
-        context.authService.authenticate(payload).pipe(
-          map(data => new SetRootPageAction({ route: routes.dashboard.page })),
-          catchError((error: Error) => {
-            const { message } = error;
-            return of(new actions.LoginFailureAction({ message }));
-          })
-        )
+        context.authService
+          .authenticate(payload)
+          .pipe(
+            map(data => new SetRootPageAction({ route: routes.dashboard.page })),
+            catchError((error: Error) => of(new actions.LoginFailureAction(error)))
+          )
       )
     )
 };
@@ -40,26 +38,25 @@ _handlers[actions.LoginRequestAction.TYPE] = {
 // Login succcess
 _handlers[actions.LoginSuccessAction.TYPE] = {
   action: (state, { payload }: actions.LoginSuccessAction) => {
-    const authenticating = false;
-    const authenticated = true;
-    return { ...state, authenticated, authenticating };
+    const login = { ...state.login, processing: false };
+    return { ...state, authenticated: true, login };
   }
 };
 
 // Login failure
 _handlers[actions.LoginFailureAction.TYPE] = {
   action: (state, { payload }: actions.LoginFailureAction) => {
-    const authenticating = false;
-    const authenticated = false;
-    const authenticationError = payload.message;
-    return { ...state, authenticated, authenticating, authenticationError };
+    console.log('processing action for login failure');
+    const error = payload;
+    const login = { ...state.login, processing: false, error };
+    return { ...state, login };
   }
 };
 
 // Password reset request
 _handlers[actions.PasswordResetRequestAction.TYPE] = {
-  action: (state, action: actions.LoginRequestAction) => {
-    const passwordReset = { ...state.passwordReset, processing: true, completed: false };
+  action: (state, action: actions.PasswordResetRequestAction) => {
+    const passwordReset: ActionState<string> = { ...state.passwordReset, processing: true, data: null, error: null };
     return { ...state, passwordReset };
   },
 
@@ -69,8 +66,7 @@ _handlers[actions.PasswordResetRequestAction.TYPE] = {
         context.authService.askForNewPassword(payload.username).pipe(
           map(data => new actions.PasswordResetSuccessAction()),
           catchError((error: Error) => {
-            const { message } = error;
-            return of(new actions.PasswordResetFailureAction({ message }));
+            return of(new actions.PasswordResetFailureAction(error));
           })
         )
       )
@@ -80,7 +76,7 @@ _handlers[actions.PasswordResetRequestAction.TYPE] = {
 // Password reset succcess
 _handlers[actions.PasswordResetSuccessAction.TYPE] = {
   action: (state, { payload }: actions.LoginSuccessAction) => {
-    const passwordReset = { ...state.passwordReset, processing: false, completed: true };
+    const passwordReset = { ...state.passwordReset, processing: false };
     return { ...state, passwordReset };
   }
 };
@@ -88,7 +84,8 @@ _handlers[actions.PasswordResetSuccessAction.TYPE] = {
 // Password reset failure
 _handlers[actions.PasswordResetFailureAction.TYPE] = {
   action: (state, { payload }: actions.LoginFailureAction) => {
-    const passwordReset = { ...state.passwordReset, processing: false, completed: payload.message };
+    const error = payload;
+    const passwordReset = { ...state.passwordReset, processing: false, error };
     return { ...state, passwordReset };
   }
 };
@@ -111,9 +108,7 @@ _handlers[actions.LogoutRequestAction.TYPE] = {
 // Logout succcess
 _handlers[actions.LogoutSuccessAction.TYPE] = {
   action: (state, action: actions.LogoutSuccessAction) => {
-    const authenticating = false;
-    const authenticated = false;
-    return { ...state, authenticated, authenticating };
+    return { ...state, authenticated: false };
   }
 };
 

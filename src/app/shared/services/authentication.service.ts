@@ -31,6 +31,7 @@ export class AuthenticationService {
 
   authenticate(credentials: { username: string; password: string }): Observable<any> {
     const { auth } = this._afAuth;
+    // REM: One could use the "from" operator like seen in other methods, but in this case the implementation illustrates a custom observable snippet.
     const obs: Observable<any> = new Observable<any>((observer: Observer<any>) => {
       auth
         .signInWithEmailAndPassword(credentials.username, credentials.password)
@@ -53,17 +54,6 @@ export class AuthenticationService {
 
   signOut(): Observable<any> {
     const { auth } = this._afAuth;
-    return new Observable<any>((observer: Observer<any>) => {
-      auth
-        .signOut()
-        .then(() => {
-          observer.next('ok');
-          observer.complete();
-        })
-        .catch(err => {
-          observer.error(err);
-          observer.complete();
-        });
-    });
+    return from(auth.signOut());
   }
 }

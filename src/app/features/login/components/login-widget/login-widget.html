@@ -51,21 +51,10 @@
                   round
                   padding
                   margin-bottom
-                  (click)="onPasswordLost()"
+                  (click)="onOpenPasswordLostScreen()"
                   color="light">password lost</button>
         </ion-item>
       </ion-list>
-    </div>
-    <div class="buttons"
-         *ngIf="false">
-      <button ion-button
-              round
-              type="submit"
-              [disabled]="!loginForm.valid">login</button>
-      <button ion-button
-              round
-              (click)="onPasswordLost()"
-              color="light">lost password</button>
     </div>
   </form>
 </div>

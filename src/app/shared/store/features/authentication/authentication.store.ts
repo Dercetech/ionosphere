@@ -15,19 +15,21 @@ import { ActionState } from '../../interfaces/action-state';
 
 export interface AuthenticationState {
   authenticated: boolean;
-  authenticating: boolean;
-  authenticationError: string;
+  login: ActionState<string>;
   passwordReset: ActionState<string>;
 }
 
 const initialState: AuthenticationState = {
   authenticated: false,
-  authenticating: true,
-  authenticationError: null,
-  passwordReset: {
-    completed: false,
+  login: {
+    error: null,
     processing: false,
-    token: null
+    data: null
+  },
+  passwordReset: {
+    error: null,
+    processing: false,
+    data: null
   }
 };
 

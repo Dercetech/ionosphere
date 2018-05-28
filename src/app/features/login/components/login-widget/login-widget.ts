@@ -12,7 +12,7 @@ import {
   PasswordResetRequestAction
 } from '../../../../shared/store/features/authentication/authentication.actions';
 import { UserCreationRequestAction } from '../../../../shared/store/features/users/users.actions';
-import { takeUntil, take, filter, switchMap } from 'rxjs/operators';
+import { takeUntil, take, filter, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'login-widget',
@@ -53,73 +53,102 @@ export class LoginWidgetComponent {
     });
   }
 
-  onLogin(): void {
-    const username = this.loginForm.value.email;
-    const password = this.loginForm.value.password;
-    this.signIn({ username, password });
+  onOpenPasswordLostScreen(): void {
+    this.loginForm.value.email && this.passwordRecoveryForm.controls.email.setValue(this.loginForm.value.email);
+    this.mode = 'recovery';
   }
 
-  onOpenRegisterScreen(): void {
-    this.mode = 'register';
+  onLogin(): void {
+    // Loading...
+    const loading = this._loadingCtrl.create({ content: 'signing in...' });
+    loading.present();
+
+    // Dispatch
+    const username = this.loginForm.value.email;
+    const password = this.loginForm.value.password;
+    this._storeService.dispatch(new LoginRequestAction({ username, password }));
+
+    // Processing
+    const { select } = this._storeService;
+    const { processing$, error$ } = select.authentication.login;
+    processing$
+      .pipe(filter(processing => !processing), switchMap(processingComplete => combineLatest(error$)), take(1))
+      .subscribe(([error]) => {
+        loading.dismiss();
+        error &&
+          this._alertCtrl
+            .create({
+              title: 'authentication error',
+              message: error.message,
+              buttons: ['ok']
+            })
+            .present();
+      });
   }
 
   onRegister(): void {
+    // Loading...
+    const loading = this._loadingCtrl.create({ content: 'registring...' });
+    loading.present();
+
+    // Dispatch
     const displayName = this.registerForm.value.displayName;
     const username = this.registerForm.value.email;
     const password = this.registerForm.value.password;
     this._storeService.dispatch(new UserCreationRequestAction({ displayName, username, password }));
 
-    const { authenticated$ } = this._storeService.select.authentication;
-    const { registering$, registeringErrorMessage$ } = this._storeService.select.users;
-
-    authenticated$.subscribe(is => console.log('<<<< ' + is));
-
-    this._layoutService.createModal(
-      { title: 'registration', message: 'please wait...', error: { title: 'registration error ', btnOk: 'ok' } },
-      { waitToBeFalse$: registering$, successIfTrue$: authenticated$, error$: registeringErrorMessage$ }
-    );
-  }
-
-  onPasswordLost(): void {
-    if (this.loginForm.value.email) this.passwordRecoveryForm.controls.email.setValue(this.loginForm.value.email);
-    this.mode = 'recovery';
+    // Processing
+    const { select } = this._storeService;
+    const { processing$, error$, data$ } = select.users.registration;
+    processing$
+      .pipe(filter(processing => !processing), switchMap(processingComplete => combineLatest(error$, data$)), take(1))
+      .subscribe(([error]) => {
+        loading.dismiss();
+        (error
+          ? this._alertCtrl.create({
+              title: 'registration error',
+              message: error.message,
+              buttons: ['ok']
+            })
+          : this._toastCtrl.create({
+              position: 'top',
+              message: `Welcome, ${displayName}!`,
+              duration: 1500
+            })
+        ).present();
+      });
   }
 
   onNewPasswordRequest(): void {
-    const { select } = this._storeService;
-    const username = this.passwordRecoveryForm.value.email;
-    const loading = this._loadingCtrl.create({ content: 'requesting reset link...' });
-
     // Loading...
+    const loading = this._loadingCtrl.create({ content: 'requesting reset link...' });
     loading.present();
+
+    // Dispatch
+    const username = this.passwordRecoveryForm.value.email;
     this._storeService.dispatch(new PasswordResetRequestAction({ username }));
 
-    // Success
-    select.authentication.passwordReset.processing$.pipe(filter(processing => !processing), take(1)).subscribe(done => {
-      loading.dismiss();
-      this._toastCtrl
-        .create({
-          position: 'top',
-          showCloseButton: true,
-          closeButtonText: 'ok',
-          message: 'A reset link has been sent to this email address.'
-        })
-        .present();
-      this.mode = 'login';
-    });
-
-    // Error
-    select.authentication.passwordReset.completed$
-      .pipe(filter(completed => !!completed), take(1))
-      .subscribe(result => console.log('result ' + result));
-  }
-
-  private signIn(credentials: { username: string; password: string }) {
-    this._storeService.dispatch(new LoginRequestAction(credentials));
-    const { authenticating$, authenticated$, authenticationError$ } = this._storeService.select.authentication;
-    this._layoutService.createModal(
-      { title: 'authenticating', message: 'please wait...', error: { title: 'authentication error ', btnOk: 'ok' } },
-      { waitToBeFalse$: authenticating$, successIfTrue$: authenticated$, error$: authenticationError$ }
-    );
+    // Processing
+    const { select } = this._storeService;
+    const { processing$, error$, data$ } = select.authentication.passwordReset;
+    processing$
+      .pipe(filter(processing => !processing), switchMap(processingComplete => combineLatest(error$)), take(1))
+      .subscribe(([error]) => {
+        loading.dismiss();
+        this.mode = error ? this.mode : 'login';
+        (error
+          ? this._alertCtrl.create({
+              title: 'password reset error',
+              message: error.message,
+              buttons: ['ok']
+            })
+          : this._toastCtrl.create({
+              position: 'top',
+              showCloseButton: true,
+              closeButtonText: 'ok',
+              message: 'A reset link has been sent to this email address.'
+            })
+        ).present();
+      });
   }
 }

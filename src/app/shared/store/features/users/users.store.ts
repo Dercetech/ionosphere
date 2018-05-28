@@ -11,19 +11,18 @@ import { GenericStore } from '../../classes/generic-store';
 import { UserCreationRequestAction } from './users.actions';
 import { handlers, UsersHandlerContext } from './users.handlers';
 import { selectsFactory } from './users.selects';
+import { ActionState } from '../../interfaces/action-state';
 
 export interface UsersState {
-  registering: boolean;
-  registeringErrorMessage: string;
-  registeringErrorPwdTooWeak: boolean;
-  registeringErrorEmailTaken: boolean;
+  registration: ActionState<string>;
 }
 
 const initialState: UsersState = {
-  registering: false,
-  registeringErrorMessage: null,
-  registeringErrorPwdTooWeak: false,
-  registeringErrorEmailTaken: false
+  registration: {
+    data: null,
+    error: null,
+    processing: false
+  }
 };
 
 @Injectable()
