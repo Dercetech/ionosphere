@@ -59,9 +59,8 @@ _handlers[actions.LoginFailureAction.TYPE] = {
 // Password reset request
 _handlers[actions.PasswordResetRequestAction.TYPE] = {
   action: (state, action: actions.LoginRequestAction) => {
-    const resettingPassword = true;
-    const resetPasswordError = null;
-    return { ...state, resettingPassword, resetPasswordError };
+    const passwordReset = { ...state.passwordReset };
+    return { ...state, passwordReset };
   },
 
   effect: (action$, context: AuthenticationHandlerContext) =>
@@ -81,18 +80,16 @@ _handlers[actions.PasswordResetRequestAction.TYPE] = {
 // Password reset succcess
 _handlers[actions.PasswordResetSuccessAction.TYPE] = {
   action: (state, { payload }: actions.LoginSuccessAction) => {
-    const resettingPassword = false;
-    const resetPasswordError = null;
-    return { ...state, resettingPassword, resetPasswordError };
+    const passwordReset = { ...state.passwordReset };
+    return { ...state, passwordReset };
   }
 };
 
 // Password reset failure
 _handlers[actions.PasswordResetFailureAction.TYPE] = {
   action: (state, { payload }: actions.LoginFailureAction) => {
-    const resettingPassword = false;
-    const resetPasswordError = 'GFY';
-    return { ...state, resettingPassword, resetPasswordError };
+    const passwordReset = { ...state.passwordReset };
+    return { ...state, passwordReset };
   }
 };
 

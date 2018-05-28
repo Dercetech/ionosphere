@@ -29,7 +29,7 @@ export class RouteStore extends GenericStore<RoutingHandlerContext> {
       {
         storeService,
         featureKey: routingKey,
-        propertyKeys: Object.keys(initialState),
+        initialState,
         customSelects: selectsFactory(store)
       }
     );

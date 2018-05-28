@@ -20,12 +20,8 @@ export class StoreService implements StoreAntiCorruptionLayer {
     this.select = this.antiCorruptionLayer.select;
   }
 
-  registerSelects(featureKey, properties: string[], customSelects?: any) {
-    this.antiCorruptionLayer.registerSelects(
-      featureKey,
-      properties,
-      customSelects
-    );
+  registerSelects(featureKey, initialState: any, customSelects?: any) {
+    this.antiCorruptionLayer.registerSelects(featureKey, initialState, customSelects);
   }
 
   getSelect$(absolutePathOrFeature: string, property?: string) {

@@ -11,21 +11,24 @@ import { GenericStore } from '../../classes/generic-store';
 import { LoginRequestAction, LogoutRequestAction, PasswordResetRequestAction } from './authentication.actions';
 import { handlers, AuthenticationHandlerContext } from './authentication.handlers';
 import { selectsFactory } from './authentication.selects';
+import { ActionState } from '../../interfaces/action-state';
 
 export interface AuthenticationState {
   authenticated: boolean;
   authenticating: boolean;
   authenticationError: string;
-  resettingPassword: boolean;
-  resetPasswordError: string;
+  passwordReset: ActionState<string>;
 }
 
 const initialState: AuthenticationState = {
   authenticated: false,
   authenticating: true,
   authenticationError: null,
-  resettingPassword: false,
-  resetPasswordError: null
+  passwordReset: {
+    completed: false,
+    processing: false,
+    token: null
+  }
 };
 
 @Injectable()
@@ -36,7 +39,7 @@ export class AuthenticationStore extends GenericStore<AuthenticationHandlerConte
       {
         storeService,
         featureKey: authenticationKey,
-        propertyKeys: Object.keys(initialState),
+        initialState,
         customSelects: selectsFactory(store)
       }
     );

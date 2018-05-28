@@ -34,7 +34,7 @@ export class InterfaceStore extends GenericStore<InterfaceHandlerContext> {
       {
         storeService,
         featureKey: interfaceKey,
-        propertyKeys: Object.keys(initialState),
+        initialState,
         customSelects: selectsFactory(store)
       }
     );

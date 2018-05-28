@@ -34,7 +34,7 @@ export class UsersStore extends GenericStore<UsersHandlerContext> {
       {
         storeService,
         featureKey: usersKey,
-        propertyKeys: Object.keys(initialState),
+        initialState,
         customSelects: selectsFactory(store)
       }
     );

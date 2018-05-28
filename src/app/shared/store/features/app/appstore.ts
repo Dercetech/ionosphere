@@ -28,7 +28,7 @@ export class AppStore extends GenericStore<AppHandlerContext> {
       {
         storeService,
         featureKey: appKey,
-        propertyKeys: Object.keys(initialState),
+        initialState,
         customSelects: selectsFactory(store)
       }
     );

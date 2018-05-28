@@ -27,7 +27,7 @@ export class LoginWidgetComponent {
   private passwordRecoveryForm: FormGroup;
 
   constructor(
-    //private loadingCtrl: LoadingController,
+    private _loadingCtrl: LoadingController,
     private _alertCtrl: AlertController,
     private _formBuilder: FormBuilder,
     private _customValidators: CustomValidators,
@@ -82,11 +82,15 @@ export class LoginWidgetComponent {
   onPasswordLost(): void {
     if (this.loginForm.value.email) this.passwordRecoveryForm.controls.email.setValue(this.loginForm.value.email);
     this.mode = 'recovery';
-    const username = this.passwordRecoveryForm.value.email;
-    this._storeService.dispatch(new PasswordResetRequestAction({ username }));
+    this.onNewPasswordRequest();
   }
 
   onNewPasswordRequest(): void {
+    const username = this.passwordRecoveryForm.value.email;
+    //this._storeService.dispatch(new PasswordResetRequestAction({ username }));
+
+    const loading = this._loadingCtrl.create({ content: 'requesting reset link...' });
+    loading.present();
     /*
     this.authService
       .askForNewPassword(this.passwordRecoveryForm.value.email)

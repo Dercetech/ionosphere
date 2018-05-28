@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 export interface SelectRegistrationContext {
   storeService: StoreService;
   featureKey: string;
-  propertyKeys: string[];
+  initialState: any;
   customSelects?: {
     [key: string]: Observable<any>;
   };
@@ -26,8 +26,8 @@ export class GenericStore<T extends GenericContext> {
     return actionHandler ? actionHandler(state, action) : state;
   }
 
-  static registerSelects({ storeService, featureKey, propertyKeys, customSelects }: SelectRegistrationContext) {
-    storeService.registerSelects(featureKey, propertyKeys, customSelects);
+  static registerSelects({ storeService, featureKey, initialState, customSelects }: SelectRegistrationContext) {
+    storeService.registerSelects(featureKey, initialState, customSelects);
   }
 
   processEffect(handlers: any, actionType: string) {
