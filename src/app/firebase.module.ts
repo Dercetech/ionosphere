@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
 
 import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFirestoreModule, AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
@@ -11,10 +11,14 @@ import { ENV } from '@app/env';
   imports: [
     AngularFireModule.initializeApp(ENV.firebase, 'Ionosphere'),
     AngularFirestoreModule,
-    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     AngularFireStorageModule
   ],
   exports: [AngularFireModule, AngularFirestoreModule, AngularFireAuthModule, AngularFireStorageModule]
 })
-export class FirebaseModule {}
+export class FirebaseModule {
+  constructor(afs: AngularFirestore) {
+    afs.firestore.settings({ timestampsInSnapshots: true });
+    afs.firestore.enablePersistence();
+  }
+}

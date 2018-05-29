@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, of, Observer, throwError, from } from 'rxjs';
-import { delay, catchError } from 'rxjs/operators';
+import { delay, catchError, filter, tap } from 'rxjs/operators';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -13,13 +13,22 @@ import {
 
 import { StoreService } from './store.service';
 import { map } from 'rxjs-compat/operator/map';
+import { AngularFirestore } from 'angularfire2/firestore';
+
+export interface FirebaseUser {
+  uid: string;
+  email?: string | null;
+  photoURL?: string;
+  displayName?: string;
+}
 
 @Injectable()
 export class AuthenticationService {
-  constructor(private _store: StoreService, private _afAuth: AngularFireAuth) {
-    this._afAuth.authState.subscribe(user =>
-      this._store.dispatch(user ? new LoginSuccessAction() : new LogoutSuccessAction())
-    );
+  constructor(private _store: StoreService, private _afs: AngularFirestore, private _afAuth: AngularFireAuth) {
+    this._afAuth.authState
+      // .switchMap(user => this._afs.doc<FirebaseUser>(`users/${user.uid}`).valueChanges())
+      // .pipe(filter(value => !!value), tap(value => console.log('value')))
+      .subscribe(user => this._store.dispatch(user ? new LoginSuccessAction() : new LogoutSuccessAction()));
     // .switchMap(user => {
     //   if (user) {
     //     return this.afs.doc<User>(`users/${user.uid}`).valueChanges()

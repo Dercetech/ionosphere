@@ -26,9 +26,14 @@ import { SharedModule } from './shared/shared.module';
 import { LayoutModule } from './shared/layout/layout.module';
 import { RoutingModule } from './routing/routing.module';
 import { RoutingService } from './routing/routing.service';
+import { BackendService } from './shared/services/classes/backend.service';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
+};
+
+const initializeConfig = (routingService: RoutingService) => () => {
+  console.log('APP STARTED with env ' + ENV.mode);
 };
 
 @NgModule({
@@ -51,15 +56,13 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   bootstrap: [IonicApp],
   entryComponents: [MyApp],
   providers: [
+    BackendService,
     StatusBar,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     {
       provide: APP_INITIALIZER,
-      useFactory: () =>
-        function(RoutingService) {
-          console.log('APP STARTED with env ' + ENV.mode);
-        },
+      useFactory: initializeConfig,
       deps: [RoutingService],
       multi: true
     },

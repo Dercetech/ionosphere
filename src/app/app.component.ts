@@ -1,14 +1,4 @@
-import {
-  Component,
-  ViewChild,
-  OnInit,
-  HostBinding,
-  trigger,
-  state,
-  style,
-  transition,
-  animate
-} from '@angular/core';
+import { Component, ViewChild, OnInit, HostBinding, trigger, state, style, transition, animate } from '@angular/core';
 
 import { NavController, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -20,6 +10,9 @@ import { map, tap, filter, take } from 'rxjs/operators';
 import { SetMenuCompactAction } from './shared/store/features/interface/interface.actions';
 import { StoreService } from './shared/services/store.service';
 import { RoutingService } from './routing/routing.service';
+
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AppInitializedAction } from './shared/store/features/app/app.actions';
 
 const stateEnteringDom = { opacity: 0 };
 const stateInDOM = { opacity: 1 };
@@ -62,17 +55,19 @@ export class MyApp implements OnInit {
       splashScreen.hide();
     });
 
+    // App is initialized i.e. the firebase settings have been set.
+    // Important: firebase.module.ts handles configuration. Its constructor runs after dependencies are resolved.
+    // So, one should only set firestore observables AFTER the app is initialized.
+    this._storeService.dispatch(new AppInitializedAction());
+
+    // App is ready when initial firebase login has happened
     this.appReady$ = this._storeService.select.app.ready$;
     this.menuDisplayed$ = this._storeService.select.interface.menuDisplayed$;
     this.menuCompact$ = this._storeService.select.interface.menuCompact$;
 
     // Navigation tweaks
-    this.navClasses$ = combineLatest(
-      this._storeService.select.interface.headerDisplayed$
-    ).pipe(
-      map(([headerDisplayed]) => [
-        headerDisplayed ? 'interface-display-menu' : ''
-      ])
+    this.navClasses$ = combineLatest(this._storeService.select.interface.headerDisplayed$).pipe(
+      map(([headerDisplayed]) => [headerDisplayed ? 'interface-display-menu' : ''])
     );
   }
 

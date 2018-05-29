@@ -1,13 +1,14 @@
+import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { GenericContext, fire } from '../../classes/generic-store';
 
-import * as actions from './authentication.actions';
-import { AuthenticationService } from '../../../services/authentication.service';
-import { of } from 'rxjs';
-import { SetRootPageAction } from '../../../../routing/store/routing.actions';
 import { routes } from '../../../../routing/routes';
+import { SetRootPageAction } from '../../../../routing/store/routing.actions';
+import { AuthenticationService } from '../../../services/authentication.service';
 import { ActionState } from '../../interfaces/action-state';
+
+import * as actions from './authentication.actions';
 
 export interface AuthenticationHandlerContext extends GenericContext {
   authService: AuthenticationService;

@@ -6,6 +6,7 @@ import { UsersService, UserCreationError } from '../../../services/users.service
 import { ActionState } from '../../interfaces/action-state';
 
 import * as actions from './users.actions';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 export interface UsersHandlerContext extends GenericContext {
   usersService: UsersService;

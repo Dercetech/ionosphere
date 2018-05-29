@@ -2,6 +2,7 @@ import { TypedAction } from './typed-action';
 import { StoreService } from '../../services/store.service';
 import { Observable } from 'rxjs';
 import { ActionState } from '../interfaces/action-state';
+import { Actions } from '@ngrx/effects';
 
 export interface SelectRegistrationContext {
   storeService: StoreService;
@@ -19,7 +20,7 @@ export const fire = {
 };
 
 export interface GenericContext {
-  actions$: any;
+  actions$: Actions;
 }
 
 export class GenericStore<T extends GenericContext> {
@@ -43,5 +44,8 @@ export class GenericStore<T extends GenericContext> {
       throw new Error(actionType + ' > action has no registered effect handler');
     }
     return effectHandler(this._context.actions$.ofType(actionType), this._context);
+  }
+  getContext(): T {
+    return this._context;
   }
 }
