@@ -23,6 +23,7 @@
                fxLayout="column">
             <ion-item *ngFor="let category of section.categories; let isFirst = first"
                       class="menu-item category"
+                      (click)="onMenuElement(category)"
                       [ngClass]="{
                       'menu-first-item' : isFirst,
                       'menu-item-lit' : false

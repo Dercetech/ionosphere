@@ -15,13 +15,6 @@ import { StoreService } from './store.service';
 import { map } from 'rxjs-compat/operator/map';
 import { AngularFirestore } from 'angularfire2/firestore';
 
-export interface FirebaseUser {
-  uid: string;
-  email?: string | null;
-  photoURL?: string;
-  displayName?: string;
-}
-
 @Injectable()
 export class AuthenticationService {
   constructor(private _store: StoreService, private _afs: AngularFirestore, private _afAuth: AngularFireAuth) {

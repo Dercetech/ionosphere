@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 
 import { StoreService } from '../../../services/store.service';
-import { AuthenticationService, FirebaseUser } from '../../../services/authentication.service';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 import { authenticationKey } from '../../store.keys';
 import { GenericStore } from '../../classes/generic-store';
@@ -12,6 +12,7 @@ import { LoginRequestAction, LogoutRequestAction, PasswordResetRequestAction } f
 import { handlers, AuthenticationHandlerContext } from './authentication.handlers';
 import { selectsFactory } from './authentication.selects';
 import { ActionState } from '../../interfaces/action-state';
+import { FirebaseUser } from '../../../models/user.firebase';
 
 export interface AuthenticationState {
   authenticated: boolean;

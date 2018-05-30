@@ -66,7 +66,10 @@ export class SideMenuComponent implements OnInit, OnDestroy {
 
   onMenuElement({ action, destination }: any) {
     if (action) {
-      this._store.dispatch(new LogoutRequestAction());
+      switch (action) {
+        case 'logout':
+          return this._store.dispatch(new LogoutRequestAction());
+      }
     }
     if (destination) {
       if (typeof destination === 'string') {

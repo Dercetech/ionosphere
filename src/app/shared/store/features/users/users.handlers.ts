@@ -1,12 +1,14 @@
 import { of, pipe } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
+import { AngularFirestore } from 'angularfire2/firestore';
+
 import { GenericContext, fire } from '../../classes/generic-store';
-import { UsersService, UserCreationError } from '../../../services/users.service';
 import { ActionState } from '../../interfaces/action-state';
 
+import { UsersService, UserCreationError } from '../../../services/users.service';
+
 import * as actions from './users.actions';
-import { AngularFirestore } from 'angularfire2/firestore';
 
 export interface UsersHandlerContext extends GenericContext {
   usersService: UsersService;

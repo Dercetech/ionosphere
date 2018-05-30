@@ -24,7 +24,6 @@ export interface GenericContext {
 }
 
 export class GenericStore<T extends GenericContext> {
-  //constructor(private _context: any) {}
   constructor(private _context: T, registration: SelectRegistrationContext) {
     GenericStore.registerSelects(registration);
   }

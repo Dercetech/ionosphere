@@ -25,7 +25,7 @@ const metaReducers = ENV.production ? {} : {};
     StoreModule.forFeature(authenticationKey, AuthenticationStore.reducer),
     StoreModule.forFeature(interfaceKey, InterfaceStore.reducer),
     StoreModule.forFeature(usersKey, UsersStore.reducer),
-    ENV.production ? [] : StoreDevtoolsModule.instrument({ maxAge: 15 }),
+    ENV.production ? [] : StoreDevtoolsModule.instrument({ maxAge: 15, name: 'Ionosphere app' }),
     EffectsModule.forRoot([...stores])
   ],
   providers: [...stores]

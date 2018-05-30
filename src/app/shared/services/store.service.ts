@@ -5,9 +5,14 @@ import { StoreAntiCorruptionLayer } from './interfaces/store';
 
 // ACL implementation
 import { NgrxService } from '../store/services/ngrx.service';
+import { SynchronizedStoreService } from './interfaces/synchronized-store.service';
+import {
+  CollectionMonitoringRequestAction,
+  CollectionMonitoringReleaseAction
+} from '../store/classes/sychronized-store.actions';
 
 @Injectable()
-export class StoreService implements StoreAntiCorruptionLayer {
+export class StoreService implements StoreAntiCorruptionLayer, SynchronizedStoreService {
   private antiCorruptionLayer: StoreAntiCorruptionLayer = null;
 
   public select: any;
@@ -30,5 +35,13 @@ export class StoreService implements StoreAntiCorruptionLayer {
 
   dispatch(action: any) {
     this.antiCorruptionLayer.dispatch(action);
+  }
+
+  monitorCollection(collectionKey: string) {
+    this.dispatch(new CollectionMonitoringRequestAction({ collectionKey }));
+  }
+
+  releaseMonitor(collectionKey) {
+    this.dispatch(new CollectionMonitoringReleaseAction({ collectionKey }));
   }
 }

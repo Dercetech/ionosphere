@@ -1,3 +1,5 @@
+import { routes } from './routing/routes';
+
 export interface menuEntry {}
 
 export const menuContents = {
@@ -7,9 +9,16 @@ export const menuContents = {
       type: 'flat-group',
       categories: [
         {
-          id: 'entry1',
+          id: 'dashboard',
           title: 'Dashboard',
-          fa: 'fa fa-home'
+          fa: 'fas fa-home',
+          destination: routes.dashboard.page
+        },
+        {
+          id: 'admin',
+          title: 'Admin',
+          fa: 'fas fa-cog',
+          destination: routes.adminUsers.page
         }
       ]
     },

@@ -11,5 +11,8 @@ export const routes: { [key: string]: Route } = {
   },
   dashboard: {
     page: 'DashboardPage'
+  },
+  adminUsers: {
+    page: 'AdminUsersPage'
   }
 };
