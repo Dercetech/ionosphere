@@ -30,16 +30,9 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
   private _storeService: StoreService;
   private _monitors = {};
 
-  constructor(context: T, registrationContext: SelectRegistrationContext, monitorHandlers: MonitorHandler[]) {
-    super(context, SynchronizedStore.augmentRegistrationContextWithMonitors(registrationContext, monitorHandlers));
+  constructor(context: T, registrationContext: SelectRegistrationContext) {
+    super(context, registrationContext);
     this._storeService = registrationContext.storeService;
-  }
-
-  static augmentRegistrationContextWithMonitors(
-    registrationContext: SelectRegistrationContext,
-    monitorHandlers: MonitorHandler[]
-  ) {
-    return registrationContext;
   }
 
   static processState(handlers: any, state: any, action: TypedAction) {
@@ -50,13 +43,17 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
         entities: { ...state[storeKey].entities },
         loading: false
       };
-
       switch (operation) {
         case 'added': {
           documents.forEach((snapshot: firestore.QueryDocumentSnapshot) => {
             const entity = { ...snapshot.data(), id: snapshot.id };
             // Array of document snapshots
-            slice.documents.push(entity);
+            const index = slice.documents.findIndex(document => entity.id === document.id);
+            if (index >= 0) {
+              slice.documents[index] = entity;
+            } else {
+              slice.documents.push(entity);
+            }
             // List of entities
             slice.entities[entity.id] = entity;
           });
@@ -99,9 +96,6 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
             const handlerSettings = monitorHandlers.find(handler => handler.collectionKey === collectionKey);
             if (handlerSettings) {
               const { storeKey, backendService } = handlerSettings;
-              console.log(
-                'requesting collection "' + collectionKey + '" from backend service to local slice "' + storeKey + '".'
-              );
 
               if (!this._monitors[collectionKey]) {
                 this._monitors[collectionKey] = {
@@ -137,16 +131,12 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
             const handlerSettings = monitorHandlers.find(handler => handler.collectionKey === collectionKey);
             if (handlerSettings) {
               const { storeKey, backendService } = handlerSettings;
-              console.log(
-                'releasing collection "' + collectionKey + '" from backend service to local slice "' + storeKey + '".'
-              );
               const monitor = this._monitors[collectionKey];
               monitor.retain--;
               if (monitor.retain <= 0) {
                 monitor.retain = 0;
                 monitor.subscription.unsubscribe();
                 monitor.subscription = null;
-                console.log('garbage collecting...<<<<<<<<<<s<<s');
               }
             }
           })

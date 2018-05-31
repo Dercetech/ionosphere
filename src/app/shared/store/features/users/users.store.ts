@@ -31,7 +31,7 @@ export const UserCollectionKeys = {
 
 export interface UsersState {
   registration: ActionState<string>;
-  users: ListState<User>;
+  all: ListState<User>;
 }
 
 const initialState: UsersState = {
@@ -40,7 +40,7 @@ const initialState: UsersState = {
     error: null,
     processing: false
   },
-  users: {
+  all: {
     entities: {},
     documents: [],
     loading: false
@@ -57,8 +57,7 @@ export class UsersStore extends SynchronizedStore<UsersHandlerContext> {
         featureKey: usersKey,
         initialState,
         customSelects: selectsFactory(store)
-      },
-      []
+      }
     );
   }
 
@@ -77,7 +76,7 @@ export class UsersStore extends SynchronizedStore<UsersHandlerContext> {
     {
       backendService: this._usersService,
       collectionKey: USERS_KEY.all,
-      storeKey: 'users'
+      storeKey: 'all'
     }
   ]);
 

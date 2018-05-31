@@ -7,6 +7,7 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 
 import { StoreService } from './store.service';
 import { BackendService } from './interfaces/backend.service';
+import { take } from 'rxjs/operators';
 
 export interface UserCreationError {
   message: string;
@@ -23,6 +24,15 @@ export const USERS_KEY = {
 @Injectable()
 export class UsersService implements BackendService {
   constructor(private _afAuth: AngularFireAuth, private _afs: AngularFirestore) {}
+
+  getPermissionsForUser() {
+    this._afs
+      .collection('users')
+      .doc('U4bGn4H9elgBBzftsWsf')
+      .valueChanges()
+      .pipe(take(1))
+      .subscribe(data => console.log('data'));
+  }
 
   getCollectionAddMonitor<T>(collectionKey, operation) {
     let collection: AngularFirestoreCollection<T>;

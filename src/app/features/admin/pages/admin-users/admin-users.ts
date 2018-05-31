@@ -13,7 +13,7 @@ export class AdminUsersPage {
   userList$;
 
   constructor(private _storeService: StoreService) {
-    this.userList$ = this._storeService.select.users.users.documents$;
+    this.userList$ = this._storeService.select.users.all.documents$;
   }
 
   ionViewDidLoad() {
