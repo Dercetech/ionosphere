@@ -10,7 +10,8 @@ export class SynchronizedCollectionAction extends TypedAction {
     public payload: {
       documents: firestore.QueryDocumentSnapshot[];
       collectionKey: string;
-      storeKey: string;
+      rootStoreKey: string;
+      localStoreKey: string;
       operation: 'added' | 'modified' | 'removed';
     }
   ) {

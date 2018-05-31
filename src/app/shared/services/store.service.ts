@@ -8,7 +8,9 @@ import { NgrxService } from '../store/services/ngrx.service';
 import { SynchronizedStoreService } from './interfaces/synchronized-store.service';
 import {
   CollectionMonitoringRequestAction,
-  CollectionMonitoringReleaseAction
+  CollectionMonitoringReleaseAction,
+  DocumentMonitoringRequestAction,
+  DocumentMonitoringReleaseAction
 } from '../store/classes/sychronized-store.actions';
 
 @Injectable()
@@ -37,11 +39,19 @@ export class StoreService implements StoreAntiCorruptionLayer, SynchronizedStore
     this.antiCorruptionLayer.dispatch(action);
   }
 
-  monitorCollection(collectionKey: string) {
-    this.dispatch(new CollectionMonitoringRequestAction({ collectionKey }));
+  monitorDocument(documentKey) {
+    this.dispatch(new DocumentMonitoringRequestAction({ documentKey }));
   }
 
-  releaseMonitor(collectionKey) {
-    this.dispatch(new CollectionMonitoringReleaseAction({ collectionKey }));
+  releaseDocument(documentKey) {
+    this.dispatch(new DocumentMonitoringReleaseAction({ documentKey }));
+  }
+
+  dispatchCollectionMonitoringRequest(collectionKey: string, targetStore: string) {
+    this.dispatch(new CollectionMonitoringRequestAction({ collectionKey, targetStore }));
+  }
+
+  dispatchCollectionMonitoringRelease(collectionKey: string, targetStore: string) {
+    this.dispatch(new CollectionMonitoringReleaseAction({ collectionKey, targetStore }));
   }
 }

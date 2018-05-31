@@ -6,13 +6,24 @@ import { DocumentChangeAction, AngularFirestoreCollection } from 'angularfire2/f
 
 import { TypedAction } from './typed-action';
 import { SynchronizedCollectionAction } from './synchronized-collection-action';
-import { CollectionMonitoringRequestAction, CollectionMonitoringReleaseAction } from './sychronized-store.actions';
+import {
+  CollectionMonitoringRequestAction,
+  CollectionMonitoringReleaseAction,
+  DocumentMonitoringRequestAction
+} from './sychronized-store.actions';
 import { GenericStore, GenericContext, SelectRegistrationContext } from './generic-store';
 
 import { User } from '../../models/user';
 
 import { BackendService } from '../../services/interfaces/backend.service';
 import { StoreService } from '../../services/store.service';
+import { SynchronizedDocumentAction } from './synchronized-document-action';
+
+export interface DocumentMonitorHandler {
+  documentKey: string;
+  storeKey: string;
+  backendService: BackendService;
+}
 
 export interface MonitorHandler {
   collectionKey: string;
@@ -28,6 +39,7 @@ export interface SynchronizedCollectionState {
 
 export class SynchronizedStore<T extends GenericContext> extends GenericStore<T> {
   private _storeService: StoreService;
+  private _documentMonitors = {};
   private _monitors = {};
 
   constructor(context: T, registrationContext: SelectRegistrationContext) {
@@ -35,14 +47,21 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
     this._storeService = registrationContext.storeService;
   }
 
-  static processState(handlers: any, state: any, action: TypedAction) {
+  static processSynchronizedState(handlers: any, state: any, action: TypedAction, expectedRootStoreKey: string) {
     if (action instanceof SynchronizedCollectionAction) {
-      const { operation, collectionKey, storeKey, documents } = action.payload;
+      const { operation, collectionKey, rootStoreKey, localStoreKey, documents } = action.payload;
+
+      // Only process collection sync events for the targetted store
+      if (expectedRootStoreKey !== rootStoreKey) {
+        return super.processState(handlers, state, action);
+      }
+
       const slice: SynchronizedCollectionState = {
-        documents: [...state[storeKey].documents],
-        entities: { ...state[storeKey].entities },
+        documents: [...state[localStoreKey].documents],
+        entities: { ...state[localStoreKey].entities },
         loading: false
       };
+
       switch (operation) {
         case 'added': {
           documents.forEach((snapshot: firestore.QueryDocumentSnapshot) => {
@@ -82,9 +101,42 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
           break;
         }
       }
-      return { ...state, [storeKey]: slice };
+      return { ...state, [localStoreKey]: slice };
     }
     return super.processState(handlers, state, action);
+  }
+
+  getStoreService() {
+    return this._storeService;
+  }
+
+  monitorDocuments(monitorHandlers: DocumentMonitorHandler[]) {
+    return this.getContext()
+      .actions$.ofType(DocumentMonitoringRequestAction.TYPE)
+      .pipe(
+        tap(({ payload: { documentKey } }: DocumentMonitoringRequestAction) => {
+          const handlerSettings = monitorHandlers.find(handler => handler.documentKey === documentKey);
+          if (handlerSettings) {
+            const { storeKey, backendService } = handlerSettings;
+            if (!this._documentMonitors[documentKey]) {
+              this._documentMonitors[documentKey] = {
+                retain: 0,
+                monitor$: backendService.getDocumentMonitor(documentKey),
+                subscription: null
+              };
+            }
+
+            const monitor = this._documentMonitors[documentKey];
+            if (monitor.retain === 0) {
+              monitor.subscription = monitor.monitor$.subscribe(document => {
+                this._storeService.dispatch(new SynchronizedDocumentAction({ document, storeKey }));
+              });
+            }
+
+            monitor.retain++;
+          }
+        })
+      );
   }
 
   monitorCollections(monitorHandlers: MonitorHandler[]) {
@@ -92,7 +144,7 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
       this.getContext()
         .actions$.ofType(CollectionMonitoringRequestAction.TYPE)
         .pipe(
-          tap(({ payload: { collectionKey } }: CollectionMonitoringRequestAction) => {
+          tap(({ payload: { collectionKey, targetStore } }: CollectionMonitoringRequestAction) => {
             const handlerSettings = monitorHandlers.find(handler => handler.collectionKey === collectionKey);
             if (handlerSettings) {
               const { storeKey, backendService } = handlerSettings;
@@ -100,9 +152,9 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
               if (!this._monitors[collectionKey]) {
                 this._monitors[collectionKey] = {
                   retain: 0,
-                  added$: backendService.getCollectionAddMonitor(collectionKey, 'added'),
-                  modified$: backendService.getCollectionAddMonitor(collectionKey, 'modified'),
-                  removed$: backendService.getCollectionAddMonitor(collectionKey, 'removed'),
+                  added$: backendService.getCollectionMonitor(collectionKey, 'added'),
+                  modified$: backendService.getCollectionMonitor(collectionKey, 'modified'),
+                  removed$: backendService.getCollectionMonitor(collectionKey, 'removed'),
                   subscription: null
                 };
               }
@@ -114,7 +166,13 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
                     .pipe(map((actions: DocumentChangeAction[]) => actions.map(action => action.payload.doc)))
                     .subscribe((documents: firestore.QueryDocumentSnapshot[]) => {
                       this._storeService.dispatch(
-                        new SynchronizedCollectionAction({ documents, operation, collectionKey, storeKey })
+                        new SynchronizedCollectionAction({
+                          documents,
+                          operation,
+                          collectionKey,
+                          rootStoreKey: targetStore,
+                          localStoreKey: storeKey
+                        })
                       );
                     });
                 });
@@ -132,11 +190,13 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
             if (handlerSettings) {
               const { storeKey, backendService } = handlerSettings;
               const monitor = this._monitors[collectionKey];
-              monitor.retain--;
-              if (monitor.retain <= 0) {
-                monitor.retain = 0;
-                monitor.subscription.unsubscribe();
-                monitor.subscription = null;
+              if (monitor) {
+                monitor.retain--;
+                if (monitor.retain <= 0) {
+                  monitor.retain = 0;
+                  monitor.subscription.unsubscribe();
+                  monitor.subscription = null;
+                }
               }
             }
           })

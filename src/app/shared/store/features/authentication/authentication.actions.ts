@@ -22,6 +22,14 @@ export class LoginFailureAction extends TypedAction {
   }
 }
 
+// Authenticated user update
+export class AuthenticatedUserUpdateAction extends TypedAction {
+  static TYPE = '[Auth] Authenticated user updated';
+  constructor(public payload: any) {
+    super();
+  }
+}
+
 // Password reset
 export class PasswordResetRequestAction extends TypedAction {
   static TYPE = '[Auth] Password reset requested';

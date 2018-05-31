@@ -62,15 +62,18 @@ export class UsersStore extends SynchronizedStore<UsersHandlerContext> {
   }
 
   static reducer(state = initialState, action): UsersState {
-    return super.processState(handlers, state, action);
+    return super.processSynchronizedState(handlers, state, action, usersKey);
   }
 
-  // Login effects
-  @Effect()
-  onLoginSuccess = this.getContext()
-    .actions$.ofType(LoginSuccessAction.TYPE)
-    .pipe(concatMap(() => []));
+  monitorCollection(collectionKey) {
+    this.getStoreService().dispatchCollectionMonitoringRequest(collectionKey, usersKey);
+  }
 
+  releaseCollectionMonitor(collectionKey) {
+    this.getStoreService().dispatchCollectionMonitoringRelease(collectionKey, usersKey);
+  }
+
+  // Define collection monitoring handlers
   @Effect({ dispatch: false })
   onMonitoringRequest = this.monitorCollections([
     {
@@ -79,22 +82,6 @@ export class UsersStore extends SynchronizedStore<UsersHandlerContext> {
       storeKey: 'all'
     }
   ]);
-
-  // Logout effects
-  @Effect({ dispatch: false })
-  onLogoutRequest = this.getContext()
-    .actions$.ofType(LogoutRequestAction.TYPE)
-    .pipe(
-      tap(() => {
-        console.log('stop listening to fb collection');
-      })
-    );
-
-  // App init effects
-  @Effect({ dispatch: false })
-  appInitialized = this.getContext()
-    .actions$.ofType(AppInitializedAction.TYPE)
-    .pipe(tap(() => {}));
 
   // Regular effects
   @Effect() userCreateRequest = this.processEffect(handlers, UserCreationRequestAction.TYPE);

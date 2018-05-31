@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, concatMap } from 'rxjs/operators';
 
 import { GenericContext, fire } from '../../classes/generic-store';
 
@@ -9,12 +9,20 @@ import { AuthenticationService } from '../../../services/authentication.service'
 import { ActionState } from '../../interfaces/action-state';
 
 import * as actions from './authentication.actions';
+import { UsersService } from '../../../services/users.service';
+import { AppInitializedAction } from '../app/app.actions';
 
 export interface AuthenticationHandlerContext extends GenericContext {
   authService: AuthenticationService;
+  usersService: UsersService;
 }
 
 const _handlers = {};
+
+// App initialized
+_handlers[AppInitializedAction.TYPE] = {
+  effect: (action$, context) => action$.pipe(concatMap(() => context.authService.monitorAuthentication()))
+};
 
 // Login request
 _handlers[actions.LoginRequestAction.TYPE] = {
@@ -41,7 +49,14 @@ _handlers[actions.LoginSuccessAction.TYPE] = {
   action: (state, { payload }: actions.LoginSuccessAction) => {
     const login = fire.succeed(state.login);
     return { ...state, authenticated: true, login };
-  }
+  },
+
+  effect: (action$, context: AuthenticationHandlerContext) =>
+    action$.pipe(
+      concatMap(({ payload }: actions.LoginSuccessAction) =>
+        context.usersService.getDocumentMonitor('VAn9OJ9G3JhPSBZWAxXvL9lwSOx2')
+      )
+    )
 };
 
 // Login failure

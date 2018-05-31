@@ -8,6 +8,11 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { StoreService } from './store.service';
 import { BackendService } from './interfaces/backend.service';
 import { take } from 'rxjs/operators';
+import {
+  CollectionMonitoringRequestAction,
+  CollectionMonitoringReleaseAction
+} from '../store/classes/sychronized-store.actions';
+import { usersKey } from '../store/store.keys';
 
 export interface UserCreationError {
   message: string;
@@ -23,7 +28,7 @@ export const USERS_KEY = {
 
 @Injectable()
 export class UsersService implements BackendService {
-  constructor(private _afAuth: AngularFireAuth, private _afs: AngularFirestore) {}
+  constructor(private _storeService: StoreService, private _afAuth: AngularFireAuth, private _afs: AngularFirestore) {}
 
   getPermissionsForUser() {
     this._afs
@@ -34,16 +39,17 @@ export class UsersService implements BackendService {
       .subscribe(data => console.log('data'));
   }
 
-  getCollectionAddMonitor<T>(collectionKey, operation) {
-    let collection: AngularFirestoreCollection<T>;
-
+  getCollectionMonitor<T>(collectionKey, operation) {
     switch (collectionKey) {
       case USERS_KEY.all:
         return this._afs.collection<any>('users').stateChanges([operation]);
     }
 
-    debugger;
-    return this._afs.collection<any>('users').stateChanges(['added']);
+    return null;
+  }
+
+  getDocumentMonitor(documentKey: string) {
+    return this._afs.doc(documentKey).valueChanges();
   }
 
   createUserWithEmailAndPassword(userData: { displayName: string; username: string; password: string }) {

@@ -1,4 +1,6 @@
 export interface SynchronizedStoreService {
-  monitorCollection(collectionKey: string);
-  releaseMonitor(collectionKey);
+  monitorDocument(documentKey: string, targetStore: string);
+  releaseDocument(documentKey: string, targetStore: string);
+  dispatchCollectionMonitoringRequest(collectionKey: string, targetStore: string);
+  dispatchCollectionMonitoringRelease(collectionKey: string, targetStore: string);
 }
