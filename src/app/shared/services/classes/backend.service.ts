@@ -16,6 +16,14 @@ export class BackendService {
       : this.__afs.doc(`${this._fsCollectionKey}/${documentOrId}`);
   }
 
+  addDocument(data: any, id?: string) {
+    if (!id) id = this.__afs.createId();
+    this.getCollection()
+      .doc(id)
+      .set(data);
+    // this.getCollection().add(data);
+  }
+
   updateDocument(documentOrId: any, fieldsToUpdate: {}): Promise<void> {
     return this.getDocument(documentOrId).update(fieldsToUpdate);
   }

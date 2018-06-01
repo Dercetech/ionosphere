@@ -26,6 +26,7 @@ export class AdminUsersPage {
     this._usersStore.monitorDocument('authenticated', 'VAn9OJ9G3JhPSBZWAxXvL9lwSOx2');
     this._usersService.toggleDocumentProperty('VAn9OJ9G3JhPSBZWAxXvL9lwSOx2', 'permissions.pooper');
     this._usersService.setDocumentPropertyValue('VAn9OJ9G3JhPSBZWAxXvL9lwSOx2', 'crap.poot.bull', 'shit');
+    this._usersService.addDocument({ cunt: true, o: 'abc' }, 'AZAZEL');
   }
 
   ionViewWillUnload() {
