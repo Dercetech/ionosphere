@@ -11,7 +11,6 @@ import { LoginSuccessAction, LogoutSuccessAction } from '../store/features/authe
 import { StoreService } from './store.service';
 import { map } from 'rxjs-compat/operator/map';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { BackendService } from './interfaces/backend.service';
 
 @Injectable()
 export class AuthenticationService {

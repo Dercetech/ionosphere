@@ -16,7 +16,7 @@ import { GenericStore, GenericContext, SelectRegistrationContext } from './gener
 
 import { User } from '../../models/user';
 
-import { BackendService } from '../../services/interfaces/backend.service';
+import { BackendService } from '../../services/classes/backend.service';
 import { StoreService } from '../../services/store.service';
 import { SynchronizedDocumentAction } from './synchronized-document-action';
 import { LogoutSuccessAction } from '../features/authentication/authentication.actions';

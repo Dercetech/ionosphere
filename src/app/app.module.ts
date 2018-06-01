@@ -26,6 +26,7 @@ import { SharedModule } from './shared/shared.module';
 import { LayoutModule } from './shared/layout/layout.module';
 import { RoutingModule } from './routing/routing.module';
 import { RoutingService } from './routing/routing.service';
+import { AppExceptionHandler } from './app.error.handler';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -57,13 +58,14 @@ const initializeConfig = (routingService: RoutingService) => () => {
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: ErrorHandler, useClass: IonicErrorHandler },
     {
       provide: APP_INITIALIZER,
       useFactory: initializeConfig,
       deps: [RoutingService],
       multi: true
     },
+    //{ provide: ErrorHandler, useClass: IonicErrorHandler },
+    { provide: ErrorHandler, useClass: AppExceptionHandler },
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

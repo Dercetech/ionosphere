@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, concatMap } from 'rxjs/operators';
 
 @Injectable()
 export class BackendService {
@@ -16,9 +16,9 @@ export class BackendService {
       : this.__afs.doc(`${this._fsCollectionKey}/${documentOrId}`);
   }
 
-  addDocument(data: any, id?: string) {
+  addDocument(data: any, id?: string): Promise<any> {
     if (!id) id = this.__afs.createId();
-    this.getCollection()
+    return this.getCollection()
       .doc(id)
       .set(data);
     // this.getCollection().add(data);
@@ -28,26 +28,29 @@ export class BackendService {
     return this.getDocument(documentOrId).update(fieldsToUpdate);
   }
 
-  toggleDocumentProperty(documentOrId: any, property) {
-    this.modifyNestedProperty(documentOrId, property, (nestedPojo, leafProperty) => !!!nestedPojo[leafProperty]);
+  toggleDocumentProperty(documentOrId: any, property): Promise<any> {
+    return this.modifyNestedProperty(documentOrId, property, (nestedPojo, leafProperty) => !!!nestedPojo[leafProperty]);
   }
 
-  setDocumentPropertyValue(documentOrId: any, property, newValue) {
-    this.modifyNestedProperty(documentOrId, property, (nestedPojo, leafProperty) => newValue);
+  setDocumentPropertyValue(documentOrId: any, property, newValue): Promise<any> {
+    return this.modifyNestedProperty(documentOrId, property, (nestedPojo, leafProperty) => newValue);
   }
 
-  modifyNestedProperty(documentOrId, property, modFunction) {
+  modifyNestedProperty(documentOrId, property, modFunction): Promise<any> {
     const segments = property.split('.');
-    this.getDocumentValue$(documentOrId)
-      .pipe(take(1))
-      .subscribe(documentValue => {
-        const { pojo } = this.reachNestedProperty(documentValue, segments);
-        const leafProperty = property.split('.').pop();
-        const newValue = modFunction(pojo, leafProperty);
-        this.updateDocument(documentOrId, {
-          [property]: newValue
-        });
-      });
+    return this.getDocumentValue$(documentOrId)
+      .pipe(
+        take(1),
+        concatMap(documentValue => {
+          const { pojo } = this.reachNestedProperty(documentValue, segments);
+          const leafProperty = property.split('.').pop();
+          const newValue = modFunction(pojo, leafProperty);
+          return this.updateDocument(documentOrId, {
+            [property]: newValue
+          });
+        })
+      )
+      .toPromise();
   }
 
   private getNestedPropertyValue(pojo: any, segments: string[]) {
