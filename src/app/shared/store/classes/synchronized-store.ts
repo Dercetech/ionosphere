@@ -347,7 +347,7 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
   private releaseCollectionMonitors() {
     Object.keys(this._monitors).forEach(key => {
       const monitor = this._monitors[key];
-      monitor.subscriptions.forEach(subscription => subscription.unsubscribe());
+      monitor && monitor.subscriptions && monitor.subscriptions.forEach(subscription => subscription.unsubscribe());
       this._monitors[key] = null;
     });
   }
@@ -355,7 +355,7 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
   private releaseDocumentMonitors() {
     Object.keys(this._documentMonitors).forEach(key => {
       const monitor = this._monitors[key];
-      monitor.subscription.unsubscribe();
+      monitor && monitor.subscription && monitor.subscription.unsubscribe();
       this._documentMonitors[key] = null;
     });
   }
