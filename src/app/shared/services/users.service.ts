@@ -6,7 +6,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 import { StoreService } from './store.service';
-import { BackendService } from './interfaces/backend.service';
+import { BackendService } from './classes/backend.service';
 import { take } from 'rxjs/operators';
 import {
   CollectionMonitoringRequestAction,
@@ -27,13 +27,17 @@ export const USERS_KEY = {
 };
 
 @Injectable()
-export class UsersService implements BackendService {
-  constructor(private _storeService: StoreService, private _afAuth: AngularFireAuth, private _afs: AngularFirestore) {}
+export class UsersService extends BackendService {
+  constructor(private _storeService: StoreService, private _afAuth: AngularFireAuth, private _afs: AngularFirestore) {
+    super(_afs, {
+      collection: 'users'
+    });
+  }
 
   getCollectionMonitor<T>(collectionKey, operation) {
     switch (collectionKey) {
       case USERS_KEY.all:
-        return this._afs.collection<any>('users').stateChanges([operation]);
+        return this.getCollection().stateChanges([operation]);
     }
 
     return null;

@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 
 import { StoreService } from '../../../../shared/services/store.service';
-import { USERS_KEY } from '../../../../shared/services/users.service';
+import { USERS_KEY, UsersService } from '../../../../shared/services/users.service';
 import { UsersStore } from '../../../../shared/store/features/users/users.store';
 
 @IonicPage()
@@ -13,13 +13,19 @@ import { UsersStore } from '../../../../shared/store/features/users/users.store'
 export class AdminUsersPage {
   userList$;
 
-  constructor(private _storeService: StoreService, private _usersStore: UsersStore) {
+  constructor(
+    private _storeService: StoreService,
+    private _usersStore: UsersStore,
+    private _usersService: UsersService
+  ) {
     this.userList$ = this._storeService.select.users.all.documents$;
   }
 
   ionViewDidLoad() {
     this._usersStore.monitorCollection(USERS_KEY.all);
     this._usersStore.monitorDocument('authenticated', 'VAn9OJ9G3JhPSBZWAxXvL9lwSOx2');
+    this._usersService.toggleDocumentProperty('VAn9OJ9G3JhPSBZWAxXvL9lwSOx2', 'permissions.pooper');
+    this._usersService.setDocumentPropertyValue('VAn9OJ9G3JhPSBZWAxXvL9lwSOx2', 'crap.poot.bull', 'shit');
   }
 
   ionViewWillUnload() {

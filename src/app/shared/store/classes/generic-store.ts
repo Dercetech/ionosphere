@@ -50,7 +50,5 @@ export class GenericStore<T extends GenericContext> {
     return this._context;
   }
 
-  logoutRoutine() {
-    console.log('logging out');
-  }
+  logoutRoutine() {}
 }
