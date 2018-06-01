@@ -9,7 +9,8 @@ import { SynchronizedCollectionAction } from './synchronized-collection-action';
 import {
   CollectionMonitoringRequestAction,
   CollectionMonitoringReleaseAction,
-  DocumentMonitoringRequestAction
+  DocumentMonitoringRequestAction,
+  DocumentMonitoringReleaseAction
 } from './sychronized-store.actions';
 import { GenericStore, GenericContext, SelectRegistrationContext } from './generic-store';
 
@@ -20,15 +21,21 @@ import { StoreService } from '../../services/store.service';
 import { SynchronizedDocumentAction } from './synchronized-document-action';
 
 export interface DocumentMonitorHandler {
-  documentKey: string;
+  backendService: BackendService;
+  folderPath: string;
+  localStoreKey: string;
+}
+
+export interface CollectionMonitorHandler {
+  collectionKey: string;
   storeKey: string;
   backendService: BackendService;
 }
 
-export interface MonitorHandler {
-  collectionKey: string;
-  storeKey: string;
-  backendService: BackendService;
+export interface SynchronizedDocumentState {
+  document: any;
+  id: string;
+  loading: boolean;
 }
 
 export interface SynchronizedCollectionState {
@@ -39,16 +46,33 @@ export interface SynchronizedCollectionState {
 
 export class SynchronizedStore<T extends GenericContext> extends GenericStore<T> {
   private _storeService: StoreService;
+  private _targetStore: string;
   private _documentMonitors = {};
   private _monitors = {};
 
   constructor(context: T, registrationContext: SelectRegistrationContext) {
     super(context, registrationContext);
     this._storeService = registrationContext.storeService;
+    this._targetStore = registrationContext.featureKey;
   }
 
   static processSynchronizedState(handlers: any, state: any, action: TypedAction, expectedRootStoreKey: string) {
-    if (action instanceof SynchronizedCollectionAction) {
+    //
+    // Handle document updates
+    if (action instanceof SynchronizedDocumentAction) {
+      const { rootStoreKey, localStoreKey, document, documentKey } = action.payload;
+
+      // Only process collection sync events for the targetted store
+      if (expectedRootStoreKey !== rootStoreKey) {
+        return super.processState(handlers, state, action);
+      }
+
+      const slice: SynchronizedDocumentState = { document, id: documentKey, loading: false };
+      return { ...state, [localStoreKey]: slice };
+    }
+
+    // Handle collection updates
+    else if (action instanceof SynchronizedCollectionAction) {
       const { operation, collectionKey, rootStoreKey, localStoreKey, documents } = action.payload;
 
       // Only process collection sync events for the targetted store
@@ -110,59 +134,136 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
     return this._storeService;
   }
 
-  monitorDocuments(monitorHandlers: DocumentMonitorHandler[]) {
-    return this.getContext()
-      .actions$.ofType(DocumentMonitoringRequestAction.TYPE)
-      .pipe(
-        tap(({ payload: { documentKey } }: DocumentMonitoringRequestAction) => {
-          const handlerSettings = monitorHandlers.find(handler => handler.documentKey === documentKey);
-          if (handlerSettings) {
-            const { storeKey, backendService } = handlerSettings;
-            if (!this._documentMonitors[documentKey]) {
-              this._documentMonitors[documentKey] = {
-                retain: 0,
-                monitor$: backendService.getDocumentMonitor(documentKey),
-                subscription: null
-              };
-            }
-
-            const monitor = this._documentMonitors[documentKey];
-            if (monitor.retain === 0) {
-              monitor.subscription = monitor.monitor$.subscribe(document => {
-                this._storeService.dispatch(new SynchronizedDocumentAction({ document, storeKey }));
-              });
-            }
-
-            monitor.retain++;
-          }
-        })
-      );
+  monitorDocument(targetStoreKey: string, documentKey: string) {
+    const targetStore = this._targetStore;
+    this._storeService.dispatch(new DocumentMonitoringRequestAction({ documentKey, targetStore, targetStoreKey }));
   }
 
-  monitorCollections(monitorHandlers: MonitorHandler[]) {
+  releaseDocumentMonitor(targetStoreKey: string) {
+    const targetStore = this._targetStore;
+    this._storeService.dispatch(new DocumentMonitoringReleaseAction({ targetStore, targetStoreKey }));
+  }
+
+  monitorCollection(collectionKey: string) {
+    const targetStore = this._targetStore;
+    this._storeService.dispatch(new CollectionMonitoringRequestAction({ collectionKey, targetStore }));
+  }
+
+  releaseCollectionMonitor(collectionKey: string) {
+    const targetStore = this._targetStore;
+    this._storeService.dispatch(new CollectionMonitoringReleaseAction({ collectionKey, targetStore }));
+  }
+
+  documentMonitoringSetup(monitorHandlers: DocumentMonitorHandler[]) {
     return merge(
+      // Document monitor retain
+      this.getContext()
+        .actions$.ofType(DocumentMonitoringRequestAction.TYPE)
+        .pipe(
+          tap(({ payload: { documentKey, targetStore, targetStoreKey } }: DocumentMonitoringRequestAction) => {
+            if (targetStore !== this._targetStore) {
+              return;
+            }
+            // Pick the handler for this local key
+            const handlerSettings: DocumentMonitorHandler = monitorHandlers.find(
+              handler => handler.localStoreKey === targetStoreKey
+            );
+            if (handlerSettings) {
+              const { backendService, folderPath } = handlerSettings;
+              if (!this._documentMonitors[targetStoreKey]) {
+                this._documentMonitors[targetStoreKey] = {
+                  retain: 0,
+                  monitor$: backendService.getDocumentMonitor(handlerSettings.folderPath, documentKey),
+                  subscription: null
+                };
+              }
+
+              const monitor = this._documentMonitors[targetStoreKey];
+              if (monitor.retain === 0) {
+                monitor.subscription = monitor.monitor$.subscribe(document => {
+                  this._storeService.dispatch(
+                    new SynchronizedDocumentAction({
+                      document,
+                      documentKey,
+                      rootStoreKey: targetStore,
+                      localStoreKey: targetStoreKey
+                    })
+                  );
+                });
+              }
+
+              monitor.retain++;
+            }
+          })
+        ),
+
+      // Document monitor release
+      this.getContext()
+        .actions$.ofType(DocumentMonitoringReleaseAction.TYPE)
+        .pipe(
+          tap(({ payload: { targetStore, targetStoreKey } }: DocumentMonitoringReleaseAction) => {
+            if (targetStore !== this._targetStore) {
+              return;
+            }
+            const monitor = this._documentMonitors[targetStoreKey];
+            if (monitor) {
+              monitor.retain--;
+              if (monitor.retain < 0) {
+                console.warn('[Document Monitoring] Release > Monitor counter should not be lower than 0!');
+                monitor.retain = 0;
+              }
+              if (monitor.retain === 0) {
+                if (!monitor.subscription) {
+                  console.warn(
+                    '[Document Monitoring] Release > No subscription available when releasing the monitor: ' +
+                      targetStoreKey
+                  );
+                }
+                [monitor.subscription].forEach((subscription: Subscription) => {
+                  if (subscription.closed) {
+                    console.warn(
+                      '[Document Monitoring] Release > A subscription was already closed when releasing the monitor: ' +
+                        targetStoreKey
+                    );
+                  }
+                  subscription.unsubscribe();
+                });
+                monitor.subscription = null;
+              }
+            }
+          })
+        )
+    );
+  }
+
+  collectionMonitoringSetup(monitorHandlers: CollectionMonitorHandler[]) {
+    return merge(
+      // Collection monitor retain
       this.getContext()
         .actions$.ofType(CollectionMonitoringRequestAction.TYPE)
         .pipe(
           tap(({ payload: { collectionKey, targetStore } }: CollectionMonitoringRequestAction) => {
+            if (targetStore !== this._targetStore) {
+              return;
+            }
             const handlerSettings = monitorHandlers.find(handler => handler.collectionKey === collectionKey);
             if (handlerSettings) {
               const { storeKey, backendService } = handlerSettings;
-
               if (!this._monitors[collectionKey]) {
                 this._monitors[collectionKey] = {
                   retain: 0,
                   added$: backendService.getCollectionMonitor(collectionKey, 'added'),
                   modified$: backendService.getCollectionMonitor(collectionKey, 'modified'),
                   removed$: backendService.getCollectionMonitor(collectionKey, 'removed'),
-                  subscription: null
+                  subscriptions: null
                 };
               }
 
               const monitor = this._monitors[collectionKey];
-              monitor.retain === 0 &&
-                ['added', 'modified', 'removed'].forEach((operation: 'added' | 'modified' | 'removed') => {
-                  monitor.subscription = monitor[`${operation}$`]
+              if (monitor.retain === 0) {
+                const operations: ('added' | 'modified' | 'removed')[] = ['added', 'modified', 'removed'];
+                monitor.subscriptions = operations.map(operation =>
+                  monitor[`${operation}$`]
                     .pipe(map((actions: DocumentChangeAction[]) => actions.map(action => action.payload.doc)))
                     .subscribe((documents: firestore.QueryDocumentSnapshot[]) => {
                       this._storeService.dispatch(
@@ -174,30 +275,56 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
                           localStoreKey: storeKey
                         })
                       );
-                    });
-                });
+                    })
+                );
+              }
 
               monitor.retain++;
+            } else {
+              console.warn(
+                '[Collection Monitoring] Setup > There was no handler found for requested key: ' + collectionKey
+              );
             }
           })
         ),
 
+      // Collection monitor release
       this.getContext()
         .actions$.ofType(CollectionMonitoringReleaseAction.TYPE)
         .pipe(
-          tap(({ payload: { collectionKey } }: CollectionMonitoringReleaseAction) => {
-            const handlerSettings = monitorHandlers.find(handler => handler.collectionKey === collectionKey);
-            if (handlerSettings) {
-              const { storeKey, backendService } = handlerSettings;
-              const monitor = this._monitors[collectionKey];
-              if (monitor) {
-                monitor.retain--;
-                if (monitor.retain <= 0) {
-                  monitor.retain = 0;
-                  monitor.subscription.unsubscribe();
-                  monitor.subscription = null;
-                }
+          tap(({ payload: { collectionKey, targetStore } }: CollectionMonitoringReleaseAction) => {
+            if (targetStore !== this._targetStore) {
+              return;
+            }
+            const monitor = this._monitors[collectionKey];
+            if (monitor) {
+              monitor.retain--;
+              if (monitor.retain < 0) {
+                console.warn('[Collection Monitoring] Release > Monitor counter should not be lower than 0!');
+                monitor.retain = 0;
               }
+              if (monitor.retain === 0) {
+                if (monitor.subscriptions.length !== 3) {
+                  console.warn(
+                    '[Collection Monitoring] Release > No subscriptions were available when releasing the monitor: ' +
+                      collectionKey
+                  );
+                }
+                monitor.subscriptions.forEach((subscription: Subscription) => {
+                  if (subscription.closed) {
+                    console.warn(
+                      '[Collection Monitoring] Release > A subscription was already closed when releasing the monitor: ' +
+                        collectionKey
+                    );
+                  }
+                  subscription.unsubscribe();
+                });
+                monitor.subscriptions.length = 0;
+              }
+            } else {
+              console.warn(
+                '[Collection Monitoring] Release > There was no monitor found for requested key: ' + collectionKey
+              );
             }
           })
         )

@@ -65,17 +65,15 @@ export class UsersStore extends SynchronizedStore<UsersHandlerContext> {
     return super.processSynchronizedState(handlers, state, action, usersKey);
   }
 
-  monitorCollection(collectionKey) {
-    this.getStoreService().dispatchCollectionMonitoringRequest(collectionKey, usersKey);
-  }
-
-  releaseCollectionMonitor(collectionKey) {
-    this.getStoreService().dispatchCollectionMonitoringRelease(collectionKey, usersKey);
-  }
-
-  // Define collection monitoring handlers
+  // Document monitoring handlers
   @Effect({ dispatch: false })
-  onMonitoringRequest = this.monitorCollections([
+  documentMonitoringEffect = this.documentMonitoringSetup([
+    { localStoreKey: 'authenticated', backendService: this._usersService, folderPath: null }
+  ]);
+
+  // Collection monitoring handlers
+  @Effect({ dispatch: false })
+  collectionMonitoringEffect = this.collectionMonitoringSetup([
     {
       backendService: this._usersService,
       collectionKey: USERS_KEY.all,

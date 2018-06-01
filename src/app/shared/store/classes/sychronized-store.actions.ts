@@ -2,14 +2,14 @@ import { TypedAction } from './typed-action';
 
 export class DocumentMonitoringRequestAction extends TypedAction {
   static TYPE = '[Database] Document monitoring requested';
-  constructor(public payload: { documentKey: string }) {
+  constructor(public payload: { documentKey: string; targetStore: string; targetStoreKey: string }) {
     super();
   }
 }
 
 export class DocumentMonitoringReleaseAction extends TypedAction {
   static TYPE = '[Database] Document monitoring released';
-  constructor(public payload: { documentKey: string }) {
+  constructor(public payload: { targetStore: string; targetStoreKey: string }) {
     super();
   }
 }

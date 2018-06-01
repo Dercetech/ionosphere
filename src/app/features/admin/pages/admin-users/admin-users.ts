@@ -19,9 +19,11 @@ export class AdminUsersPage {
 
   ionViewDidLoad() {
     this._usersStore.monitorCollection(USERS_KEY.all);
+    this._usersStore.monitorDocument('authenticated', 'VAn9OJ9G3JhPSBZWAxXvL9lwSOx2');
   }
 
   ionViewWillUnload() {
     this._usersStore.releaseCollectionMonitor(USERS_KEY.all);
+    this._usersStore.releaseDocumentMonitor('authenticated');
   }
 }

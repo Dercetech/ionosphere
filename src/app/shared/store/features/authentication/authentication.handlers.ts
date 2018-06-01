@@ -1,4 +1,4 @@
-import { of } from 'rxjs';
+import { of, merge } from 'rxjs';
 import { catchError, map, switchMap, concatMap } from 'rxjs/operators';
 
 import { GenericContext, fire } from '../../classes/generic-store';
@@ -11,6 +11,8 @@ import { ActionState } from '../../interfaces/action-state';
 import * as actions from './authentication.actions';
 import { UsersService } from '../../../services/users.service';
 import { AppInitializedAction } from '../app/app.actions';
+import { DocumentMonitoringRequestAction } from '../../classes/sychronized-store.actions';
+import { authenticationKey } from '../../store.keys';
 
 export interface AuthenticationHandlerContext extends GenericContext {
   authService: AuthenticationService;
@@ -21,7 +23,7 @@ const _handlers = {};
 
 // App initialized
 _handlers[AppInitializedAction.TYPE] = {
-  effect: (action$, context) => action$.pipe(concatMap(() => context.authService.monitorAuthentication()))
+  effect: (action$, context) => action$.pipe(concatMap(() => merge(context.authService.monitorAuthentication())))
 };
 
 // Login request
@@ -53,9 +55,13 @@ _handlers[actions.LoginSuccessAction.TYPE] = {
 
   effect: (action$, context: AuthenticationHandlerContext) =>
     action$.pipe(
-      concatMap(({ payload }: actions.LoginSuccessAction) =>
-        context.usersService.getDocumentMonitor('VAn9OJ9G3JhPSBZWAxXvL9lwSOx2')
-      )
+      concatMap(({ payload: { uid } }: actions.LoginSuccessAction) => [
+        new DocumentMonitoringRequestAction({
+          documentKey: uid, // Keep this document in sync
+          targetStore: authenticationKey, // On this store
+          targetStoreKey: 'authenticatedUser' // Using this property
+        })
+      ])
     )
 };
 

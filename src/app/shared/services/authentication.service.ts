@@ -16,38 +16,15 @@ import {
 import { StoreService } from './store.service';
 import { map } from 'rxjs-compat/operator/map';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { BackendService } from './interfaces/backend.service';
 
 @Injectable()
 export class AuthenticationService {
-  constructor(private _store: StoreService, private _afs: AngularFirestore, private _afAuth: AngularFireAuth) {
-    //this._afAuth.authState
-    // .switchMap(user => this._afs.doc<FirebaseUser>(`users/${user.uid}`).valueChanges())
-    // .pipe(filter(value => !!value), tap(value => console.log('value')))
-    //.subscribe(user => this._store.dispatch(user ? new LoginSuccessAction() : new LogoutSuccessAction()));
-    // .switchMap(user => {
-    //   if (user) {
-    //     return this.afs.doc<User>(`users/${user.uid}`).valueChanges()
-    //   } else {
-    //     return Observable.of(null)
-    //   }
-    // })
-  }
+  constructor(private _store: StoreService, private _afs: AngularFirestore, private _afAuth: AngularFireAuth) {}
 
   monitorAuthentication() {
     return this._afAuth.authState.pipe(
-      tap(fireUser => {
-        this._afs
-          .doc(`users/${fireUser.uid}`)
-          .valueChanges()
-          .pipe(
-            catchError(err => {
-              console.warn(err);
-              return of(null);
-            })
-          )
-          .subscribe(user => this._store.dispatch(new AuthenticatedUserUpdateAction({ ...user, id: fireUser.uid })));
-      }),
-      concatMap(user => [user ? new LoginSuccessAction() : new LogoutSuccessAction()])
+      concatMap(fireUser => [fireUser ? new LoginSuccessAction({ uid: fireUser.uid }) : new LogoutSuccessAction()])
     );
   }
 

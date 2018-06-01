@@ -22,11 +22,11 @@ import { ActionState } from '../../interfaces/action-state';
 import { FirebaseUser } from '../../../models/user.firebase';
 import { AppInitializedAction } from '../app/app.actions';
 import { concatMap, tap } from 'rxjs/operators';
+import { SynchronizedStore } from '../../classes/synchronized-store';
 
 export interface AuthenticationState {
   authenticated: boolean;
   authenticatedUser: FirebaseUser;
-  authenticatedUserId: string;
   login: ActionState<string>;
   passwordReset: ActionState<string>;
 }
@@ -34,7 +34,6 @@ export interface AuthenticationState {
 const initialState: AuthenticationState = {
   authenticated: false,
   authenticatedUser: null,
-  authenticatedUserId: null,
   login: {
     error: null,
     processing: false,
@@ -48,16 +47,16 @@ const initialState: AuthenticationState = {
 };
 
 @Injectable()
-export class AuthenticationStore extends GenericStore<AuthenticationHandlerContext> {
+export class AuthenticationStore extends SynchronizedStore<AuthenticationHandlerContext> {
   constructor(
     actions$: Actions,
     store: Store<any>,
     storeService: StoreService,
     authService: AuthenticationService,
-    usersService: UsersService
+    private _usersService: UsersService
   ) {
     super(
-      { actions$, authService, usersService },
+      { actions$, authService, usersService: _usersService },
       {
         storeService,
         featureKey: authenticationKey,
@@ -68,20 +67,22 @@ export class AuthenticationStore extends GenericStore<AuthenticationHandlerConte
   }
 
   static reducer(state = initialState, action): AuthenticationState {
-    return super.processState(handlers, state, action);
+    return super.processSynchronizedState(handlers, state, action, authenticationKey);
   }
 
+  // Document monitoring handlers
   @Effect({ dispatch: false })
-  appInitialized_monitorAuthentication = this.getContext()
-    .actions$.ofType(AppInitializedAction.TYPE)
-    .pipe(
-      tap(() => {
-        this.getContext().authService.monitorAuthentication();
-      })
-    );
+  documentMonitoringEffect = this.documentMonitoringSetup([
+    { localStoreKey: 'authenticatedUser', backendService: this._usersService, folderPath: null }
+  ]);
+
+  // Collection monitoring handlers
+  @Effect({ dispatch: false })
+  collectionMonitoringEffect = this.collectionMonitoringSetup([]);
 
   @Effect() appInitialized = this.processEffect(handlers, AppInitializedAction.TYPE);
   @Effect() loginRequest = this.processEffect(handlers, LoginRequestAction.TYPE);
+  @Effect() loginSuccess = this.processEffect(handlers, LoginSuccessAction.TYPE);
   @Effect() passwordResetRequest = this.processEffect(handlers, PasswordResetRequestAction.TYPE);
   @Effect() logoutRequest = this.processEffect(handlers, LogoutRequestAction.TYPE);
 }

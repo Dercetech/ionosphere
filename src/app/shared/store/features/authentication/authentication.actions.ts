@@ -10,7 +10,7 @@ export class LoginRequestAction extends TypedAction {
 
 export class LoginSuccessAction extends TypedAction {
   static TYPE = '[Auth] Login success';
-  constructor(public payload?: { token: string }) {
+  constructor(public payload: { uid: string }) {
     super();
   }
 }

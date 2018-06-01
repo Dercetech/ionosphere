@@ -30,15 +30,6 @@ export const USERS_KEY = {
 export class UsersService implements BackendService {
   constructor(private _storeService: StoreService, private _afAuth: AngularFireAuth, private _afs: AngularFirestore) {}
 
-  getPermissionsForUser() {
-    this._afs
-      .collection('users')
-      .doc('U4bGn4H9elgBBzftsWsf')
-      .valueChanges()
-      .pipe(take(1))
-      .subscribe(data => console.log('data'));
-  }
-
   getCollectionMonitor<T>(collectionKey, operation) {
     switch (collectionKey) {
       case USERS_KEY.all:
@@ -48,8 +39,14 @@ export class UsersService implements BackendService {
     return null;
   }
 
-  getDocumentMonitor(documentKey: string) {
-    return this._afs.doc(documentKey).valueChanges();
+  getDocumentMonitor(folderPath: string, documentKey: string) {
+    if (folderPath) {
+      console.warn('[TODO] Implement folderPath in document monitor');
+    }
+    return this._afs
+      .collection('users')
+      .doc(documentKey)
+      .valueChanges();
   }
 
   createUserWithEmailAndPassword(userData: { displayName: string; username: string; password: string }) {
