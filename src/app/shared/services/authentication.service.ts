@@ -6,12 +6,7 @@ import { delay, catchError, filter, tap, concatMap } from 'rxjs/operators';
 import firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
 
-import {
-  LoginSuccessAction,
-  LogoutRequestAction,
-  LogoutSuccessAction,
-  AuthenticatedUserUpdateAction
-} from '../store/features/authentication/authentication.actions';
+import { LoginSuccessAction, LogoutSuccessAction } from '../store/features/authentication/authentication.actions';
 
 import { StoreService } from './store.service';
 import { map } from 'rxjs-compat/operator/map';

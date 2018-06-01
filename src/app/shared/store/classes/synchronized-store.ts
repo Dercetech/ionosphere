@@ -19,6 +19,7 @@ import { User } from '../../models/user';
 import { BackendService } from '../../services/interfaces/backend.service';
 import { StoreService } from '../../services/store.service';
 import { SynchronizedDocumentAction } from './synchronized-document-action';
+import { LogoutSuccessAction } from '../features/authentication/authentication.actions';
 
 export interface DocumentMonitorHandler {
   backendService: BackendService;
@@ -329,5 +330,33 @@ export class SynchronizedStore<T extends GenericContext> extends GenericStore<T>
           })
         )
     );
+  }
+
+  logoutRoutine() {
+    super.logoutRoutine();
+    return this.getContext()
+      .actions$.ofType(LogoutSuccessAction.TYPE)
+      .pipe(take(1), tap(() => this.releaseMonitors()));
+  }
+
+  private releaseMonitors() {
+    this.releaseCollectionMonitors();
+    this.releaseDocumentMonitors();
+  }
+
+  private releaseCollectionMonitors() {
+    Object.keys(this._monitors).forEach(key => {
+      const monitor = this._monitors[key];
+      monitor.subscriptions.forEach(subscription => subscription.unsubscribe());
+      this._monitors[key] = null;
+    });
+  }
+
+  private releaseDocumentMonitors() {
+    Object.keys(this._documentMonitors).forEach(key => {
+      const monitor = this._monitors[key];
+      monitor.subscription.unsubscribe();
+      this._documentMonitors[key] = null;
+    });
   }
 }

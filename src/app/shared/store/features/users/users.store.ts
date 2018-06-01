@@ -83,4 +83,8 @@ export class UsersStore extends SynchronizedStore<UsersHandlerContext> {
 
   // Regular effects
   @Effect() userCreateRequest = this.processEffect(handlers, UserCreationRequestAction.TYPE);
+
+  // Logout routine
+  @Effect({ dispatch: false })
+  logoutRequest = this.logoutRoutine();
 }

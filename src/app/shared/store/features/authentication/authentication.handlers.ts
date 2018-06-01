@@ -1,5 +1,5 @@
 import { of, merge } from 'rxjs';
-import { catchError, map, switchMap, concatMap } from 'rxjs/operators';
+import { catchError, map, switchMap, concatMap, tap } from 'rxjs/operators';
 
 import { GenericContext, fire } from '../../classes/generic-store';
 
@@ -11,7 +11,10 @@ import { ActionState } from '../../interfaces/action-state';
 import * as actions from './authentication.actions';
 import { UsersService } from '../../../services/users.service';
 import { AppInitializedAction } from '../app/app.actions';
-import { DocumentMonitoringRequestAction } from '../../classes/sychronized-store.actions';
+import {
+  DocumentMonitoringRequestAction,
+  DocumentMonitoringReleaseAction
+} from '../../classes/sychronized-store.actions';
 import { authenticationKey } from '../../store.keys';
 
 export interface AuthenticationHandlerContext extends GenericContext {
@@ -113,14 +116,15 @@ _handlers[actions.PasswordResetFailureAction.TYPE] = {
 _handlers[actions.LogoutRequestAction.TYPE] = {
   effect: (action$, context: AuthenticationHandlerContext) =>
     action$.pipe(
-      switchMap(() =>
-        context.authService
-          .signOut()
-          .pipe(
-            map(() => new SetRootPageAction({ route: routes.login.page })),
-            catchError(err => of(new actions.LogoutFailureAction()))
-          )
-      )
+      concatMap(() => context.authService.signOut()),
+      concatMap(() => [
+        new SetRootPageAction({ route: routes.login.page }),
+        new DocumentMonitoringReleaseAction({
+          targetStore: authenticationKey,
+          targetStoreKey: 'authenticatedUser'
+        })
+      ]),
+      catchError(err => of(new actions.LogoutFailureAction()))
     )
 };
 

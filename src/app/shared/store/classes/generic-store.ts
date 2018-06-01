@@ -3,6 +3,8 @@ import { StoreService } from '../../services/store.service';
 import { Observable } from 'rxjs';
 import { ActionState } from '../interfaces/action-state';
 import { Actions } from '@ngrx/effects';
+import { LogoutSuccessAction } from '../features/authentication/authentication.actions';
+import { take, tap } from 'rxjs/operators';
 
 export interface SelectRegistrationContext {
   storeService: StoreService;
@@ -46,5 +48,9 @@ export class GenericStore<T extends GenericContext> {
   }
   getContext(): T {
     return this._context;
+  }
+
+  logoutRoutine() {
+    console.log('logging out');
   }
 }

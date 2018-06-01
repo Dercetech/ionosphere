@@ -11,17 +11,16 @@ import { GenericStore } from '../../classes/generic-store';
 
 import {
   LoginRequestAction,
-  LogoutRequestAction,
   PasswordResetRequestAction,
   LoginSuccessAction,
-  LogoutSuccessAction
+  LogoutRequestAction
 } from './authentication.actions';
 import { handlers, AuthenticationHandlerContext } from './authentication.handlers';
 import { selectsFactory } from './authentication.selects';
 import { ActionState } from '../../interfaces/action-state';
 import { FirebaseUser } from '../../../models/user.firebase';
 import { AppInitializedAction } from '../app/app.actions';
-import { concatMap, tap } from 'rxjs/operators';
+import { concatMap, tap, take } from 'rxjs/operators';
 import { SynchronizedStore } from '../../classes/synchronized-store';
 
 export interface AuthenticationState {
@@ -84,5 +83,9 @@ export class AuthenticationStore extends SynchronizedStore<AuthenticationHandler
   @Effect() loginRequest = this.processEffect(handlers, LoginRequestAction.TYPE);
   @Effect() loginSuccess = this.processEffect(handlers, LoginSuccessAction.TYPE);
   @Effect() passwordResetRequest = this.processEffect(handlers, PasswordResetRequestAction.TYPE);
+
+  // Logout request
+  @Effect({ dispatch: false })
+  releaseMonitorsOnLogout = this.logoutRoutine();
   @Effect() logoutRequest = this.processEffect(handlers, LogoutRequestAction.TYPE);
 }
