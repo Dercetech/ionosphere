@@ -42,6 +42,11 @@ export class BackendService {
       .pipe(
         take(1),
         concatMap(documentValue => {
+          if (!documentValue) {
+            throw new Error(
+              `Document ${documentOrId.id ? documentOrId.id : documentOrId} not found in ${this._fsCollectionKey}`
+            );
+          }
           const { pojo } = this.reachNestedProperty(documentValue, segments);
           const leafProperty = property.split('.').pop();
           const newValue = modFunction(pojo, leafProperty);

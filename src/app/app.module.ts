@@ -64,8 +64,8 @@ const initializeConfig = (routingService: RoutingService) => () => {
       deps: [RoutingService],
       multi: true
     },
-    //{ provide: ErrorHandler, useClass: IonicErrorHandler },
-    { provide: ErrorHandler, useClass: AppExceptionHandler },
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    //{ provide: ErrorHandler, useClass: AppExceptionHandler },
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG

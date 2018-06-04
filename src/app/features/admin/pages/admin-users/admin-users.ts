@@ -24,8 +24,8 @@ export class AdminUsersPage {
 
   ionViewDidLoad() {
     this._usersStore.monitorCollection(USERS_KEY.all);
-    this._usersStore.monitorDocument('authenticated', 'VAn9OJ9G3JhPSBZWAxXvL9lwSOx2');
-    this._usersService.toggleDocumentProperty('VAn9OJ9G3JhPSBZWAxXvL9lwSOx2z', 'permissions.pooper');
+    // this._usersStore.monitorDocument('authenticated', 'VAn9OJ9G3JhPSBZWAxXvL9lwSOx2');
+    // this._usersService.toggleDocumentProperty('VAn9OJ9G3JhPSBZWAxXvL9lwSOx2', 'permissions.pooper');
     // .catch(err =>
     //   this.alert
     //     .create({
@@ -40,6 +40,6 @@ export class AdminUsersPage {
 
   ionViewWillUnload() {
     this._usersStore.releaseCollectionMonitor(USERS_KEY.all);
-    this._usersStore.releaseDocumentMonitor('authenticated');
+    //this._usersStore.releaseDocumentMonitor('authenticated');
   }
 }
