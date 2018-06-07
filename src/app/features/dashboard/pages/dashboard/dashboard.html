@@ -17,7 +17,10 @@
 <ion-content padding>
   <ion-card padding>
 
-    <button ion-button>Edit the document</button>
+    <h2>{{ 'welcome.title' | translate$ | async }}</h2>
+
+    <button ion-button
+            (click)="onEdit()">Edit the document (firebase)</button>
 
   </ion-card>
 </ion-content>

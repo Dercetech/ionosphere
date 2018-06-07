@@ -13,11 +13,17 @@ import { LoadingFullscreenComponent } from './components/loading-fullscreen/load
 
 import { ScrollHideDirective } from './layout/directives/scroll-hide';
 import { ScrollEffectDirective } from './layout/directives/scroll-effect';
+import { DocumentEditorComponent } from './components/document-editor/document-editor';
+
+const modals = [DocumentEditorComponent];
 
 @NgModule({
   declarations: [
     // Components
     LoadingFullscreenComponent,
+
+    // Components: Modals
+    ...modals,
 
     // Directives
     ScrollHideDirective,
@@ -50,6 +56,7 @@ import { ScrollEffectDirective } from './layout/directives/scroll-effect';
     // Directives
     ScrollHideDirective,
     ScrollEffectDirective
-  ]
+  ],
+  entryComponents: [...modals]
 })
 export class SharedModule {}

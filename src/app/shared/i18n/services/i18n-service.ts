@@ -4,17 +4,15 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { map, filter, switchMap, tap, catchError, take } from 'rxjs/operators';
+import { StoreService } from '../../services/store.service';
 
 @Injectable()
 export class I18nService {
-  // @Select('interface.activeLanguage')
   private _currentLanguage$: Observable<string>;
-
-  // @Select('interface.languageLoading')
   private _languageLoading$: Observable<boolean>;
 
   private _keys: {};
-
+  /*
   private static KEYS: {} = {};
 
   static forRoot(rootDict: any): any {
@@ -25,26 +23,30 @@ export class I18nService {
   static registerFeature(featureName: string, dict: any) {
     I18nService.KEYS[featureName] = dict;
   }
+*/
+  constructor(private http: Http, private _storeService: StoreService) {}
 
-  constructor(private http: Http) {}
+  public initializeWithStore() {
+    this._currentLanguage$ = this._storeService.select.interface.currentLanguage$;
+    this._languageLoading$ = this._storeService.select.interface.languageLoading$;
+  }
 
-  public switchToLanguage$(langCode: string): Observable<boolean> {
-    return this.http
-      .get(`./assets/i18n/${langCode}.json`)
-      .pipe(
-        map((res: any) => res.json()),
-        tap(translations => (this._keys = translations)),
-        switchMap(() => of(true)),
-        catchError(() => of(false))
-      );
+  public switchToLanguage(langCode: string): Observable<boolean> {
+    return this.http.get(`./assets/i18n/${langCode}.json`).pipe(
+      map((res: any) => res.json()),
+      tap(translations => (this._keys = translations)),
+      take(1)
+    );
   }
 
   getString$(ref: any): Observable<string> {
     return this._languageLoading$.pipe(
       filter(loading => loading === false),
-      switchMap(
-        () => this._currentLanguage$.pipe(take(1)),
-        (loading, currentLanguage) => this.getTranslation(ref, currentLanguage)
+      switchMap(() =>
+        this._currentLanguage$.pipe(
+          map(currentLanguage => this.getTranslation(ref, currentLanguage)),
+          take(1)
+        )
       )
     );
   }

@@ -15,13 +15,13 @@ export class I18nModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: I18nModule,
-      providers: [I18nService.forRoot({})]
+      providers: [I18nService /*.forRoot({})*/]
     };
   }
-
+  /*
   static forFeature(featureName: string, dict: any) {
     I18nService.registerFeature(featureName, dict);
   }
-
+*/
   constructor() {}
 }
