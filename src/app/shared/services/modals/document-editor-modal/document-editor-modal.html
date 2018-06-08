@@ -46,6 +46,7 @@
       <button ion-button
               color="primary"
               icon-right
+              [disabled]="isSaveDisabled()"
               (click)="onSave()">
         save
         <ion-icon name="cloud-done"></ion-icon>

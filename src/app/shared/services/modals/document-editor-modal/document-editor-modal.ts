@@ -32,8 +32,7 @@ export class DocumentEditorModalComponent {
       this._alertCtrl
         .create({
           title: 'change detected',
-          message:
-            'this document has been updated by someone else. Your changes might conflict or overwrite the updated version.',
+          message: 'this document has been updated by someone else. Cancel your edits and start over.',
           buttons: ['ok']
         })
         .present();
@@ -48,8 +47,11 @@ export class DocumentEditorModalComponent {
     this._changeGuardSubscription.unsubscribe();
   }
 
+  isSaveDisabled() {
+    return !!!this.getData();
+  }
+
   onCancel() {
-    debugger;
     this.dismiss();
   }
 
