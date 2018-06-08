@@ -5,10 +5,3 @@
              (input)="onValueChanged($event.target.value)"
              type="text"></ion-input>
 </ion-item>
-
-<!-- Object -->
-<ion-item-group *ngIf="prop.type === 'object'">
-  <ion-item-divider color="light">{{prop.key}}</ion-item-divider>
-  <ion-item *ngFor="let subProperty of subProperties">{{ subProperty.type }}</ion-item>
-  <field-editor *ngFor="let subProperty of subProperties"></field-editor>
-</ion-item-group>

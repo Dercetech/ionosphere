@@ -1,22 +1,24 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { ViewController, NavParams, AlertController } from 'ionic-angular';
+import { Component, Input, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
 
-import { Observable, Subscription } from 'rxjs';
-import { take, skip } from 'rxjs/operators';
 import { DocumentSubProperty, DocumentProperty } from '../field-editor/interfaces/document-properties';
-
-export interface DocumentEditorNavParams {
-  data$: Observable<any>;
-}
 
 @Component({
   selector: 'document-editor',
-  templateUrl: 'document-editor.html'
+  templateUrl: 'document-editor.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentEditorComponent {
-  status = {
-    loading: true
-  };
+  @Input()
+  set doc(pojo: any) {
+    if (pojo) {
+      this.data = this.processDocument(pojo);
+    }
+  }
+
+  @Input() key: string;
+
+  @Output('update') updateEmitter: EventEmitter<any> = new EventEmitter<any>();
+
   data: {
     properties: DocumentProperty[];
     subProperties: DocumentSubProperty[];
@@ -25,29 +27,7 @@ export class DocumentEditorComponent {
     subProperties: []
   };
 
-  private _changeGuardSubscription: Subscription;
-
-  constructor(private _viewCtrl: ViewController, private _navParams: NavParams, private _alertCtrl: AlertController) {
-    const data$ = (<DocumentEditorNavParams>this._navParams.data).data$;
-
-    // Obtain value
-    data$.pipe(take(1)).subscribe(data => {
-      this.status = { ...this.status, loading: false };
-      this.data = this.dataToArray(data);
-    });
-
-    // Warn in case of inbound value update
-    this._changeGuardSubscription = data$.pipe(skip(1)).subscribe(data => {
-      this._alertCtrl
-        .create({
-          title: 'change detected',
-          message:
-            'this document has been updated by someone else. Your changes might conflict or overwrite the updated version.',
-          buttons: ['ok']
-        })
-        .present();
-    });
-  }
+  constructor() {}
 
   trackByFn(index: any, item: any) {
     return index;
@@ -56,49 +36,53 @@ export class DocumentEditorComponent {
   onPropertyUpdated(updatedProperty: DocumentProperty) {
     const propertyIndex = this.data.properties.findIndex(property => property.key === updatedProperty.key);
     this.data.properties[propertyIndex] = updatedProperty;
+    this.emitUpdatedDocument();
   }
 
-  private dataToArray(data: any) {
+  onSubdocumentUpdated(updatedSubdocument: any) {
+    Object.keys(updatedSubdocument).forEach(key => {
+      const idx = this.data.subProperties.findIndex((subProperty: DocumentProperty) => subProperty.key === key);
+      this.data.subProperties[idx] = {
+        key,
+        type: 'object',
+        value: updatedSubdocument[key]
+      };
+    });
+
+    //const subdocumentIndex = this.data.subProperties.findIndex((subDoc: any) => subDoc.key === subDoc.key);
+    //this.data.subProperties[subdocumentIndex] = updatedSubdocument;
+    this.emitUpdatedDocument();
+  }
+
+  private emitUpdatedDocument() {
+    const pojo = {};
+    this.data.properties.forEach(property => (pojo[property.key] = property.value));
+    this.data.subProperties.forEach((property: any) => (pojo[property.key] = property.value));
+    this.updateEmitter.emit(this.key ? { [this.key]: pojo } : pojo);
+  }
+
+  private processDocument(data: any) {
     const properties: DocumentProperty[] = [];
     const subProperties: DocumentSubProperty[] = [];
-    debugger;
     Object.keys(data).map(key => {
       const value = data[key];
       const type = this.getDataType(value);
+      const entry = {
+        key,
+        value,
+        type
+      };
       if (type === 'object') {
-        subProperties.push({
-          key,
-          type,
-          values: Object.keys(value).map(subKey => ({
-            key: subKey,
-            value: value[subKey],
-            type: this.getDataType(value[subKey])
-          }))
-        });
+        subProperties.push(entry);
       } else if (type === 'array') {
       } else {
-        properties.push({
-          key,
-          value,
-          type
-        });
+        properties.push(entry);
       }
     });
-
     return {
       properties,
       subProperties
     };
-
-    // if (this.getDataType(data) === 'string') {
-    //   return data;
-    // } else {
-    //   return Object.keys(data).map(key => ({
-    //     key,
-    //     value: this.dataToArray(data[key]),
-    //     type: this.getDataType(data[key])
-    //   }));
-    // }
   }
 
   private getDataType(value: any) {
@@ -111,25 +95,5 @@ export class DocumentEditorComponent {
     } else if (value.constructor === Array) {
       return 'array';
     }
-  }
-
-  ionViewWillLeave() {
-    this._changeGuardSubscription.unsubscribe();
-  }
-
-  onCancel() {
-    this.dismiss(null);
-  }
-
-  onSubmit() {
-    this.dismiss(this.getData());
-  }
-
-  private getData() {
-    return this.data;
-  }
-
-  private dismiss(data?: any) {
-    this._viewCtrl.dismiss(data);
   }
 }

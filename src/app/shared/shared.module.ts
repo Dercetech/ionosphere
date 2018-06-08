@@ -13,15 +13,19 @@ import { LoadingFullscreenComponent } from './components/loading-fullscreen/load
 
 import { ScrollHideDirective } from './layout/directives/scroll-hide';
 import { ScrollEffectDirective } from './layout/directives/scroll-effect';
+
+import { DocumentEditorModalComponent } from './services/modals/document-editor-modal/document-editor-modal';
+
 import { DocumentEditorComponent } from './components/document-editor/document-editor';
 import { FieldEditorComponent } from './components/field-editor/field-editor';
 
-const modals = [DocumentEditorComponent];
+const modals = [DocumentEditorModalComponent];
 
 @NgModule({
   declarations: [
     // Components
     LoadingFullscreenComponent,
+    DocumentEditorComponent,
     FieldEditorComponent,
 
     // Components: Modals

@@ -1,38 +1,16 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Description
-    </ion-title>
-    <ion-buttons start>
-      <button ion-button>
-        <span ion-text
-              color="primary"
-              showWhen="ios">Cancel</span>
-        <ion-icon name="md-close"
-                  showWhen="android,windows"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-list>
 
-<ion-content>
-  <div *ngIf="status.loading"> LOADING </div>
-  <ion-list *ngIf="!status.loading">
+  <!-- Primitives -->
+  <field-editor *ngFor="let property of data.properties; trackBy: trackByFn"
+                [property]="property"
+                (update)="onPropertyUpdated($event)"></field-editor>
 
-    <!-- Primitives -->
-    <field-editor *ngFor="let property of data.properties; trackBy: trackByFn"
-                  [property]="property"
-                  (update)="onPropertyUpdated($event)"></field-editor>
+  <!-- Properties -->
+  <ion-item-group *ngFor="let subDocument of data.subProperties; trackBy: trackByFn">
+    <ion-item-divider color="light">{{subDocument.key}}</ion-item-divider>
+    <document-editor [doc]="subDocument.value"
+                     [key]="subDocument.key"
+                     (update)="onSubdocumentUpdated($event)"></document-editor>
+  </ion-item-group>
 
-    <!-- Primitives -->
-    <field-editor *ngFor="let property of data.properties; trackBy: trackByFn"
-                  [property]="property"
-                  (update)="onPropertyUpdated($event)"></field-editor>
-
-    <!-- Primitives -->
-    <field-editor *ngFor="let property of data.subProperties; trackBy: trackByFn"
-                  [property]="property"
-                  (update)="onPropertyUpdated($event)"></field-editor>
-
-  </ion-list>
-</ion-content>
+</ion-list>

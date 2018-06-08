@@ -3,8 +3,9 @@ import { ModalController } from 'ionic-angular';
 
 import { take } from 'rxjs/operators';
 
-import { DocumentEditorComponent, DocumentEditorNavParams } from '../components/document-editor/document-editor';
 import { BackendService } from './classes/backend.service';
+import { DocumentEditorModalComponent } from './modals/document-editor-modal/document-editor-modal';
+import { DocumentEditorNavParams } from './modals/document-editor-modal/document-editor-nav-params';
 
 @Injectable()
 export class ModalsService {
@@ -16,7 +17,7 @@ export class ModalsService {
       data$: doc.valueChanges()
     };
 
-    const modal = this._modalCtrl.create(DocumentEditorComponent, navParams, {});
+    const modal = this._modalCtrl.create(DocumentEditorModalComponent, navParams, {});
 
     modal.onDidDismiss(data => {
       console.log('data: ', data);
