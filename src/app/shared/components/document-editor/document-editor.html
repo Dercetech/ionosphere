@@ -20,43 +20,19 @@
   <ion-list *ngIf="!status.loading">
 
     <!-- Primitives -->
-    <ng-template ngFor
-                 let-property
-                 [ngForOf]="data.properties">
-
-      <!-- String -->
-      <ion-item *ngIf="property.type === 'string'">
-        <ion-label floating>{{property.key}}</ion-label>
-        <ion-input [(ngModel)]="property.value"
-                   type="text"></ion-input>
-      </ion-item>
-
-    </ng-template>
+    <field-editor *ngFor="let property of data.properties; trackBy: trackByFn"
+                  [property]="property"
+                  (update)="onPropertyUpdated($event)"></field-editor>
 
     <!-- Primitives -->
-    <ng-template ngFor
-                 let-sub
-                 [ngForOf]="data.subProperties">
+    <field-editor *ngFor="let property of data.properties; trackBy: trackByFn"
+                  [property]="property"
+                  (update)="onPropertyUpdated($event)"></field-editor>
 
-      <ion-item-group>
-        <ion-item-divider color="light">{{sub.key}}</ion-item-divider>
-
-        <ng-template ngFor
-                     let-subval
-                     [ngForOf]="sub.values">
-
-          <!-- String -->
-          <ion-item *ngIf="true">
-            <ion-label floating>{{subval.key}}</ion-label>
-            <ion-input [(ngModel)]="subval.value"
-                       type="text"></ion-input>
-          </ion-item>
-
-        </ng-template>
-
-      </ion-item-group>
-
-    </ng-template>
+    <!-- Primitives -->
+    <field-editor *ngFor="let property of data.subProperties; trackBy: trackByFn"
+                  [property]="property"
+                  (update)="onPropertyUpdated($event)"></field-editor>
 
   </ion-list>
 </ion-content>

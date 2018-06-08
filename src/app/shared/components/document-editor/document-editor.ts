@@ -3,6 +3,7 @@ import { ViewController, NavParams, AlertController } from 'ionic-angular';
 
 import { Observable, Subscription } from 'rxjs';
 import { take, skip } from 'rxjs/operators';
+import { DocumentSubProperty, DocumentProperty } from '../field-editor/interfaces/document-properties';
 
 export interface DocumentEditorNavParams {
   data$: Observable<any>;
@@ -16,7 +17,13 @@ export class DocumentEditorComponent {
   status = {
     loading: true
   };
-  data = {};
+  data: {
+    properties: DocumentProperty[];
+    subProperties: DocumentSubProperty[];
+  } = {
+    properties: [],
+    subProperties: []
+  };
 
   private _changeGuardSubscription: Subscription;
 
@@ -42,16 +49,26 @@ export class DocumentEditorComponent {
     });
   }
 
-  private dataToArray(data: any) {
-    const properties = [];
-    const subProperties = [];
+  trackByFn(index: any, item: any) {
+    return index;
+  }
 
+  onPropertyUpdated(updatedProperty: DocumentProperty) {
+    const propertyIndex = this.data.properties.findIndex(property => property.key === updatedProperty.key);
+    this.data.properties[propertyIndex] = updatedProperty;
+  }
+
+  private dataToArray(data: any) {
+    const properties: DocumentProperty[] = [];
+    const subProperties: DocumentSubProperty[] = [];
+    debugger;
     Object.keys(data).map(key => {
       const value = data[key];
       const type = this.getDataType(value);
       if (type === 'object') {
         subProperties.push({
           key,
+          type,
           values: Object.keys(value).map(subKey => ({
             key: subKey,
             value: value[subKey],

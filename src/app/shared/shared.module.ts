@@ -14,6 +14,7 @@ import { LoadingFullscreenComponent } from './components/loading-fullscreen/load
 import { ScrollHideDirective } from './layout/directives/scroll-hide';
 import { ScrollEffectDirective } from './layout/directives/scroll-effect';
 import { DocumentEditorComponent } from './components/document-editor/document-editor';
+import { FieldEditorComponent } from './components/field-editor/field-editor';
 
 const modals = [DocumentEditorComponent];
 
@@ -21,6 +22,7 @@ const modals = [DocumentEditorComponent];
   declarations: [
     // Components
     LoadingFullscreenComponent,
+    FieldEditorComponent,
 
     // Components: Modals
     ...modals,
@@ -52,6 +54,7 @@ const modals = [DocumentEditorComponent];
 
     // Components
     LoadingFullscreenComponent,
+    FieldEditorComponent,
 
     // Directives
     ScrollHideDirective,
