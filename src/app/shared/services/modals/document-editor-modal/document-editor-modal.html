@@ -1,13 +1,24 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      document editor
-    </ion-title>
     <ion-buttons start>
       <button ion-button>
         <span ion-text
               color="primary"
               showWhen="ios">Cancel</span>
+      </button>
+    </ion-buttons>
+    <ion-title>
+      document editor
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button>
+        <!-- iOS -->
+        <span ion-text
+              color="primary"
+              showWhen="ios">save</span>
+        <!-- Others -->
+        <ion-icon name="md-close"
+                  showWhen="android,windows"></ion-icon>
         <ion-icon name="md-close"
                   showWhen="android,windows"></ion-icon>
       </button>
@@ -22,3 +33,23 @@
                      (update)="documentUpdated($event)"></document-editor>
   </ion-list>
 </ion-content>
+
+<ion-footer showWhen="core">
+  <ion-toolbar>
+    <ion-buttons>
+      <button ion-button
+              (click)="onCancel()">
+        cancel
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button ion-button
+              color="primary"
+              icon-right
+              (click)="onSave()">
+        save
+        <ion-icon name="cloud-done"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

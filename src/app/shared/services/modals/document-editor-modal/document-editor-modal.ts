@@ -24,8 +24,7 @@ export class DocumentEditorModalComponent {
     // Expose one-time vlaue
     this.data$ = data$.pipe(
       take(1),
-      tap(() => (this.loading = false)),
-      tap(data => console.log('data: ', data))
+      tap(() => (this.loading = false))
     );
 
     // Warn in case of inbound value update
@@ -50,10 +49,11 @@ export class DocumentEditorModalComponent {
   }
 
   onCancel() {
-    this.dismiss(this.getData());
+    debugger;
+    this.dismiss();
   }
 
-  onSubmit() {
+  onSave() {
     this.dismiss(this.getData());
   }
 

@@ -20,7 +20,9 @@ export class ModalsService {
     const modal = this._modalCtrl.create(DocumentEditorModalComponent, navParams, {});
 
     modal.onDidDismiss(data => {
-      console.log('data: ', data);
+      if (data) {
+        backendService.updateDocument(docId, data);
+      }
     });
 
     modal.present();
