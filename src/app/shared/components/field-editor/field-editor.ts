@@ -29,7 +29,7 @@ export class FieldEditorComponent implements OnInit {
       .pipe(
         takeUntil(this._destroy$),
         filter(value => this.prop.value != value),
-        map(value => (isNaN(value) ? value : Number.parseFloat(value))),
+        map(value => (isNaN(value) ? value : value.indexOf('e') !== -1 ? value : Number.parseFloat(value))),
         debounceTime(this.prop.type === 'boolean' ? 0 : 750),
         tap(() => console.log('saving'))
       )
@@ -37,7 +37,7 @@ export class FieldEditorComponent implements OnInit {
   }
 
   onValueChanged(value) {
-    this.validateNewValue(value) ? this._value$.next(value) : this.revertLastChange();
+    this._value$.next(value); // this.validateNewValue(value) ? this._value$.next(value) : this.revertLastChange();
   }
 
   private validateNewValue(newValue: any) {
