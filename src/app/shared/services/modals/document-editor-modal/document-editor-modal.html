@@ -35,8 +35,30 @@
 </ion-content>
 
 <ion-footer showWhen="core">
-  <ion-toolbar>
-    <ion-buttons>
+
+  <!-- Live mode -->
+  <ion-toolbar *ngIf="isLiveUpdate">
+    <p margin-left>
+      <span class="fas fa-sync"
+            color="light">
+      </span>
+      <span margin-left>live edit</span>
+    </p>
+
+    <ion-buttons end>
+      <button ion-button
+              color="primary"
+              icon-right
+              (click)="onClose()">
+        close
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Transaction mode -->
+  <ion-toolbar *ngIf="!isLiveUpdate">
+    <ion-buttons margin-left
+                 padding-right>
       <button ion-button
               (click)="onCancel()">
         cancel
@@ -49,7 +71,7 @@
               [disabled]="isSaveDisabled()"
               (click)="onSave()">
         save
-        <ion-icon name="cloud-done"></ion-icon>
+        <ion-icon name="cloud-upload"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>

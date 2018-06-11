@@ -11,16 +11,19 @@ import { DocumentEditorNavParams } from './modals/document-editor-modal/document
 export class ModalsService {
   constructor(private _modalCtrl: ModalController) {}
 
-  editDocument(docId: string, backendService: BackendService) {
+  editDocument(docId: string, backendService: BackendService, live: boolean = true) {
     const doc = backendService.getDocument(docId);
     const navParams: DocumentEditorNavParams = {
-      data$: doc.valueChanges()
+      data$: doc.valueChanges(),
+      live,
+      updateFn: data => backendService.updateDocument(docId, data)
     };
 
     const modal = this._modalCtrl.create(DocumentEditorModalComponent, navParams, {});
 
     modal.onDidDismiss(data => {
-      if (data) {
+      if (live) {
+      } else if (data) {
         backendService.updateDocument(docId, data);
       }
     });

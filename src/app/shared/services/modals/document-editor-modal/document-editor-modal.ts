@@ -13,14 +13,30 @@ import { map } from 'rxjs-compat/operator/map';
 })
 export class DocumentEditorModalComponent {
   loading = false;
+  isLiveUpdate: boolean;
+
+  private _updateFn: Function;
   private _documentState: any = null;
 
   data$: Observable<any>;
   private _changeGuardSubscription: Subscription;
 
   constructor(private _viewCtrl: ViewController, private _navParams: NavParams, private _alertCtrl: AlertController) {
-    const data$ = (<DocumentEditorNavParams>this._navParams.data).data$;
+    const { data$, live, updateFn } = <DocumentEditorNavParams>this._navParams.data;
+    if (live) {
+      this.initLiveEditMode(data$, updateFn);
+    } else {
+      this.initTransactionMode(data$);
+    }
+  }
 
+  private initLiveEditMode(data$: Observable<any>, updateFn: Function) {
+    this.isLiveUpdate = true;
+    this._updateFn = updateFn;
+    this.data$ = data$;
+  }
+
+  private initTransactionMode(data$: Observable<any>) {
     // Expose one-time vlaue
     this.data$ = data$.pipe(
       take(1),
@@ -41,14 +57,21 @@ export class DocumentEditorModalComponent {
 
   documentUpdated(documentState) {
     this._documentState = documentState;
+    if (this.isLiveUpdate) {
+      this._updateFn(documentState);
+    }
   }
 
   ionViewWillLeave() {
-    this._changeGuardSubscription.unsubscribe();
+    this._changeGuardSubscription && this._changeGuardSubscription.unsubscribe();
   }
 
   isSaveDisabled() {
     return !!!this.getData();
+  }
+
+  onClose() {
+    this.dismiss();
   }
 
   onCancel() {
