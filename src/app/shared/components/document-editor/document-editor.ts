@@ -16,6 +16,7 @@ export class DocumentEditorComponent {
   }
 
   @Input() key: string;
+  @Input() level: number = 0;
 
   @Output('update') updateEmitter: EventEmitter<any> = new EventEmitter<any>();
 
@@ -48,9 +49,6 @@ export class DocumentEditorComponent {
         value: updatedSubdocument[key]
       };
     });
-
-    //const subdocumentIndex = this.data.subProperties.findIndex((subDoc: any) => subDoc.key === subDoc.key);
-    //this.data.subProperties[subdocumentIndex] = updatedSubdocument;
     this.emitUpdatedDocument();
   }
 
@@ -94,6 +92,8 @@ export class DocumentEditorComponent {
       return 'number';
     } else if (value.constructor === Array) {
       return 'array';
+    } else if (value.constructor === Boolean) {
+      return 'boolean';
     }
   }
 }

@@ -5,3 +5,26 @@
              (input)="onValueChanged($event.target.value)"
              type="text"></ion-input>
 </ion-item>
+
+<!-- Number -->
+<ion-item *ngIf="prop.type === 'number'">
+  <ion-label floating>{{prop.key}}</ion-label>
+  <ion-input [ngModel]="prop.value"
+             (input)="onValueChanged($event.target.value)"
+             pattern="[0-9]*"
+             type="number"></ion-input>
+</ion-item>
+
+<!-- Boolean: Toggle -->
+<ion-item *ngIf="false && prop.type === 'boolean'">
+  <ion-label>{{prop.key}}</ion-label>
+  <ion-toggle [checked]="prop.value"
+              (ionChange)="onValueChanged($event.value)"></ion-toggle>
+</ion-item>
+
+<!-- Boolean: Checkbox -->
+<ion-item *ngIf="prop.type === 'boolean'">
+  <ion-label>{{prop.key}}</ion-label>
+  <ion-checkbox [checked]="prop.value"
+                (ionChange)="onValueChanged($event.value)"></ion-checkbox>
+</ion-item>

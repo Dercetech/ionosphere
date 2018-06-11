@@ -5,12 +5,32 @@
                 [property]="property"
                 (update)="onPropertyUpdated($event)"></field-editor>
 
-  <!-- Properties -->
-  <ion-item-group *ngFor="let subDocument of data.subProperties; trackBy: trackByFn">
-    <ion-item-divider color="light">{{subDocument.key}}</ion-item-divider>
-    <document-editor [doc]="subDocument.value"
-                     [key]="subDocument.key"
-                     (update)="onSubdocumentUpdated($event)"></document-editor>
-  </ion-item-group>
+  <!-- Properties: Root Level -->
+  <ng-template [ngIf]="level === 0">
+    <ion-item-group *ngFor="let subDocument of data.subProperties; trackBy: trackByFn">
+      <ion-item-divider color="light">{{subDocument.key}}</ion-item-divider>
+      <document-editor [doc]="subDocument.value"
+                       [key]="subDocument.key"
+                       [level]="level + 1"
+                       (update)="onSubdocumentUpdated($event)"></document-editor>
+    </ion-item-group>
+  </ng-template>
+
+  <!-- Properties: Sub properties -->
+  <ng-template [ngIf]="level > 0">
+    <ng-template ngFor
+                 let-subDocument
+                 [ngForOf]="data.subProperties"
+                 let-i="index"
+                 [ngForTrackBy]="trackByFn">
+      <ion-list-header>
+        {{subDocument.key}}
+      </ion-list-header>
+      <document-editor [doc]="subDocument.value"
+                       [key]="subDocument.key"
+                       [level]="level + 1"
+                       (update)="onSubdocumentUpdated($event)"></document-editor>
+    </ng-template>
+  </ng-template>
 
 </ion-list>
