@@ -24,7 +24,7 @@ function processAll18nFiles(done) {
     .pipe(
       through.obj((file, enc, next) => {
         const i18n = JSON.parse(file.contents.toString('utf8'));
-        composeDictionary(dictionary, i18n.data, i18n.path);
+        composeDictionary(dictionary, i18n.data, i18n.path.split('.'));
         next(null, file);
       })
     )
@@ -40,25 +40,40 @@ function processAll18nFiles(done) {
 }
 
 function composeDictionary(dictionary, data, path) {
+  console.log('WWW ', path);
   Object.keys(data)
     .map(key => ({ key, data: data[key] }))
-    .forEach(({ key, data }) =>
-      Object.keys(data).forEach(langKey => {
-        setDictionaryEntry(dictionary, langKey, path, key, data[langKey]);
-      })
-    );
+    .forEach(({ key, data }) => {
+      if (isString(data)) {
+        setDictionaryEntry(dictionary, key, path, data);
+      } else {
+        composeDictionary(dictionary, data, [...path, key]);
+      }
+    });
 }
 
-function setDictionaryEntry(dictionary, langKey, path, key, data) {
-  initDictionaryEntry(langKey, dictionary);
-  initDictionaryEntry(path, dictionary[langKey]);
-  dictionary[langKey][path][key] = data;
+function isString(x) {
+  return Object.prototype.toString.call(x) === '[object String]';
 }
 
 function initDictionaryEntry(key, dictionary) {
   if (!dictionary[key]) {
     dictionary[key] = {};
   }
+  return dictionary[key];
+}
+
+function setDictionaryEntry(dictionary, langKey, path, data) {
+  initDictionaryEntry(langKey, dictionary);
+  let subDict = dictionary[langKey];
+  path.forEach(subKey => {
+    isLastToken = path[path.length - 1] === subKey;
+    if (isLastToken) {
+      subDict[subKey] = data;
+    } else {
+      subDict = initDictionaryEntry(subKey, subDict);
+    }
+  });
 }
 
 function writeDictionary(lang, data) {
