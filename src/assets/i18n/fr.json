@@ -1,5 +1,1 @@
-{
-  "welcome":{
-    "title" : "bienvenue à <...>"
-  }
-}
+{"app":{"title":"Ionosphere - Modèle d'app par jem@dercetech.com"},"menu":{"title":"entrée du menu"},"welcome":{"title":"titre composé"}}

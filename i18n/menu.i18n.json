@@ -1,0 +1,9 @@
+{
+  "path": "menu",
+  "data": {
+    "title": {
+      "fr": "entrée du menu 1",
+      "en": "menu entry"
+    }
+  }
+}

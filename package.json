@@ -7,6 +7,7 @@
   "scripts": {
     "clean": "ionic-app-scripts clean",
     "lint": "ionic-app-scripts lint",
+    "i18n": "gulp i18n:watch",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve"
   },
@@ -45,7 +46,10 @@
   "devDependencies": {
     "@ionic/app-scripts": "^3.1.9",
     "chalk": "^2.4.1",
+    "gulp": "^3.9.1",
+    "gulp-watch": "^5.0.0",
     "redux-devtools-extension": "^2.13.2",
+    "through2": "^2.0.3",
     "typescript": "~2.4.2"
   },
   "description": "Jem's Ionic/Redux/Firebase project seed"

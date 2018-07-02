@@ -1,5 +1,1 @@
-{
-  "welcome":{
-    "title" : "welcome to <...>"
-  }
-}
+{"app":{"title":"Ionosphere: App template by Jem."},"menu":{"title":"menu entry"},"welcome":{"title":"composed title"}}
