@@ -40,7 +40,6 @@ function processAll18nFiles(done) {
 }
 
 function composeDictionary(dictionary, data, path) {
-  console.log('WWW ', path);
   Object.keys(data)
     .map(key => ({ key, data: data[key] }))
     .forEach(({ key, data }) => {
